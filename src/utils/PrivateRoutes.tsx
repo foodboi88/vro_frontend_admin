@@ -5,9 +5,9 @@ type Props = {
   };
 
 const PrivateRoutes = ({children}: Props) => {
-    let auth = {'token':true}
+    let auth = {'token':false}
     return(
-        auth.token ? <Outlet/> : <Navigate to="/login"/>
+        auth.token ? <Outlet/> : <Navigate to="/"/>
     )
 }
 
