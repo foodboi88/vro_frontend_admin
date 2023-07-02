@@ -4,10 +4,14 @@ import { Button, Checkbox, Form, Input } from 'antd';
 
 import './out-login.styles.scss'
 import { ILoginRequest } from '../../common/login.interface';
+import { useNavigate } from "react-router-dom";
 
 const OutLoginLayout = () => {
-	const onFinish = (bodyRequest : ILoginRequest ) => {
 
+	const navigate = useNavigate();
+
+	const onFinish = (bodyRequest: ILoginRequest) => {
+		navigate('/home')
 	}
 
 	return (
@@ -43,7 +47,7 @@ const OutLoginLayout = () => {
 							<Input.Password />
 						</Form.Item>
 
-						<Form.Item name="remember" valuePropName="checked" wrapperCol={{  span: 16 }}>
+						<Form.Item name="remember" valuePropName="checked" wrapperCol={{ span: 16 }}>
 							<Checkbox>Remember me</Checkbox>
 						</Form.Item>
 
