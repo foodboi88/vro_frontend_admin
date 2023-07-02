@@ -1,0 +1,74 @@
+.main-sidebar {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    background-color: #CF0201ed;
+    width: 220px;
+    font-family: Lexend Deca;
+    font-style: normal;
+
+    .sidebar-logo {
+        padding: .5em 0;
+        height: 3em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFF;
+        font-size: 1.25em;
+        font-weight: 500;
+
+        img {
+            width: 1.75em;
+            margin-right: .5em;
+        }
+    }
+
+    .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1em;
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: .5em;
+            color: #FFF;
+            font-size: 14px;
+            padding: 10px;
+            margin: 5px 10px;
+            transition: all .2s ease-in-out;
+
+            svg {
+                font-size: 1.75em;
+            }
+        }
+
+        .sidebar-item:hover {
+            background-color: #FFF;
+            color: #CF0201;
+            border-radius: 1em;
+            cursor: pointer;
+        }
+    }
+
+    .sidebar-logout {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        margin: 1em 0;
+        padding-top: 1em;
+        border-top: 1px solid #FFF;
+        color: #FFF;
+        font-size: 14px;
+        display: flex;
+        gap: 1em;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        svg {
+            font-size: 1.75em;
+        }
+    }
+
+}
