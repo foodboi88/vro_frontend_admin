@@ -7,22 +7,24 @@ import InLoginLayout from './layouts/in-login/in-login';
 import General from './pages/general/general';
 import Sketch from './pages/sketch/sketch';
 import User from './pages/user/user';
+import { AnimatePresence } from 'framer-motion';
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          <Route element={<PrivateRoutes />}>
-            <Route element={<InLoginLayout />} path="/management" >
-              <Route element={<General />} path="/management" />
-              <Route element={<Sketch />} path="/management/sketch" />
-              <Route element={<User />} path="/management/user" />
+      <AnimatePresence>
+        <Router>
+          <Routes>
+            <Route element={<PrivateRoutes />}>
+              <Route element={<InLoginLayout />} path="/management" >
+                <Route element={<General />} path="/management" />
+                <Route element={<Sketch />} path="/management/sketch" />
+                <Route element={<User />} path="/management/user" />
+              </Route>
             </Route>
-          </Route>
-          <Route element={<OutLoginLayout />} path="/" />
-
-        </Routes>
-      </Router>
+            <Route element={<OutLoginLayout />} path="/" />
+          </Routes>
+        </Router>
+      </AnimatePresence>
     </div>
   );
 }

@@ -7,7 +7,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.11.4",
-    "@patternfly/react-charts": "^6.94.15",
+    "@patternfly/react-charts": "^6.94.19",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -26,8 +26,10 @@
     "jsencrypt": "^3.2.1",
     "mdb-react-ui-kit": "^5.1.0",
     "mdbootstrap": "^4.20.0",
+    "numeral": "^2.0.6",
     "rc-switch": "^4.0.0",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-icons": "^4.10.1",
@@ -71,6 +73,8 @@
     ]
   },
   "devDependencies": {
-    "@types/babel__core": "^7.20.1"
+    "@types/babel__core": "^7.20.1",
+    "@types/chart.js": "^2.9.37",
+    "@types/numeral": "^2.0.2"
   }
 }

@@ -1,4 +1,8 @@
 import React from 'react'
+import './style.totalbox.scss'
+import numeral from 'numeral';
+import { motion } from 'framer-motion';
+
 
 interface Props {
     title: string
@@ -8,13 +12,23 @@ interface Props {
 
 const TotalBox = (props: Props) => {
     return (
-        <div className='total-box'>
-            <div className='total-box'></div>
-            <div className="total-box-title">
-                {props.title}
+        <motion.div className='total-box'
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+        >
+            <div className='total-box-icon' >
+                <img src={props.icon} alt="" />
+            </div >
+            <div className='total-box-content'>
+                <div className="total-box-title">
+                    {props.title}
+                </div>
+                <div className="total-box-number">
+                    {props.number.toLocaleString()}
+                </div>
             </div>
 
-        </div>
+        </motion.div >
     )
 }
 
