@@ -1,0 +1,13 @@
+.table-main{
+    .title-and-search{
+        display: flex;
+        justify-content: space-between;
+        .title{
+            font-size: 20px;
+            font-weight: 550;
+        }
+        .search-area{
+            display: flex;
+        }
+    }
+}
