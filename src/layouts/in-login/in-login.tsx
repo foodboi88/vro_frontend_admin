@@ -10,14 +10,16 @@ import User from '../../pages/user/user'
 
 type Props = {
     children?: React.ReactNode
-  }
+}
 
-const InLoginLayout = ({children}: Props) => {
+const InLoginLayout = ({ children }: Props) => {
     return (
         <div className="main-home">
-            <Header />
             <Sidebar />
-            <Outlet/>
+            <Header />
+            <div className='main-content'>
+                <Outlet />
+            </div>
         </div>
     )
 }
