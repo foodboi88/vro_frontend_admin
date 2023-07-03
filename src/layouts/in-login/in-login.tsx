@@ -2,12 +2,22 @@ import React from 'react'
 import Header from '../../components/header/header'
 import Sidebar from '../../components/sidebar/sidebar'
 import './in-login.styles.scss'
+import { Router, Routes, Route, Outlet } from 'react-router-dom'
+import OutLoginLayout from '../out-login/out-login'
+import General from '../../pages/general/general'
+import Sketch from '../../pages/sketch/sketch'
+import User from '../../pages/user/user'
 
-const InLoginLayout = () => {
+type Props = {
+    children?: React.ReactNode
+  }
+
+const InLoginLayout = ({children}: Props) => {
     return (
         <div className="main-home">
             <Header />
             <Sidebar />
+            <Outlet/>
         </div>
     )
 }
