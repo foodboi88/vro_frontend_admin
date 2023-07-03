@@ -1,16 +1,52 @@
-import { motion } from 'framer-motion'
-import React from 'react'
-
+import React, { useState } from 'react'
+import CTable from '../../components/table/CTable'
+import { useDispatchRoot } from '../../redux/store';
+import { getUsersRequest } from '../../redux/controller';
+import { motion } from 'framer-motion';
+import './user.styles.scss'
 const User = () => {
-  return (
-    <motion.div
-      className="main-user"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}>
-      User
-    </motion.div>
-  )
+
+    const [textSearch, setTextSearch] = useState('');
+    const [beginDate, setBeginDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
+    const dispatch = useDispatchRoot()
+
+    const onChangeInput = (event: any) => {
+        setTextSearch(event.target.value);
+    }
+
+    const onChangeRangePicker = (event: any) => {
+        console.log(event)
+    }
+
+    const onSearch = () => {
+        console.log('hehee')
+        const body: any = {
+            size: 20,
+            offset: 0
+        };
+        dispatch(getUsersRequest(body))
+    }
+
+    return (
+        <motion.div className='user-main'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}>
+            <div>Statistic overall</div>
+            <div className='table-area'>
+                <CTable
+                    tableMainTitle='Danh sách tài khoản'
+                    allowDateRangeSearch={true}
+                    allowTextSearch={true}
+                    onChangeInput={onChangeInput}
+                    onChangeRangePicker={onChangeRangePicker}
+                    onSearch={onSearch}
+                />
+            </div>
+        </motion.div>
+    )
 }
 
 export default User

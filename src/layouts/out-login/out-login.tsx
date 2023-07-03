@@ -1,17 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MainBackground from '../../assets/out-login/background.jpg'
 import { Button, Checkbox, Form, Input } from 'antd';
 
 import './out-login.styles.scss'
 import { ILoginRequest } from '../../common/login.interface';
 import { useNavigate } from "react-router-dom";
+import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
+import { loginRequest } from '../../redux/controller';
 
 const OutLoginLayout = () => {
 
 	const navigate = useNavigate();
+	const dispatch = useDispatchRoot();
+
+	const {
+        tokenLogin
+    } = useSelectorRoot((state) => state.login);
+
+
+    useEffect(()=>{
+        if(tokenLogin){
+            navigate('/management')
+        }
+    },[tokenLogin])
 
 	const onFinish = (bodyRequest: ILoginRequest) => {
-		navigate('/management')
+		dispatch(loginRequest(bodyRequest))
+		// navigate('/management')
 	}
 
 	return (
@@ -32,9 +47,9 @@ const OutLoginLayout = () => {
 						autoComplete="off"
 					>
 						<Form.Item
-							label="Username"
-							name="userName"
-							rules={[{ required: true, message: 'Please input your username!' }]}
+							label="Email"
+							name="email"
+							rules={[{ required: true, message: 'Please input your email!' }]}
 						>
 							<Input />
 						</Form.Item>

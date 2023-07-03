@@ -4,4 +4,5 @@ export enum API_URL {
     REGISTER = "users/register",
     REFRESH_TOKEN = "users/refreshtoken",
     GET_USER_INFO = "users/profile",
+    GET_ALL_USERS = "Admin/all-user",
 }

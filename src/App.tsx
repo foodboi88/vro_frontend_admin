@@ -9,6 +9,7 @@ import Sketch from './pages/sketch/sketch';
 import User from './pages/user/user';
 import { AnimatePresence } from 'framer-motion';
 function App() {
+  
   return (
     <div className="App">
       <AnimatePresence>

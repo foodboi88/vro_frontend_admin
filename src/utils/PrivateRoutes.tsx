@@ -1,13 +1,26 @@
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet, Navigate, useNavigate } from 'react-router-dom'
+import { useSelectorRoot } from '../redux/store';
+import { useEffect } from 'react';
 
 type Props = {
     children?: React.ReactNode
   };
 
 const PrivateRoutes = ({children}: Props) => {
-    let auth = {'token':true}
+    const {
+        tokenLogin
+    } = useSelectorRoot((state) => state.login);
+    const navigate = useNavigate();
+
+
+    useEffect(()=>{
+        if(tokenLogin){
+            navigate('/management')
+        }
+    },[tokenLogin])
+
     return(
-        auth.token ? <Outlet/> : <Navigate to="/"/>
+        tokenLogin ? <Outlet/> : <Navigate to="/"/>
     )
 }
 
