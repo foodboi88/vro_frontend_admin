@@ -8,8 +8,9 @@ import { RiMoneyDollarCircleLine } from 'react-icons/ri'
 import { ImStatsDots } from 'react-icons/im'
 import { AiOutlineKey, AiFillGift, AiOutlineQuestionCircle } from 'react-icons/ai'
 import { BiSolidLogIn } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom'
 const Sidebar = () => {
-
+    const navigate = useNavigate();
     const [active, setActive] = useState<number>(1)
 
     return (
@@ -19,15 +20,24 @@ const Sidebar = () => {
                 <span>Vro Group</span>
             </div>
             <div className="sidebar-menu">
-                <div className={'sidebar-item' + (active === 1 ? ' active' : ' ')} onClick={() => setActive(1)}>
+                <div className={'sidebar-item' + (active === 1 ? ' active' : ' ')} onClick={() => {
+                    setActive(1)
+                    navigate('/management')
+                }}>
                     <BiGridAlt />
                     <span>Tổng quan</span>
                 </div>
-                <div className={'sidebar-item' + (active === 2 ? ' active' : '')} onClick={() => setActive(2)}>
+                <div className={'sidebar-item' + (active === 2 ? ' active' : '')} onClick={() => {
+                    setActive(2)
+                    navigate('/management/user')
+                }}>
                     <BsFillPersonFill />
                     <span>Quản lý tài khoản</span>
                 </div>
-                <div className={'sidebar-item' + (active === 3 ? ' active' : '')} onClick={() => setActive(3)}>
+                <div className={'sidebar-item' + (active === 3 ? ' active' : '')} onClick={() => {
+                    setActive(3)
+                    navigate('/management/sketch')
+                }}>
                     <HiOutlineNewspaper />
                     <span>Quản lý bài viết</span>
                 </div>
@@ -56,7 +66,7 @@ const Sidebar = () => {
                 <BiSolidLogIn />
                 <span>Đăng xuất</span>
             </div>
-        </div>
+        </div >
     )
 }
 
