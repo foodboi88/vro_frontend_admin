@@ -1,4 +1,4 @@
-import { DatePicker, Table } from 'antd';
+import { Button, DatePicker, Table } from 'antd';
 import './ctable.styles.scss'
 
 import React from 'react'
@@ -14,6 +14,10 @@ interface CTableProps{
     data?: any[];
     allowActionDetail?: boolean;
     allowActionBlock?: boolean;
+    onChangeInput?: (event: any) => void;
+    onChangeRangePicker?: (event: any) => void;
+    onSearch?: () => void;
+
 }
 
 const CTable = (props: CTableProps) => {
@@ -25,11 +29,28 @@ const CTable = (props: CTableProps) => {
             <div className='search-area'>
                 {
                     props.allowTextSearch && 
-                    <Input/>
+                    <Input onChange={
+                        (event) => {
+                            if(props.onChangeInput) props.onChangeInput(event)
+                        }
+                    }/>
                 }
                 {
                     props.allowDateRangeSearch && 
-                    <RangePicker />
+                    <RangePicker 
+                        onChange={(event)=> {
+                            if(props.onChangeRangePicker) props.onChangeRangePicker(event)
+                        }}
+                    />
+                }
+                {
+                    (props.allowDateRangeSearch ||
+                    props.allowTextSearch) && 
+                    <Button
+                        onClick={()=>{
+                            if(props.onSearch) props.onSearch()
+                        }}
+                    >Tìm kiếm</Button>
                 }
             </div>
         </div>
