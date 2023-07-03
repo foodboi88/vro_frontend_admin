@@ -1,8 +1,9 @@
 import React from 'react'
 import Header from '../../components/header/header'
 import Sidebar from '../../components/sidebar/sidebar'
-import './style.home.scss'
-const home = () => {
+import './in-login.styles.scss'
+
+const InLoginLayout = () => {
     return (
         <div className="main-home">
             <Header />
@@ -11,4 +12,4 @@ const home = () => {
     )
 }
 
-export default home
+export default InLoginLayout

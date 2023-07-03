@@ -3,15 +3,15 @@ import './App.styles.scss';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import PrivateRoutes from './utils/PrivateRoutes'
 import OutLoginLayout from './layouts/out-login/out-login';
-import Home from './layouts/home/home';
+import InLoginLayout from './layouts/in-login/in-login';
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
           <Route element={<PrivateRoutes />}>
+            <Route element={<InLoginLayout />} path="/management" />
           </Route>
-          <Route element={<Home />} path="/home" />
           <Route element={<OutLoginLayout />} path="/" />
         </Routes>
       </Router>
