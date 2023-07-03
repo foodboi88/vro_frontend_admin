@@ -31,7 +31,7 @@ const managementSlice = createSlice({
         getUsersSuccess(state, action: PayloadAction<any>) {
             state.loading = false;
             console.log(action.payload)
-            state.userList = action.payload.listUser
+            state.userList = action.payload.items
         },
         getUsersFail(state, action: any) {
             console.log(action);

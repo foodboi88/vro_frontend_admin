@@ -4,7 +4,7 @@ import CoinIcon from '../../assets/image/coin.png'
 import ShopIcon from '../../assets/image/shop.png'
 import UserIcon from '../../assets/image/user.png'
 
-import './user.styles.scss'
+import './general.styles.scss'
 import { motion } from 'framer-motion'
 import Statistical from '../../components/statistical/Statistical'
 
