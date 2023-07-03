@@ -49,6 +49,12 @@
             border-radius: 1em;
             cursor: pointer;
         }
+
+        .sidebar-item.active {
+            background-color: #FFF;
+            color: #CF0201;
+            border-radius: 1em;
+        }
     }
 
     .sidebar-logout {
