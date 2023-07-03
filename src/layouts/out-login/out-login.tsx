@@ -11,7 +11,7 @@ const OutLoginLayout = () => {
 	const navigate = useNavigate();
 
 	const onFinish = (bodyRequest: ILoginRequest) => {
-		navigate('/home')
+		navigate('/management')
 	}
 
 	return (
