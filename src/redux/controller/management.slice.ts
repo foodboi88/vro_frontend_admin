@@ -37,7 +37,7 @@ const managementSlice = createSlice({
             state.loading = false;
             console.log(action.payload)
             state.userList = action.payload.items
-            state.totalUserRecords = action.payload.count
+            state.totalUserRecords = action.payload.total
             
         },
         getUsersFail(state, action: PayloadAction<any>) {
