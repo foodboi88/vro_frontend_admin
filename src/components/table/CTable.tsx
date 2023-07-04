@@ -1,31 +1,38 @@
 import { Button, DatePicker, Table } from 'antd';
 import './ctable.styles.scss'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ColumnsType } from 'antd/lib/table';
 import Input from 'antd/lib/input/Input';
 const { RangePicker } = DatePicker;
 
 interface CTableProps{
     tableMainTitle?: string;
-    allowTextSearch?: true;
-    allowDateRangeSearch?: true;
+    allowTextSearch?: boolean;
+    allowDateRangeSearch?: boolean;
     titleOfColumnList?: ColumnsType<any>;
     data?: any[];
     allowActionDetail?: boolean;
     allowActionBlock?: boolean;
+    totalRecord: number;
     onChangeInput?: (event: any) => void;
     onChangeRangePicker?: (event: any) => void;
     onSearch?: () => void;
+    onChangePagination: (event: any) => void;
 
 }
 
 const CTable = (props: CTableProps) => {
+    useEffect(()=>{
+        console.log(Math.ceil(props?.totalRecord))
 
+        console.log(Math.ceil(props?.totalRecord/10))
+    },[])
   return (
     <div className='table-main'>
         <div className='title-and-search'>
             <div className='title'>{props.tableMainTitle}</div>
+            <div className='total'>Tổng số bản ghi: {props.totalRecord}</div>
             <div className='search-area'>
                 {
                     props.allowTextSearch && 
@@ -55,7 +62,19 @@ const CTable = (props: CTableProps) => {
             </div>
         </div>
         <div className='table'>
-            <Table columns={props.titleOfColumnList} dataSource={props.data} />
+            <Table 
+                columns={props.titleOfColumnList} 
+                dataSource={props.data} 
+                pagination={
+                    { 
+                        total: props.totalRecord, 
+                        onChange: (event) => {
+                            props.onChangePagination(event)
+                
+                        } 
+                    }
+                }
+            />
         </div>
     </div>
   )

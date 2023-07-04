@@ -334,6 +334,22 @@ class Utils {
         value = value + "";
         value = value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
         return value;
+    };
+
+    static parseObjectToQueryParameter(object: any){
+        let result = '?' + new URLSearchParams(object).toString();
+        return result;
+    }
+
+    static getRidOfUnusedProperties(object: any){
+        Object.keys(object).forEach(key => {
+            if (object[key] === null || 
+                object[key] === undefined || 
+                object[key] === '') {
+              delete object[key];
+            }
+          });
+        return object;
     }
 }
 

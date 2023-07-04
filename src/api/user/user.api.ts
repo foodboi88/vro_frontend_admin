@@ -8,7 +8,9 @@ export default class UserApi {
     static apiURL = API_URL;
 
     static getAllUsers(body: any): Observable<any> {
-        const api = `${UserApi.apiURL.HOST}/${this.apiURL.GET_ALL_USERS}?size=${body.size}&offset=${body.offset}`;
+        const queryParam = Utils.parseObjectToQueryParameter(body);
+        console.log(queryParam)
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.GET_ALL_USERS}${queryParam}`;
         return HttpClient.get(api).pipe(
             map(
                 (res) => (res as any) || null,

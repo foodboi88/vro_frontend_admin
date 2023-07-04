@@ -12,12 +12,14 @@ import { IUser } from "../../common/user.interface";
 
 interface ManagementState {
     loading: boolean;
-    userList: IUser[]
+    userList: IUser[];
+    totalUserRecords: number;
 }
 
 const initState: ManagementState = {
     loading: false,
-    userList: []
+    userList: [],
+    totalUserRecords: 0,
 };
 
 const managementSlice = createSlice({
@@ -32,6 +34,8 @@ const managementSlice = createSlice({
             state.loading = false;
             console.log(action.payload)
             state.userList = action.payload.items
+            state.totalUserRecords = action.payload.count
+            
         },
         getUsersFail(state, action: any) {
             console.log(action);

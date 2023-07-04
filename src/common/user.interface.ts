@@ -14,3 +14,15 @@ export interface IUser{
     totalSales: number,
     totalBuy: number
 }
+
+export interface IGetUsersRequest{
+    size: number;
+    offset: number;
+    search?: string;
+    startTime?: string;
+    endTime?: string;
+    status?: string
+    sortBy?: string
+    sortOrder?: string
+}
+

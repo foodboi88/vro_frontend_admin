@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
 import { getUsersRequest } from '../../redux/controller';
@@ -6,15 +6,30 @@ import { motion } from 'framer-motion';
 import './user.styles.scss'
 import { Space } from 'antd';
 import { ColumnsType } from 'rc-table/lib/interface';
-import { IUser } from '../../common/user.interface';
+import { IGetUsersRequest, IUser } from '../../common/user.interface';
 import { ColumnType } from 'antd/lib/table';
+import Utils from '../../utils/base-utils';
+import { QUERY_PARAM } from '../../constants/get-api.constant';
 const User = () => {
     const {
-        userList
+        userList,
+        totalUserRecords
     } = useSelectorRoot((state) => state.management);
+
     const [textSearch, setTextSearch] = useState('');
     const [beginDate, setBeginDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [currentSearchValue, setCurrentSearchValue] = useState<IGetUsersRequest>(
+      {
+        size: QUERY_PARAM.size,
+        offset: 0
+      }
+    )
+    
+
+    useEffect(()=> {
+      console.log(totalUserRecords)
+    },[totalUserRecords])
 
     const columns: ColumnType<IUser>[] = [
         {
@@ -81,16 +96,36 @@ const User = () => {
     }
 
     const onChangeRangePicker = (event: any) => {
-        console.log(event)
+        setBeginDate(event[0].format('YYYY-MM-DD'))
+        setEndDate(event[1].format('YYYY-MM-DD'))
+
+        console.log(beginDate)
+        console.log(endDate)
+
     }
 
     const onSearch = () => {
         console.log('hehee')
-        const body: any = {
-            size: 20,
-            offset: 0
+        const body: IGetUsersRequest = {
+          size: QUERY_PARAM.size,
+          offset: 0,
+          search: textSearch,
+          startTime: beginDate,
+          endTime: endDate,
+          status: '',
+          sortBy: '',
+          sortOrder: '',
         };
-        dispatch(getUsersRequest(body))
+
+        const finalBody = Utils.getRidOfUnusedProperties(body)
+        setCurrentSearchValue(finalBody);
+        dispatch(getUsersRequest(finalBody))
+    }
+
+    const onChangePagination = ( event: any) => {
+      currentSearchValue.offset = (event-1)*QUERY_PARAM.size ; 
+      setCurrentSearchValue(currentSearchValue);
+      dispatch(getUsersRequest(currentSearchValue))
     }
 
     return (
@@ -109,6 +144,8 @@ const User = () => {
                     onSearch={onSearch}
                     data={userList}
                     titleOfColumnList={columns}
+                    totalRecord= {totalUserRecords}
+                    onChangePagination = {onChangePagination}
                 />
             </div>
         </motion.div>
