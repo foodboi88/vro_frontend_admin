@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
-import { getUsersRequest } from '../../redux/controller';
+import { blockUsersRequest, getUsersRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
 import './user.styles.scss'
 import { Space } from 'antd';
@@ -82,7 +82,7 @@ const User = () => {
           key: 'action',
           render: (_, record) => (
             <Space size="middle">
-              <a>Block {record.name}</a>
+              <a onClick={(event)=>handleBlockUser(record)}>Block</a>
               <a>Delete</a>
             </Space>
           ),
@@ -91,17 +91,23 @@ const User = () => {
 
     const dispatch = useDispatchRoot()
 
+    const handleBlockUser = (record: any) => {
+      const bodyrequest = {
+        userId: record.id,
+        currentSearchValue: currentSearchValue
+      }
+      dispatch(blockUsersRequest(bodyrequest));
+    }
+
     const onChangeInput = (event: any) => {
         setTextSearch(event.target.value);
     }
 
     const onChangeRangePicker = (event: any) => {
-        setBeginDate(event[0].format('YYYY-MM-DD'))
-        setEndDate(event[1].format('YYYY-MM-DD'))
-
-        console.log(beginDate)
-        console.log(endDate)
-
+        if(event){
+          setBeginDate(event[0].format('YYYY-MM-DD'))
+          setEndDate(event[1].format('YYYY-MM-DD'))
+        }
     }
 
     const onSearch = () => {
@@ -116,7 +122,6 @@ const User = () => {
           sortBy: '',
           sortOrder: '',
         };
-
         const finalBody = Utils.getRidOfUnusedProperties(body)
         setCurrentSearchValue(finalBody);
         dispatch(getUsersRequest(finalBody))

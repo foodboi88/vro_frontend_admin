@@ -19,5 +19,16 @@ export default class UserApi {
         );
     }
 
+    static blockUser(body: any): Observable<any> {
+        const queryParam = Utils.parseObjectToQueryParameter(body);
+        console.log(queryParam)
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.BLOCK_USER}${queryParam}`;
+        return HttpClient.put(api,body).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
     
 }

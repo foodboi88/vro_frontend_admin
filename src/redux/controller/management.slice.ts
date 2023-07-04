@@ -7,7 +7,8 @@ import { RootEpic } from "../../common/define-type";
 import Utils from "../../utils/base-utils";
 import IdentityApi from "../../api/identity/identity.api";
 import UserApi from "../../api/user/user.api";
-import { IUser } from "../../common/user.interface";
+import { IGetUsersRequest, IUser } from "../../common/user.interface";
+import { QUERY_PARAM } from "../../constants/get-api.constant";
 
 
 interface ManagementState {
@@ -26,6 +27,8 @@ const managementSlice = createSlice({
     name: "management",
     initialState: initState,
     reducers: {
+
+        // Get users
         getUsersRequest(state, action: PayloadAction<any>) {
             state.loading = true;
             // console.log("da chui vao",state.loading)
@@ -37,8 +40,40 @@ const managementSlice = createSlice({
             state.totalUserRecords = action.payload.count
             
         },
-        getUsersFail(state, action: any) {
+        getUsersFail(state, action: PayloadAction<any>) {
             console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+         
+        },
+
+        //Block user
+        blockUsersRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        blockUsersSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            notification.open({
+                message: 'Block người dùng thành công',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+        },
+        blockUsersFail(state, action: any) {
             state.loading = false;
 
          
@@ -51,15 +86,11 @@ const getUsers$: RootEpic = (action$) =>
     action$.pipe(
         filter(getUsersRequest.match),
         mergeMap((re) => {
-            // IdentityApi.login(re.payload) ?
             console.log(re);
             
 
             return UserApi.getAllUsers(re.payload).pipe(
                 mergeMap((res: any) => {
-                    console.log(res);
-                    console.log(res.data.accessToken);
-
                     return [
                         managementSlice.actions.getUsersSuccess(res.data),
                         
@@ -70,15 +101,35 @@ const getUsers$: RootEpic = (action$) =>
         })
     );
 
+const blockUsers$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(blockUsersRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return UserApi.blockUser(re.payload).pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.blockUsersSuccess(res.data),
+                        managementSlice.actions.getUsersRequest(re.payload.currentSearchValue)
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.blockUsersFail(err)])
+            );
+        })
+    );
+
 
 
 export const ManagementEpics = [
     getUsers$,
-  
+    blockUsers$,
 ];
 export const {
  
     getUsersRequest,
+    blockUsersRequest,
    
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
