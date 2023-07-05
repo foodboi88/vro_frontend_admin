@@ -11,7 +11,7 @@ import { IGetUsersRequest, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
-import { IOverViewStatictis } from "../../common/statistic.interface";
+import { IOverViewStatictis, IOverViewStatictisDay } from "../../common/statistic.interface";
 import StatisticAPI from "../../api/statistic/statistic.api";
 
 
@@ -21,9 +21,9 @@ interface ManagementState {
     totalUserRecords: number;
     sketchList: ISketch[];
     totalSketchRecords: number;
-    sketchStatistic: IStatisticSketch| undefined
+    sketchStatistic: IStatisticSketch | undefined
     overviewStatistic: IOverViewStatictis | undefined;
-    
+    overViewStatisticDay: IOverViewStatictisDay | undefined;
 }
 
 const initState: ManagementState = {
@@ -33,7 +33,8 @@ const initState: ManagementState = {
     sketchList: [],
     totalSketchRecords: 0,
     overviewStatistic: undefined,
-    sketchStatistic: undefined
+    sketchStatistic: undefined,
+    overViewStatisticDay: undefined,
 };
 
 const managementSlice = createSlice({
@@ -112,7 +113,7 @@ const managementSlice = createSlice({
         getSketchsFail(state, action: any) {
             state.loading = false;
 
-         
+
         },
 
         //Get sketch statistic
@@ -127,9 +128,9 @@ const managementSlice = createSlice({
         getSketchsStatisticFail(state, action: any) {
             state.loading = false;
 
-         
+
         },
-        
+
         // Get overview statistic
         getOverviewStatisticRequest(state) {
             state.loading = true;
@@ -143,6 +144,29 @@ const managementSlice = createSlice({
 
         getOverviewStatisticFail(state, action: PayloadAction<any>) {
             state.loading = false;
+        },
+
+        // Get overview statistic day
+        getOverviewStatisticDayRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticDaySuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+            state.overViewStatisticDay = action.payload[0];
+        },
+
+        getOverviewStatisticDayFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+            if (action.payload.status === 400 || action.payload.status === 404) {
+                notification.open({
+                    message: action.payload.response.message,
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                });
+            }
         }
 
     },
@@ -191,13 +215,13 @@ const getSketchs$: RootEpic = (action$) =>
         filter(getSketchsRequest.match),
         mergeMap((re) => {
             console.log(re);
-            
+
 
             return SketchApi.getAllSketchs(re.payload).pipe(
                 mergeMap((res: any) => {
                     return [
                         managementSlice.actions.getSketchsSuccess(res.data),
-                        
+
                     ];
                 }),
                 catchError((err) => [managementSlice.actions.getSketchsFail(err)])
@@ -246,12 +270,30 @@ const getSketchStatistic$: RootEpic = (action$) =>
         })
     );
 
+const getOverviewStatisticDay$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticDayRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            return StatisticAPI.getOverViewStatisticDay(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOverviewStatisticDaySuccess(res.data),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getOverviewStatisticDayFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
     getSketchs$,
     getOverviewStatistic$,
     getSketchStatistic$,
+    getOverviewStatisticDay$,
 ];
 export const {
     getUsersRequest,
@@ -259,6 +301,7 @@ export const {
     getSketchsRequest,
     getSketchsStatisticRequest,
     getOverviewStatisticRequest,
+    getOverviewStatisticDayRequest
 
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
