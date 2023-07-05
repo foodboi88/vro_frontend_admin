@@ -11,6 +11,8 @@ import { IGetUsersRequest, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch } from "../../common/sketch.interface";
+import { IOverViewStatictis } from "../../common/statistic.interface";
+import StatisticAPI from "../../api/statistic/statistic.api";
 
 
 interface ManagementState {
@@ -19,6 +21,7 @@ interface ManagementState {
     totalUserRecords: number;
     sketchList: ISketch[];
     totalSketchRecords: number;
+    overviewStatistic: IOverViewStatictis | undefined;
 }
 
 const initState: ManagementState = {
@@ -27,6 +30,7 @@ const initState: ManagementState = {
     totalUserRecords: 0,
     sketchList: [],
     totalSketchRecords: 0,
+    overviewStatistic: undefined,
 };
 
 const managementSlice = createSlice({
@@ -44,7 +48,7 @@ const managementSlice = createSlice({
             console.log(action.payload)
             state.userList = action.payload.items
             state.totalUserRecords = action.payload.total
-            
+
         },
         getUsersFail(state, action: PayloadAction<any>) {
             console.log(action);
@@ -59,7 +63,7 @@ const managementSlice = createSlice({
                     paddingTop: 40,
                 },
             });
-         
+
         },
 
         //Block user
@@ -81,8 +85,6 @@ const managementSlice = createSlice({
         },
         blockUsersFail(state, action: any) {
             state.loading = false;
-
-         
         },
 
         //Get all sketch
@@ -110,6 +112,20 @@ const managementSlice = createSlice({
          
         },
         
+        // Get overview statistic
+        getOverviewStatisticRequest(state) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticSuccess(state, action: PayloadAction<IOverViewStatictis>) {
+            state.loading = false;
+            state.overviewStatistic = action.payload;
+        },
+
+        getOverviewStatisticFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+        }
+
     },
 });
 
@@ -118,13 +134,13 @@ const getUsers$: RootEpic = (action$) =>
         filter(getUsersRequest.match),
         mergeMap((re) => {
             console.log(re);
-            
+
 
             return UserApi.getAllUsers(re.payload).pipe(
                 mergeMap((res: any) => {
                     return [
                         managementSlice.actions.getUsersSuccess(res.data),
-                        
+
                     ];
                 }),
                 catchError((err) => [managementSlice.actions.getUsersFail(err)])
@@ -166,6 +182,26 @@ const getSketchs$: RootEpic = (action$) =>
                     ];
                 }),
                 catchError((err) => [managementSlice.actions.getSketchsFail(err)])
+            )
+        })
+    );
+// Get overview statistic
+const getOverviewStatistic$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return StatisticAPI.getOverViewStatistic().pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.getOverviewStatisticSuccess(res.data),
+                    ];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getOverviewStatisticFail(err)]
+                )
             );
         })
     );
@@ -174,12 +210,14 @@ export const ManagementEpics = [
     getUsers$,
     blockUsers$,
     getSketchs$,
+    getOverviewStatistic$,
 ];
 export const {
- 
     getUsersRequest,
     blockUsersRequest,
     getSketchsRequest,
    
+    getOverviewStatisticRequest,
+
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

@@ -10,42 +10,71 @@ import { IGetUsersRequest, IUser } from '../../common/user.interface';
 import { ColumnType } from 'antd/lib/table';
 import Utils from '../../utils/base-utils';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
+import UserIcon from '../../assets/image/user.png'
+import UserTick from '../../assets/image/user-tick.png'
+import UserMinus from '../../assets/image/user-minus.png'
+import UserBlock from '../../assets/image/user-remove.png'
+import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
+
+const statisticalUser = [
+    {
+        title: "Tổng số tài khoản",
+        number: 8426,
+        icon: UserIcon,
+    },
+    {
+        title: "Tài khoản mới ",
+        number: 4568,
+        icon: UserTick,
+    },
+    {
+        title: "Tài khoản đăng kí trc đó",
+        number: 3858,
+        icon: UserMinus,
+    },
+    {
+        title: "Tài khoản bị chặn",
+        number: 833,
+        icon: UserBlock,
+    }
+]
+
 const User = () => {
     const {
         userList,
         totalUserRecords
-    } = useSelectorRoot((state) => state.management);
+    } = useSelectorRoot((state) => state.management); // lấy ra state từ store
 
-    const [textSearch, setTextSearch] = useState('');
-    const [beginDate, setBeginDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [currentSearchValue, setCurrentSearchValue] = useState<IGetUsersRequest>(
-      {
+    const [textSearch, setTextSearch] = useState(''); // giá trị của ô search
+    const [beginDate, setBeginDate] = useState('');  // giá trị của ngày bắt đầu
+    const [endDate, setEndDate] = useState(''); // giá trị của ngày kết thúc
+    const [currentSearchValue, setCurrentSearchValue] = useState<IGetUsersRequest>({
         size: QUERY_PARAM.size,
         offset: 0
-      }
-    )
-    
+    }) // giá trị của request gọi api lấy danh sách user
 
-    useEffect(()=> {
-      console.log(totalUserRecords)
-    },[totalUserRecords])
 
+    // Gọi api lấy ra danh sách user
+    useEffect(() => {
+        console.log(totalUserRecords)
+    }, [totalUserRecords])
+
+    // Các cột của bảng
     const columns: ColumnType<IUser>[] = [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
         },
         {
-          title: 'Phone',
-          dataIndex: 'phone',
-          key: 'phone',
+            title: 'Phone',
+            dataIndex: 'phone',
+            key: 'phone',
         },
         {
             title: 'CreatedAt',
@@ -78,59 +107,65 @@ const User = () => {
         //   ),
         // },
         {
-          title: 'Action',
-          key: 'action',
-          render: (_, record) => (
-            <Space size="middle">
-              <a onClick={(event)=>handleBlockUser(record)}>Block</a>
-              <a>Delete</a>
-            </Space>
-          ),
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <a onClick={(event) => handleBlockUser(record)}>Block</a>
+                    <a>Delete</a>
+                </Space>
+            ),
         },
-      ];
+    ];
 
     const dispatch = useDispatchRoot()
 
+    // Hàm xử lý khi click vào nút block user
     const handleBlockUser = (record: any) => {
-      const bodyrequest = {
-        userId: record.id,
-        currentSearchValue: currentSearchValue
-      }
-      dispatch(blockUsersRequest(bodyrequest));
+        const bodyrequest = {
+            userId: record.id,
+            currentSearchValue: currentSearchValue
+        }
+        dispatch(blockUsersRequest(bodyrequest));
     }
 
+    // Hàm xử lý khi thay đổi giá trị ô search
     const onChangeInput = (event: any) => {
         setTextSearch(event.target.value);
     }
 
+    // Hàm xử lý khi thay đổi giá trị của ngày bắt đầu và ngày kết thúc
     const onChangeRangePicker = (event: any) => {
-        if(event){
-          setBeginDate(event[0].format('YYYY-MM-DD'))
-          setEndDate(event[1].format('YYYY-MM-DD'))
+        if (event) {
+            console.log(event[0].format('YYYY-MM-DD'));
+            setBeginDate(event[0].format('YYYY-MM-DD'))
+            setEndDate(event[1].format('YYYY-MM-DD'))
         }
     }
 
+    // Hàm xử lý khi click vào nút search
     const onSearch = () => {
         console.log('hehee')
         const body: IGetUsersRequest = {
-          size: QUERY_PARAM.size,
-          offset: 0,
-          search: textSearch,
-          startTime: beginDate,
-          endTime: endDate,
-          status: '',
-          sortBy: '',
-          sortOrder: '',
+            size: QUERY_PARAM.size,
+            offset: 0,
+            search: textSearch,
+            startTime: beginDate,
+            endTime: endDate,
+            status: '',
+            sortBy: '',
+            sortOrder: '',
         };
         const finalBody = Utils.getRidOfUnusedProperties(body)
         setCurrentSearchValue(finalBody);
         dispatch(getUsersRequest(finalBody))
     }
 
-    const onChangePagination = ( event: any) => {
-      currentSearchValue.offset = (event-1)*QUERY_PARAM.size ; 
-      setCurrentSearchValue(currentSearchValue);
-      dispatch(getUsersRequest(currentSearchValue))
+    // Hàm xử lý khi thay đổi giá trị của pagination
+    const onChangePagination = (event: any) => {
+        currentSearchValue.offset = (event - 1) * QUERY_PARAM.size;
+        setCurrentSearchValue(currentSearchValue);
+        dispatch(getUsersRequest(currentSearchValue))
     }
 
     return (
@@ -138,7 +173,16 @@ const User = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}>
-            <div>Statistic overall</div>
+            <div className="statistical-user">
+                {statisticalUser.map((item, index) => (
+                    <TotalBoxUser
+                        key={index}
+                        title={item.title}
+                        number={item.number}
+                        icon={item.icon}
+                    />
+                ))}
+            </div>
             <div className='table-area'>
                 <CTable
                     tableMainTitle='Danh sách tài khoản'
@@ -149,8 +193,8 @@ const User = () => {
                     onSearch={onSearch}
                     data={userList}
                     titleOfColumnList={columns}
-                    totalRecord= {totalUserRecords}
-                    onChangePagination = {onChangePagination}
+                    totalRecord={totalUserRecords}
+                    onChangePagination={onChangePagination}
                 />
             </div>
         </motion.div>
