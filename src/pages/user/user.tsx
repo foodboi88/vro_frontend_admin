@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
-import { blockUsersRequest, getUsersRequest } from '../../redux/controller';
+import { blockUsersRequest, getUsersRequest, getUsersStatisticRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
 import './user.styles.scss'
 import { Space } from 'antd';
@@ -42,7 +42,8 @@ const statisticalUser = [
 const User = () => {
     const {
         userList,
-        totalUserRecords
+        totalUserRecords,
+        userStatistic
     } = useSelectorRoot((state) => state.management); // lấy ra state từ store
 
     const [textSearch, setTextSearch] = useState(''); // giá trị của ô search
@@ -57,6 +58,7 @@ const User = () => {
     // Gọi api lấy ra danh sách user
     useEffect(() => {
         console.log(totalUserRecords)
+        dispatch(getUsersStatisticRequest())
     }, [totalUserRecords])
 
     // Các cột của bảng
@@ -118,6 +120,8 @@ const User = () => {
         },
     ];
 
+    
+
     const dispatch = useDispatchRoot()
 
     // Hàm xử lý khi click vào nút block user
@@ -174,14 +178,18 @@ const User = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}>
             <div className="statistical-user">
-                {statisticalUser.map((item, index) => (
-                    <TotalBoxUser
-                        key={index}
-                        title={item.title}
-                        number={item.number}
-                        icon={item.icon}
-                    />
-                ))}
+                <TotalBoxUser
+                    key={0}
+                    title={"Tổng số người dùng"}
+                    number={userStatistic?.totalUser ? userStatistic?.totalUser : 0}
+                    icon={""}
+                />
+                <TotalBoxUser
+                    key={1}
+                    title={"Tổng số người dùng bị block"}
+                    number={userStatistic?.totalUserBlock ? userStatistic?.totalUserBlock : 0}
+                    icon={""}
+                />
             </div>
             <div className='table-area'>
                 <CTable

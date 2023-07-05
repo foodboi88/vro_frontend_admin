@@ -19,6 +19,16 @@ export default class UserApi {
         );
     }
 
+    static getUsersStatistic(): Observable<any> {
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.USER_STATISTIC}`;
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
+
     static blockUser(body: any): Observable<any> {
         const queryParam = Utils.parseObjectToQueryParameter(body);
         console.log(queryParam)
