@@ -1,5 +1,5 @@
 export enum API_URL {
-    HOST = "http://vroteam.online:6068",
+    HOST = "http://14.232.177.50:6068",
     LOGIN = "users/login",
     REGISTER = "users/register",
     REFRESH_TOKEN = "users/refreshtoken",
