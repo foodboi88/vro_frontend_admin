@@ -9,18 +9,24 @@ import IdentityApi from "../../api/identity/identity.api";
 import UserApi from "../../api/user/user.api";
 import { IGetUsersRequest, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
+import SketchApi from "../../api/sketch/sketch.api";
+import { ISketch } from "../../common/sketch.interface";
 
 
 interface ManagementState {
     loading: boolean;
     userList: IUser[];
     totalUserRecords: number;
+    sketchList: ISketch[];
+    totalSketchRecords: number;
 }
 
 const initState: ManagementState = {
     loading: false,
     userList: [],
     totalUserRecords: 0,
+    sketchList: [],
+    totalSketchRecords: 0,
 };
 
 const managementSlice = createSlice({
@@ -78,6 +84,31 @@ const managementSlice = createSlice({
 
          
         },
+
+        //Get all sketch
+        getSketchsRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        getSketchsSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.sketchList = action.payload.items
+            state.totalSketchRecords = action.payload.total
+            // notification.open({
+            //     message: 'Block người dùng thành công',
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
+        },
+        getSketchsFail(state, action: any) {
+            state.loading = false;
+
+         
+        },
         
     },
 });
@@ -120,16 +151,35 @@ const blockUsers$: RootEpic = (action$) =>
         })
     );
 
+const getSketchs$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getSketchsRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            
 
+            return SketchApi.getAllSketchs(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getSketchsSuccess(res.data),
+                        
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getSketchsFail(err)])
+            );
+        })
+    );
 
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
+    getSketchs$,
 ];
 export const {
  
     getUsersRequest,
     blockUsersRequest,
+    getSketchsRequest,
    
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

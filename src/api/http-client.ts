@@ -4,6 +4,7 @@ import { ajax, AjaxError, AjaxRequest, AjaxResponse } from "rxjs/ajax";
 import { Observable } from "rxjs/internal/Observable";
 import { catchError, map, retry } from "rxjs/operators";
 import IdentityApi from "./identity/identity.api";
+import { notification } from "antd";
 
 /** types */
 type PartAjaxRequest = Omit<AjaxRequest, "url" | "method" | "body">;
@@ -81,7 +82,21 @@ export async function handleRefreshTokenWithOrgId(organizationId?: string) {
 function handleError$(err: AjaxError): Observable<unknown> {
     if (err) {
         if (err.status === 401) {
-            handleRefreshToken();
+            document.location.href = "/";
+            localStorage.clear();
+            notification.open({
+                message: 'Hết phiên đăng nhập',
+                description: 'Vui lòng đăng nhập lại',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+            // handleRefreshToken();
         }
     }
     console.log(err);
