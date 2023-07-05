@@ -9,18 +9,22 @@ import IdentityApi from "../../api/identity/identity.api";
 import UserApi from "../../api/user/user.api";
 import { IGetUsersRequest, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
+import { IOverViewStatictis } from "../../common/statistic.interface";
+import StatisticAPI from "../../api/statistic/statistic.api";
 
 
 interface ManagementState {
     loading: boolean;
     userList: IUser[];
     totalUserRecords: number;
+    overviewStatistic: IOverViewStatictis | undefined;
 }
 
 const initState: ManagementState = {
     loading: false,
     userList: [],
     totalUserRecords: 0,
+    overviewStatistic: undefined,
 };
 
 const managementSlice = createSlice({
@@ -38,7 +42,7 @@ const managementSlice = createSlice({
             console.log(action.payload)
             state.userList = action.payload.items
             state.totalUserRecords = action.payload.total
-            
+
         },
         getUsersFail(state, action: PayloadAction<any>) {
             console.log(action);
@@ -53,7 +57,7 @@ const managementSlice = createSlice({
                     paddingTop: 40,
                 },
             });
-         
+
         },
 
         //Block user
@@ -75,10 +79,22 @@ const managementSlice = createSlice({
         },
         blockUsersFail(state, action: any) {
             state.loading = false;
-
-         
         },
-        
+
+        // Get overview statistic
+        getOverviewStatisticRequest(state) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticSuccess(state, action: PayloadAction<IOverViewStatictis>) {
+            state.loading = false;
+            state.overviewStatistic = action.payload;
+        },
+
+        getOverviewStatisticFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+        }
+
     },
 });
 
@@ -87,13 +103,13 @@ const getUsers$: RootEpic = (action$) =>
         filter(getUsersRequest.match),
         mergeMap((re) => {
             console.log(re);
-            
+
 
             return UserApi.getAllUsers(re.payload).pipe(
                 mergeMap((res: any) => {
                     return [
                         managementSlice.actions.getUsersSuccess(res.data),
-                        
+
                     ];
                 }),
                 catchError((err) => [managementSlice.actions.getUsersFail(err)])
@@ -120,16 +136,36 @@ const blockUsers$: RootEpic = (action$) =>
         })
     );
 
+// Get overview statistic
+const getOverviewStatistic$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticRequest.match),
+        mergeMap((re) => {
+            console.log(re);
 
+            return StatisticAPI.getOverViewStatistic().pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.getOverviewStatisticSuccess(res.data),
+                    ];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getOverviewStatisticFail(err)]
+                )
+            );
+        })
+    );
 
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
+    getOverviewStatistic$,
 ];
 export const {
- 
     getUsersRequest,
     blockUsersRequest,
-   
+    getOverviewStatisticRequest,
+
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

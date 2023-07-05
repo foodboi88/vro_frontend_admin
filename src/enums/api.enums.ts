@@ -6,4 +6,5 @@ export enum API_URL {
     GET_USER_INFO = "users/profile",
     GET_ALL_USERS = "Admin/all-user",
     BLOCK_USER = "Admin/block-user",
+    OVERVIEW_STATISTIC = "Admin/overview-statistic",
 }
