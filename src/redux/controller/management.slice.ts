@@ -7,7 +7,7 @@ import { RootEpic } from "../../common/define-type";
 import Utils from "../../utils/base-utils";
 import IdentityApi from "../../api/identity/identity.api";
 import UserApi from "../../api/user/user.api";
-import { IGetUsersRequest, IUser } from "../../common/user.interface";
+import { IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
@@ -23,7 +23,7 @@ interface ManagementState {
     totalSketchRecords: number;
     sketchStatistic: IStatisticSketch| undefined
     overviewStatistic: IOverViewStatictis | undefined;
-    
+    userStatistic: IStatisticUser | undefined;
 }
 
 const initState: ManagementState = {
@@ -33,7 +33,8 @@ const initState: ManagementState = {
     sketchList: [],
     totalSketchRecords: 0,
     overviewStatistic: undefined,
-    sketchStatistic: undefined
+    sketchStatistic: undefined,
+    userStatistic: undefined
 };
 
 const managementSlice = createSlice({
@@ -125,6 +126,21 @@ const managementSlice = createSlice({
             state.sketchStatistic = action.payload
         },
         getSketchsStatisticFail(state, action: any) {
+            state.loading = false;
+
+         
+        },
+
+        //Get user statistic
+        getUsersStatisticRequest(state) {
+            state.loading = true;
+        },
+        getUsersStatisticSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.userStatistic = action.payload
+        },
+        getUsersStatisticFail(state, action: any) {
             state.loading = false;
 
          
@@ -226,6 +242,7 @@ const getOverviewStatistic$: RootEpic = (action$) =>
         })
     );
 
+
 const getSketchStatistic$: RootEpic = (action$) =>
     action$.pipe(
         filter(getSketchsStatisticRequest.match),
@@ -246,12 +263,33 @@ const getSketchStatistic$: RootEpic = (action$) =>
         })
     );
 
+const getUsersStatistic$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getUsersStatisticRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return UserApi.getUsersStatistic().pipe(
+                mergeMap((res: any) => {
+                    console.log(res.data)
+                    return [
+                        managementSlice.actions.getUsersStatisticSuccess(res.data),
+                    ];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getUsersStatisticFail(err)]
+                )
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
     getSketchs$,
     getOverviewStatistic$,
     getSketchStatistic$,
+    getUsersStatistic$
 ];
 export const {
     getUsersRequest,
@@ -259,6 +297,6 @@ export const {
     getSketchsRequest,
     getSketchsStatisticRequest,
     getOverviewStatisticRequest,
-
+    getUsersStatisticRequest,
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
