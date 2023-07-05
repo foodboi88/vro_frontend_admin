@@ -31,7 +31,7 @@ const TotalBoxData = [
 const General = () => {
 
     const { overviewStatistic } = useSelectorRoot((state) => state.management); // lấy ra state từ store
-    const dispatch = useDispatchRoot() // dispatch action
+    const dispatch = useDispatchRoot() // dispatch action   
     const [TotalBoxData, setTotalBoxData] = useState<any>([]) // state của component
 
     // Gọi api lấy ra tổng số người bán, người mua, tổng doanh thu
