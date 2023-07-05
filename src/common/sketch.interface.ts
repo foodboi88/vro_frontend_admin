@@ -22,3 +22,8 @@ export interface IGetSketchRequest{
     sortBy?: string
     sortOrder?: string
 }
+
+export interface IStatisticSketch{
+    totalProduct: number;
+    totalProductNew: number;
+}

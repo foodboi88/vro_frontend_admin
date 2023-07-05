@@ -1,7 +1,16 @@
 .sketch-main {
-    padding: 20px;
+    margin: 1em 3em;
+    font-family: Arial, Helvetica, sans-serif;
+
+    .statistical-user {
+        display: flex;
+        justify-content: space-around;
+    }
 
     .table-area {
-        margin-top: 20px;
+        padding: 1em;
+        margin-top: 1em;
+        background-color: white;
+
     }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
-import { blockUsersRequest, getSketchsRequest, getUsersRequest } from '../../redux/controller';
+import { blockUsersRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
 import './sketch.styles.scss'
 import { Space } from 'antd';
@@ -11,10 +11,14 @@ import { ColumnType } from 'antd/lib/table';
 import Utils from '../../utils/base-utils';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
 import { IGetSketchRequest, ISketch } from '../../common/sketch.interface';
+import UserIcon from '../../assets/image/user.png'
+import UserMinus from '../../assets/image/user-minus.png'
+import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
 const Sketch = () => {
   const {
     sketchList,
-    totalSketchRecords
+    totalSketchRecords,
+    sketchStatistic
   } = useSelectorRoot((state) => state.management);
 
   const [textSearch, setTextSearch] = useState('');
@@ -29,7 +33,8 @@ const Sketch = () => {
 
 
   useEffect(() => {
-    console.log(totalSketchRecords)
+    dispatch(getSketchsStatisticRequest())
+    
   }, [totalSketchRecords])
 
   const columns: ColumnType<ISketch>[] = [
@@ -119,6 +124,20 @@ const Sketch = () => {
     },
   ];
 
+  // let statisticalUser = [
+  //   {
+  //       title: "Tổng số bản vẽ toàn sàn",
+  //       number: sketchStatistic?.totalSketch ? sketchStatistic?.totalSketch : 0,
+  //       icon: UserIcon,
+  //   },
+ 
+  //   {
+  //       title: "Tổng số bản vẽ mới",
+  //       number: sketchStatistic?.totalNewSketch ? sketchStatistic?.totalNewSketch : 0,
+  //       icon: UserMinus,
+  //   },
+  // ]
+
   const dispatch = useDispatchRoot()
 
   const handleBlockUser = (record: any) => {
@@ -168,7 +187,22 @@ const Sketch = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}>
-      <div>Statistic overall</div>
+      <div>
+        <div className="statistical-user">
+          <TotalBoxUser
+              key={0}
+              title={"Tổng số bản vẽ toàn sàn"}
+              number={sketchStatistic?.totalProduct ? sketchStatistic?.totalProduct : 0}
+              icon={''}
+          />
+          <TotalBoxUser
+              key={1}
+              title={"Tổng số bản vẽ mới"}
+              number={sketchStatistic?.totalProductNew ? sketchStatistic?.totalProductNew : 0}
+              icon={''}
+          />
+        </div>
+      </div>
       <div className='table-area'>
         <CTable
           tableMainTitle='Danh sách sản phẩm'

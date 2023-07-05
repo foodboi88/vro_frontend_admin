@@ -10,7 +10,7 @@ import UserApi from "../../api/user/user.api";
 import { IGetUsersRequest, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
-import { ISketch } from "../../common/sketch.interface";
+import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
 import { IOverViewStatictis } from "../../common/statistic.interface";
 import StatisticAPI from "../../api/statistic/statistic.api";
 
@@ -21,7 +21,9 @@ interface ManagementState {
     totalUserRecords: number;
     sketchList: ISketch[];
     totalSketchRecords: number;
+    sketchStatistic: IStatisticSketch| undefined
     overviewStatistic: IOverViewStatictis | undefined;
+    
 }
 
 const initState: ManagementState = {
@@ -31,6 +33,7 @@ const initState: ManagementState = {
     sketchList: [],
     totalSketchRecords: 0,
     overviewStatistic: undefined,
+    sketchStatistic: undefined
 };
 
 const managementSlice = createSlice({
@@ -111,6 +114,21 @@ const managementSlice = createSlice({
 
          
         },
+
+        //Get sketch statistic
+        getSketchsStatisticRequest(state) {
+            state.loading = true;
+        },
+        getSketchsStatisticSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.sketchStatistic = action.payload
+        },
+        getSketchsStatisticFail(state, action: any) {
+            state.loading = false;
+
+         
+        },
         
         // Get overview statistic
         getOverviewStatisticRequest(state) {
@@ -119,6 +137,7 @@ const managementSlice = createSlice({
 
         getOverviewStatisticSuccess(state, action: PayloadAction<IOverViewStatictis>) {
             state.loading = false;
+            console.log(action.payload)
             state.overviewStatistic = action.payload;
         },
 
@@ -185,6 +204,7 @@ const getSketchs$: RootEpic = (action$) =>
             )
         })
     );
+
 // Get overview statistic
 const getOverviewStatistic$: RootEpic = (action$) =>
     action$.pipe(
@@ -206,17 +226,38 @@ const getOverviewStatistic$: RootEpic = (action$) =>
         })
     );
 
+const getSketchStatistic$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getSketchsStatisticRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return SketchApi.getSketchStatistic().pipe(
+                mergeMap((res: any) => {
+                    console.log(res.data)
+                    return [
+                        managementSlice.actions.getSketchsStatisticSuccess(res.data),
+                    ];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getSketchsStatisticFail(err)]
+                )
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
     getSketchs$,
     getOverviewStatistic$,
+    getSketchStatistic$,
 ];
 export const {
     getUsersRequest,
     blockUsersRequest,
     getSketchsRequest,
-   
+    getSketchsStatisticRequest,
     getOverviewStatisticRequest,
 
 } = managementSlice.actions;

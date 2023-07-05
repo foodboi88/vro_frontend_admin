@@ -19,6 +19,16 @@ export default class SketchApi {
         );
     }
 
+    static getSketchStatistic(): Observable<any> {
+        const api = `${SketchApi.apiURL.HOST}/${this.apiURL.STATISTIC_SKETCH}`;
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
+
     // static blockUser(body: any): Observable<any> {
     //     const queryParam = Utils.parseObjectToQueryParameter(body);
     //     console.log(queryParam)

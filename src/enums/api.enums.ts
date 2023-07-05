@@ -8,4 +8,5 @@ export enum API_URL {
     BLOCK_USER = "Admin/block-user",
     GET_SKETCHS = "Admin/all-product",
     OVERVIEW_STATISTIC = "Admin/overview-statistic",
+    STATISTIC_SKETCH = "Admin/statistic-products"
 }

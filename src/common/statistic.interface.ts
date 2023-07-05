@@ -4,3 +4,4 @@ export interface IOverViewStatictis {
     totalSeller: number;
     totalUser: number;
 }
+
