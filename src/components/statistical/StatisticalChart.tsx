@@ -15,7 +15,7 @@ const StatisticalChart = (props: StatisticalChartProps) => {
             legendData={[{ name: 'Tiền thu từ khách' }, { name: 'Tiền trả người bán' }, { name: 'Tiền còn nợ' }, { name: 'Hoa hồng' }]}
             legendOrientation="vertical"
             legendPosition="right"
-            height={250}
+            height={230}
             maxDomain={{ y: 10 }}
             minDomain={{ y: 0 }}
             name="chart1"

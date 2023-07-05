@@ -1,17 +1,22 @@
-.table-main{
-    padding: 5px;
-    .title-and-search{
+.table-main {
+
+    .title-and-search {
         display: flex;
         justify-content: space-between;
-        .title .total{
-            font-size: 20px;
-            font-weight: 550;
+        margin-bottom: 1em;
+
+        .title {
+            color: #4E4E4E;
+            font-size: 1.5em;
+            font-weight: 600;
         }
-        .search-area{
+
+        .search-area {
             display: flex;
+            align-items: center;
+            gap: 1em;
         }
     }
-    .table{
-        
-    }
+
+    .table {}
 }

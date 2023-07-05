@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TotalBox from '../../components/totalBox/TotalBox'
 import CoinIcon from '../../assets/image/coin.png'
 import ShopIcon from '../../assets/image/shop.png'
-import UserIcon from '../../assets/image/user.png'
+import UserIcon from '../../assets/image/3-user.png'
 
 import './general.styles.scss'
 import { motion } from 'framer-motion'
@@ -33,11 +33,13 @@ const General = () => {
     const { overviewStatistic } = useSelectorRoot((state) => state.management); // lấy ra state từ store
     const dispatch = useDispatchRoot() // dispatch action
     const [TotalBoxData, setTotalBoxData] = useState<any>([]) // state của component
+
     // Gọi api lấy ra tổng số người bán, người mua, tổng doanh thu
     useEffect(() => {
         dispatch(getOverviewStatisticRequest());
     }, [])
 
+    // Gán dữ liệu vào state của component
     useEffect(() => {
         if (overviewStatistic) {
             const tmp = [

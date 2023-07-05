@@ -6,7 +6,7 @@ import { ColumnsType } from 'antd/lib/table';
 import Input from 'antd/lib/input/Input';
 const { RangePicker } = DatePicker;
 
-interface CTableProps{
+interface CTableProps {
     tableMainTitle?: string;
     allowTextSearch?: boolean;
     allowDateRangeSearch?: boolean;
@@ -23,61 +23,61 @@ interface CTableProps{
 }
 
 const CTable = (props: CTableProps) => {
-    useEffect(()=>{
+    useEffect(() => {
         console.log(Math.ceil(props?.totalRecord))
 
-        console.log(Math.ceil(props?.totalRecord/10))
-    },[])
-  return (
-    <div className='table-main'>
-        <div className='title-and-search'>
-            <div className='title'>{props.tableMainTitle}</div>
-            <div className='total'>Tổng số bản ghi: {props.totalRecord}</div>
-            <div className='search-area'>
-                {
-                    props.allowTextSearch && 
-                    <Input onChange={
-                        (event) => {
-                            if(props.onChangeInput) props.onChangeInput(event)
+        console.log(Math.ceil(props?.totalRecord / 10))
+    }, [])
+    return (
+        <div className='table-main'>
+            <div className='title-and-search'>
+                <div className='title'>{props.tableMainTitle}</div>
+                {/* <div className='total'>Tổng số bản ghi: {props.totalRecord}</div> */}
+                <div className='search-area'>
+                    {
+                        props.allowTextSearch &&
+                        <Input onChange={
+                            (event) => {
+                                if (props.onChangeInput) props.onChangeInput(event)
+                            }
+                        } />
+                    }
+                    {
+                        props.allowDateRangeSearch &&
+                        <RangePicker
+                            onChange={(event) => {
+                                if (props.onChangeRangePicker) props.onChangeRangePicker(event)
+                            }}
+                        />
+                    }
+                    {
+                        (props.allowDateRangeSearch ||
+                            props.allowTextSearch) &&
+                        <Button
+                            onClick={() => {
+                                if (props.onSearch) props.onSearch()
+                            }}
+                        >Tìm kiếm</Button>
+                    }
+                </div>
+            </div>
+            <div className='table'>
+                <Table
+                    columns={props.titleOfColumnList}
+                    dataSource={props.data}
+                    pagination={
+                        {
+                            total: props.totalRecord,
+                            onChange: (event) => {
+                                props.onChangePagination(event)
+
+                            }
                         }
-                    }/>
-                }
-                {
-                    props.allowDateRangeSearch && 
-                    <RangePicker 
-                        onChange={(event)=> {
-                            if(props.onChangeRangePicker) props.onChangeRangePicker(event)
-                        }}
-                    />
-                }
-                {
-                    (props.allowDateRangeSearch ||
-                    props.allowTextSearch) && 
-                    <Button
-                        onClick={()=>{
-                            if(props.onSearch) props.onSearch()
-                        }}
-                    >Tìm kiếm</Button>
-                }
+                    }
+                />
             </div>
         </div>
-        <div className='table'>
-            <Table 
-                columns={props.titleOfColumnList} 
-                dataSource={props.data} 
-                pagination={
-                    { 
-                        total: props.totalRecord, 
-                        onChange: (event) => {
-                            props.onChangePagination(event)
-                
-                        } 
-                    }
-                }
-            />
-        </div>
-    </div>
-  )
+    )
 }
 
 export default CTable
