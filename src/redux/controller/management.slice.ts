@@ -7,7 +7,7 @@ import { RootEpic } from "../../common/define-type";
 import Utils from "../../utils/base-utils";
 import IdentityApi from "../../api/identity/identity.api";
 import UserApi from "../../api/user/user.api";
-import { IGetUsersRequest, IUser } from "../../common/user.interface";
+import { IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
@@ -29,6 +29,7 @@ interface ManagementState {
     overViewStatisticMonth: IOverViewStatictisMonth | undefined;
     overViewStatisticQuarter: IOverViewStatictisQuarter | undefined;
     overViewStatisticYear: IOverViewStatictisYear | undefined;
+    userStatistic: IStatisticUser | undefined;
 }
 
 const initState: ManagementState = {
@@ -44,6 +45,7 @@ const initState: ManagementState = {
     overViewStatisticMonth: undefined,
     overViewStatisticQuarter: undefined,
     overViewStatisticYear: undefined,
+    userStatistic: undefined
 };
 
 const managementSlice = createSlice({
@@ -135,6 +137,21 @@ const managementSlice = createSlice({
             state.sketchStatistic = action.payload
         },
         getSketchsStatisticFail(state, action: any) {
+            state.loading = false;
+
+
+        },
+
+        //Get user statistic
+        getUsersStatisticRequest(state) {
+            state.loading = true;
+        },
+        getUsersStatisticSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.userStatistic = action.payload
+        },
+        getUsersStatisticFail(state, action: any) {
             state.loading = false;
 
 
@@ -332,6 +349,7 @@ const getOverviewStatistic$: RootEpic = (action$) =>
         })
     );
 
+
 const getSketchStatistic$: RootEpic = (action$) =>
     action$.pipe(
         filter(getSketchsStatisticRequest.match),
@@ -365,6 +383,27 @@ const getOverviewStatisticDay$: RootEpic = (action$) =>
                     ];
                 }),
                 catchError((err) => [managementSlice.actions.getOverviewStatisticDayFail(err)])
+            )
+        }
+        )
+    );
+
+const getUsersStatistic$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getUsersStatisticRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return UserApi.getUsersStatistic().pipe(
+                mergeMap((res: any) => {
+                    console.log(res.data)
+                    return [
+                        managementSlice.actions.getUsersStatisticSuccess(res.data),
+                    ];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getUsersStatisticFail(err)]
+                )
             );
         })
     );
@@ -426,8 +465,8 @@ export const ManagementEpics = [
     getOverviewStatisticDay$,
     getOverviewStatisticMonth$,
     getOverviewStatisticQuarter$,
-    getOverviewStatisticYear$
-
+    getOverviewStatisticYear$,
+    getUsersStatistic$
 ];
 export const {
     getUsersRequest,
@@ -439,7 +478,7 @@ export const {
     getOverviewStatisticMonthRequest,
     getOverviewStatisticQuarterRequest,
     getOverviewStatisticYearRequest,
-    setViewStatistic
-
+    setViewStatistic,
+    getUsersStatisticRequest,
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

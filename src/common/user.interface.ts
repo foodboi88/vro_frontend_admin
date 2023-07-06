@@ -26,3 +26,7 @@ export interface IGetUsersRequest{
     sortOrder?: string
 }
 
+export interface IStatisticUser{
+    totalUser: number,
+    totalUserBlock: number
+}
