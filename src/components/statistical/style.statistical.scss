@@ -51,4 +51,17 @@
 
         }
     }
+
+    .main-statistical-chart {
+        .total-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0em 3em;
+
+            .total-box-user {
+                border: 1px solid #DFDFDF;
+            }
+        }
+    }
 }

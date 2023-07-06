@@ -10,4 +10,8 @@ export enum API_URL {
     OVERVIEW_STATISTIC = "Admin/overview-statistic",
     STATISTIC_SKETCH = "Admin/statistic-products",
     OVERVIEW_STATISTIC_DAY = "Admin/overview-statistic-day",
+    OVERVIEW_STATISTIC_MONTH = "Admin/overview-statistic-month",
+    OVERVIEW_STATISTIC_QUARTER = "Admin/overview-statistic-quarter",
+    OVERVIEW_STATISTIC_YEAR = "Admin/overview-statistic-year",
+
 }

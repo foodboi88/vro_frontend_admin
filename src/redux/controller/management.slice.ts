@@ -11,8 +11,9 @@ import { IGetUsersRequest, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
-import { IOverViewStatictis, IOverViewStatictisDay } from "../../common/statistic.interface";
+import { IOverViewStatictis, IOverViewStatictisDay, IOverViewStatictisMonth, IOverViewStatictisQuarter, IOverViewStatictisYear } from "../../common/statistic.interface";
 import StatisticAPI from "../../api/statistic/statistic.api";
+import { get } from "http";
 
 
 interface ManagementState {
@@ -22,8 +23,12 @@ interface ManagementState {
     sketchList: ISketch[];
     totalSketchRecords: number;
     sketchStatistic: IStatisticSketch | undefined
+    typeViewStatistic: string;
     overviewStatistic: IOverViewStatictis | undefined;
     overViewStatisticDay: IOverViewStatictisDay | undefined;
+    overViewStatisticMonth: IOverViewStatictisMonth | undefined;
+    overViewStatisticQuarter: IOverViewStatictisQuarter | undefined;
+    overViewStatisticYear: IOverViewStatictisYear | undefined;
 }
 
 const initState: ManagementState = {
@@ -32,9 +37,13 @@ const initState: ManagementState = {
     totalUserRecords: 0,
     sketchList: [],
     totalSketchRecords: 0,
-    overviewStatistic: undefined,
     sketchStatistic: undefined,
+    typeViewStatistic: 'day',
+    overviewStatistic: undefined,
     overViewStatisticDay: undefined,
+    overViewStatisticMonth: undefined,
+    overViewStatisticQuarter: undefined,
+    overViewStatisticYear: undefined,
 };
 
 const managementSlice = createSlice({
@@ -146,6 +155,10 @@ const managementSlice = createSlice({
             state.loading = false;
         },
 
+        setViewStatistic(state, action: PayloadAction<string>) {
+            state.typeViewStatistic = action.payload;
+        },
+
         // Get overview statistic day
         getOverviewStatisticDayRequest(state, action: PayloadAction<any>) {
             state.loading = true;
@@ -167,7 +180,76 @@ const managementSlice = createSlice({
                     },
                 });
             }
-        }
+        },
+
+        // Get overview statistic month
+        getOverviewStatisticMonthRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticMonthSuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+            state.overViewStatisticMonth = action.payload;
+        },
+
+        getOverviewStatisticMonthFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+            if (action.payload.status === 400 || action.payload.status === 404) {
+                notification.open({
+                    message: action.payload.response.message,
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                });
+            }
+        },
+
+        // Get overview statistic quarter
+        getOverviewStatisticQuarterRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticQuarterSuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+            state.overViewStatisticQuarter = action.payload;
+        },
+
+        getOverviewStatisticQuarterFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+            if (action.payload.status === 400 || action.payload.status === 404) {
+                notification.open({
+                    message: action.payload.response.message,
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                });
+            }
+        },
+
+        // Get overview statistic year
+        getOverviewStatisticYearRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticYearSuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+            state.overViewStatisticYear = action.payload;
+        },
+
+        getOverviewStatisticYearFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+            if (action.payload.status === 400 || action.payload.status === 404) {
+                notification.open({
+                    message: action.payload.response.message,
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                });
+            }
+        },
 
     },
 });
@@ -287,6 +369,54 @@ const getOverviewStatisticDay$: RootEpic = (action$) =>
         })
     );
 
+const getOverviewStatisticMonth$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticMonthRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            return StatisticAPI.getOverViewStatisticMonth(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOverviewStatisticMonthSuccess(res.data),
+                    ]
+                }),
+                catchError((err) => [managementSlice.actions.getOverviewStatisticMonthFail(err)])
+            );
+        })
+    );
+
+const getOverviewStatisticQuarter$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticQuarterRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            return StatisticAPI.getOverViewStatisticQuarter(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOverviewStatisticQuarterSuccess(res.data),
+                    ]
+                }),
+                catchError((err) => [managementSlice.actions.getOverviewStatisticQuarterFail(err)])
+            );
+        })
+    );
+
+const getOverviewStatisticYear$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticYearRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            return StatisticAPI.getOverViewStatisticYear(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOverviewStatisticYearSuccess(res.data),
+                    ]
+                }),
+                catchError((err) => [managementSlice.actions.getOverviewStatisticYearFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -294,6 +424,10 @@ export const ManagementEpics = [
     getOverviewStatistic$,
     getSketchStatistic$,
     getOverviewStatisticDay$,
+    getOverviewStatisticMonth$,
+    getOverviewStatisticQuarter$,
+    getOverviewStatisticYear$
+
 ];
 export const {
     getUsersRequest,
@@ -301,7 +435,11 @@ export const {
     getSketchsRequest,
     getSketchsStatisticRequest,
     getOverviewStatisticRequest,
-    getOverviewStatisticDayRequest
+    getOverviewStatisticDayRequest,
+    getOverviewStatisticMonthRequest,
+    getOverviewStatisticQuarterRequest,
+    getOverviewStatisticYearRequest,
+    setViewStatistic
 
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

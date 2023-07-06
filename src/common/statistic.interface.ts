@@ -14,6 +14,30 @@ export interface IOverViewStatictisDay {
     totalPriceIncomeSum: number;
 }
 
+export interface IOverViewStatictisMonth {
+    total: number;
+    statictisMonth: IStatictisMonth[];
+    totalPriceSum: number;
+    totalPriceSellerSum: number;
+    totalPriceOwnSum: number;
+    totalPriceIncomeSum: number;
+}
+export interface IOverViewStatictisQuarter {
+    total: number;
+    statictisQuarter: IStatictisQuarter[];
+    totalPriceSum: number;
+    totalPriceSellerSum: number;
+    totalPriceOwnSum: number;
+    totalPriceIncomeSum: number;
+}
+export interface IOverViewStatictisYear {
+    total: number;
+    statictisYear: IStatictisYear[];
+    totalPriceSum: number;
+    totalPriceSellerSum: number;
+    totalPriceOwnSum: number;
+    totalPriceIncomeSum: number;
+}
 export interface IStatictisDay {
     id: string,
     totalPrice: number,
@@ -21,6 +45,41 @@ export interface IStatictisDay {
     totalPriceOwn: number,
     totalPriceIncome: number,
     day: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface IStatictisMonth {
+    id: string,
+    totalPrice: number,
+    totalPriceSeller: number,
+    totalPriceOwn: number,
+    totalPriceIncome: number,
+    month: string,
+    year: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface IStatictisQuarter {
+    id: string,
+    totalPrice: number,
+    totalPriceSeller: number,
+    totalPriceOwn: number,
+    totalPriceIncome: number,
+    quarter: string,
+    year: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface IStatictisYear {
+    id: string,
+    totalPrice: number,
+    totalPriceSeller: number,
+    totalPriceOwn: number,
+    totalPriceIncome: number,
+    year: string,
     createdAt: string,
     updatedAt: string
 }
