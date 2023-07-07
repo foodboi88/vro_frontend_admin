@@ -8,6 +8,7 @@ import General from './pages/general/general';
 import Sketch from './pages/sketch/sketch';
 import User from './pages/user/user';
 import { AnimatePresence } from 'framer-motion';
+import Report from './pages/report/report';
 function App() {
   
   return (
@@ -20,6 +21,7 @@ function App() {
                 <Route element={<General />} path="/management" />
                 <Route element={<Sketch />} path="/management/sketch" />
                 <Route element={<User />} path="/management/user" />
+                <Route element={<Report />} path="/management/report" />
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />

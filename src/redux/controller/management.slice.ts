@@ -14,6 +14,8 @@ import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
 import { IOverViewStatictis, IOverViewStatictisDay, IOverViewStatictisMonth, IOverViewStatictisQuarter, IOverViewStatictisYear } from "../../common/statistic.interface";
 import StatisticAPI from "../../api/statistic/statistic.api";
 import { get } from "http";
+import { IReport, IStatisticReport } from "../../common/report.interface";
+import ReportApi from "../../api/report/report.api";
 
 
 interface ManagementState {
@@ -30,6 +32,9 @@ interface ManagementState {
     overViewStatisticQuarter: IOverViewStatictisQuarter | undefined;
     overViewStatisticYear: IOverViewStatictisYear | undefined;
     userStatistic: IStatisticUser | undefined;
+    reportList: IReport[];
+    reportStatistic: IStatisticReport | undefined;
+    totalReportRecords: number
 }
 
 const initState: ManagementState = {
@@ -37,7 +42,10 @@ const initState: ManagementState = {
     userList: [],
     totalUserRecords: 0,
     sketchList: [],
+    reportList: [],
     totalSketchRecords: 0,
+    totalReportRecords: 0,
+    reportStatistic: undefined,
     sketchStatistic: undefined,
     typeViewStatistic: 'day',
     overviewStatistic: undefined,
@@ -268,6 +276,47 @@ const managementSlice = createSlice({
             }
         },
 
+        getReportsRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getReportsSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.reportList = action.payload.items
+            state.totalReportRecords = action.payload.total
+
+        },
+        getReportsFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
+        
+        //Get user statistic
+        getReportsStatisticRequest(state) {
+            state.loading = true;
+        },
+        getReportsStatisticSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.reportStatistic = action.payload
+        },
+        getReportsStatisticFail(state, action: any) {
+            state.loading = false;
+
+
+        },
     },
 });
 
@@ -456,6 +505,45 @@ const getOverviewStatisticYear$: RootEpic = (action$) =>
         })
     );
 
+const getReports$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getReportsRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+
+            return ReportApi.getAllReports(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getReportsSuccess(res.data),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getReportsFail(err)])
+            )
+        })
+    );
+
+const getReportsStatistic$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getReportsStatisticRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return ReportApi.getReportStatistic().pipe(
+                mergeMap((res: any) => {
+                    console.log(res.data)
+                    return [
+                        managementSlice.actions.getReportsStatisticSuccess(res.data),
+                    ];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getReportsStatisticFail(err)]
+                )
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -466,7 +554,9 @@ export const ManagementEpics = [
     getOverviewStatisticMonth$,
     getOverviewStatisticQuarter$,
     getOverviewStatisticYear$,
-    getUsersStatistic$
+    getUsersStatistic$,
+    getReports$,
+    getReportsStatistic$
 ];
 export const {
     getUsersRequest,
@@ -480,5 +570,7 @@ export const {
     getOverviewStatisticYearRequest,
     setViewStatistic,
     getUsersStatisticRequest,
+    getReportsRequest,
+    getReportsStatisticRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

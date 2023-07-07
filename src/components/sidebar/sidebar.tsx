@@ -57,7 +57,10 @@ const Sidebar = () => {
                     <AiFillGift />
                     <span>Quản lý khuyến mãi</span>
                 </div>
-                <div className={'sidebar-item' + (active === 8 ? ' active' : '')} onClick={() => setActive(8)}>
+                <div className={'sidebar-item' + (active === 8 ? ' active' : '')} onClick={() => {
+                    setActive(8)
+                    navigate('/management/report')
+                }}>
                     <AiOutlineQuestionCircle />
                     <span>Giải quyết phản hồi</span>
                 </div>
