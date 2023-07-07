@@ -16,5 +16,6 @@ export enum API_URL {
     OVERVIEW_STATISTIC_YEAR = "Admin/overview-statistic-year",
     GET_ALL_REPORT = "Admin/statistic-report",
     STATISTIC_REPORT = "Admin/statistic-report",
-
+    SELLER_REQUEST = "sellers/registration-form",
+    SELLER_APPROVE = "sellers/approve/"
 }

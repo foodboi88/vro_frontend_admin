@@ -64,7 +64,7 @@ const User = () => {
     // Các cột của bảng
     const columns: ColumnType<IUser>[] = [
         {
-            title: 'Name',
+            title: 'Tên',
             dataIndex: 'name',
             key: 'name',
         },
@@ -74,17 +74,17 @@ const User = () => {
             key: 'email',
         },
         {
-            title: 'Phone',
+            title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
         },
         {
-            title: 'CreatedAt',
+            title: 'Thời điểm tạo',
             dataIndex: 'createdAt',
             key: 'createdAt',
         },
         {
-            title: 'Status',
+            title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
         },

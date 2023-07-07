@@ -14,6 +14,8 @@ import { IGetSketchRequest, ISketch } from '../../common/sketch.interface';
 import UserIcon from '../../assets/image/user.png'
 import UserMinus from '../../assets/image/user-minus.png'
 import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
+
+
 const Sketch = () => {
   const {
     sketchList,
@@ -39,37 +41,37 @@ const Sketch = () => {
 
   const columns: ColumnType<ISketch>[] = [
     {
-      title: 'title',
+      title: 'Tiêu đề',
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'price',
+      title: 'Giá',
       dataIndex: 'price',
       key: 'price',
     },
     {
-      title: 'views',
+      title: 'Lượt xem',
       dataIndex: 'views',
       key: 'views',
     },
     {
-      title: 'likes',
+      title: 'Lượt thích',
       dataIndex: 'likes',
       key: 'likes',
     },
     {
-      title: 'quantityPurchased',
+      title: 'Số lượng đã bán',
       dataIndex: 'quantityPurchased',
       key: 'quantityPurchased',
     },
     {
-      title: 'createdAt',
+      title: 'Thời điểm tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
     },
     {
-      title: 'updatedAt',
+      title: 'Thời điểm cập nhật',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
     },
@@ -79,7 +81,7 @@ const Sketch = () => {
     //     key: 'id',
     // },
     {
-      title: 'image',
+      title: 'Ảnh',
       key: 'image',
       render: (_, record) => (
         <Space size="middle">
@@ -88,7 +90,7 @@ const Sketch = () => {
       ),
     },
     {
-      title: 'nameDesignStyle',
+      title: 'Phong cách',
       dataIndex: 'nameDesignStyle',
       key: 'nameDesignStyle',
     },

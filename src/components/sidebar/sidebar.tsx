@@ -49,9 +49,12 @@ const Sidebar = () => {
                     <ImStatsDots />
                     <span>Công cụ marketing</span>
                 </div>
-                <div className={'sidebar-item' + (active === 6 ? ' active' : '')} onClick={() => setActive(6)}>
+                <div className={'sidebar-item' + (active === 6 ? ' active' : '')} onClick={() => {
+                    setActive(6)
+                    navigate('/management/seller-requests')
+                }}>
                     <AiOutlineKey />
-                    <span>Quản lý từ khóa</span>
+                    <span>Yêu cầu bán hàng</span>
                 </div>
                 <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => setActive(7)}>
                     <AiFillGift />

@@ -34,7 +34,9 @@ interface ManagementState {
     userStatistic: IStatisticUser | undefined;
     reportList: IReport[];
     reportStatistic: IStatisticReport | undefined;
-    totalReportRecords: number
+    totalReportRecords: number;
+    sellerRequestList: any[];
+    numberOfSellerRequest: number
 }
 
 const initState: ManagementState = {
@@ -53,7 +55,9 @@ const initState: ManagementState = {
     overViewStatisticMonth: undefined,
     overViewStatisticQuarter: undefined,
     overViewStatisticYear: undefined,
-    userStatistic: undefined
+    userStatistic: undefined,
+    sellerRequestList: [],
+    numberOfSellerRequest: 0,
 };
 
 const managementSlice = createSlice({
@@ -317,6 +321,54 @@ const managementSlice = createSlice({
 
 
         },
+
+        getSellerRequests(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getSellerRequestsSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.sellerRequestList = action.payload.items
+            state.numberOfSellerRequest = action.payload.total
+
+        },
+        getSellerRequestsFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
+
+        //Approve seller request
+        approveSellerRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        approveSellerRequestSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            notification.open({
+                message: 'Chấp thuận yêu cầu thành công',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+        },
+        approveSellerRequestFail(state, action: any) {
+            state.loading = false;
+        },
     },
 });
 
@@ -544,6 +596,44 @@ const getReportsStatistic$: RootEpic = (action$) =>
         })
     );
 
+const getSellerRequests$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getSellerRequests.match),
+        mergeMap((re) => {
+            console.log(re);
+
+
+            return UserApi.getAllSellerRequest(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getSellerRequestsSuccess(res.data),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getSellerRequestsFail(err)])
+            )
+        })
+    );
+
+const approveSellerRequest$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(approveSellerRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return UserApi.approveSellerRequest(re.payload).pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.approveSellerRequestSuccess(res.data),
+                        managementSlice.actions.getSellerRequests(re.payload.currentSearchValue)
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.blockUsersFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -556,7 +646,9 @@ export const ManagementEpics = [
     getOverviewStatisticYear$,
     getUsersStatistic$,
     getReports$,
-    getReportsStatistic$
+    getReportsStatistic$,
+    getSellerRequests$,
+    approveSellerRequest$
 ];
 export const {
     getUsersRequest,
@@ -571,6 +663,8 @@ export const {
     setViewStatistic,
     getUsersStatisticRequest,
     getReportsRequest,
-    getReportsStatisticRequest
+    getReportsStatisticRequest,
+    getSellerRequests,
+    approveSellerRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
