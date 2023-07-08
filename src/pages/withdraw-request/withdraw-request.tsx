@@ -1,4 +1,4 @@
-import { Space } from 'antd';
+import { Modal, Space } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react'
@@ -6,10 +6,11 @@ import { IGetSketchRequest } from '../../common/sketch.interface';
 import { ISellerRequest, IGetUsersRequest } from '../../common/user.interface';
 import CTable from '../../components/table/CTable';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
-import { approveSellerRequest, getSellerRequests, getWithdrawRequests } from '../../redux/controller';
+import { approveSellerRequest, approveWithdrawRequest, getSellerRequests, getWithdrawRequests } from '../../redux/controller';
 import { useSelectorRoot, useDispatchRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
 import { IWithdrawRequest } from '../../common/withdraw-request.interface';
+import './withdraw-request.styles.scss';
 
 const WithdrawRequest = () => {
     const {
@@ -20,6 +21,12 @@ const WithdrawRequest = () => {
       const [textSearch, setTextSearch] = useState('');
       const [beginDate, setBeginDate] = useState('');
       const [endDate, setEndDate] = useState('');
+      const [openModalApprove, setOpenModalApprove] = useState(false);
+      const [bankId, setBankId] = useState('');
+      const [accountNo, setAccountNo] = useState('');
+      const [amount,setAmount] = useState(0);
+      const [receiverName, setReceiverName] = useState('');
+      const [withdrawId,setWithdrawId] = useState('');
       const [currentSearchValue, setCurrentSearchValue] = useState<IGetSketchRequest>(
         {
           size: QUERY_PARAM.size,
@@ -137,7 +144,7 @@ const WithdrawRequest = () => {
             key: 'action',
             render: (_, record) => (
               <Space size="middle">
-                <a onClick={(event) => handleApprove(record)}>Chấp nhận</a>
+                <a onClick={(event) => handleOpenApprove(record)}>Chấp nhận</a>
               </Space>
             ),
           },
@@ -158,13 +165,27 @@ const WithdrawRequest = () => {
       // ]
     
       const dispatch = useDispatchRoot()
+
+      const handleOpenApprove = (record: IWithdrawRequest) => {
+        setOpenModalApprove(true);
+        setBankId(record.bankName);
+        setAccountNo(record.bankAccountNumber);
+        setAmount(record.amount);
+        setReceiverName(record.name);
+        setWithdrawId(record.id)
+        
+      }
     
-      const handleApprove = (record: any) => {
+      const handleApprove = () => {
+        
         const bodyrequest = {
-          id: record.id,
+          id: withdrawId,
+          status: "PENDING",
+        processedComment: "string",
+        processedAmount: 0,
           currentSearchValue: currentSearchValue
         }
-        dispatch(approveSellerRequest(bodyrequest));
+        dispatch(approveWithdrawRequest(bodyrequest));
       }
     
       const onChangeInput = (event: any) => {
@@ -202,11 +223,25 @@ const WithdrawRequest = () => {
       }
     
       return (
-        <motion.div className='sketch-main'
+        <motion.div className='withdraw-main'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}>
-          
+          {
+            bankId && receiverName && accountNo && amount && 
+            <div className='approve-request-modal'>
+                <Modal
+                    open={openModalApprove}
+                    onOk={handleApprove}
+                    okText={'Đã chuyển tiền'}
+                    cancelText={'Hủy'}
+                    closable={true}
+                    onCancel={()=>setOpenModalApprove(false)}
+                >
+                    <img src={`https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${amount}&addInfo=thanh%toan%tien&accountName=${receiverName}`}/>
+                </Modal>
+            </div>
+          }
           <div className='table-area'>
             <CTable
               tableMainTitle='Danh sách yêu cầu rút tiền'

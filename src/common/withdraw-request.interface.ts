@@ -13,4 +13,7 @@ export interface IWithdrawRequest{
     phone: string,
     email: string,
     sellerType: string,
+    bankName: string,
+    bankAccountNumber: string,
+    
 }

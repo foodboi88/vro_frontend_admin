@@ -404,6 +404,28 @@ const managementSlice = createSlice({
             });
 
         },
+
+        
+        //Approve withdraw request
+        approveWithdrawRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        approveWithdrawRequestSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            notification.open({
+                message: 'Chấp thuận yêu cầu thành công',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+        },
+        approveWithdrawRequestFail(state, action: any) {
+            state.loading = false;
+        },
     },
 });
 
@@ -688,6 +710,25 @@ const getWithdrawRequests$: RootEpic = (action$) =>
         })
     );
 
+const approveWithdrawRequest$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(approveWithdrawRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+
+            return WithdrawApi.approveWithdrawRequest(re.payload).pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.approveWithdrawRequestSuccess(res.data),
+                        managementSlice.actions.getWithdrawRequests(re.payload.currentSearchValue)
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.blockUsersFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -703,7 +744,8 @@ export const ManagementEpics = [
     getReportsStatistic$,
     getSellerRequests$,
     approveSellerRequest$,
-    getWithdrawRequests$
+    getWithdrawRequests$,
+    approveWithdrawRequest$
 ];
 export const {
     getUsersRequest,
@@ -721,6 +763,7 @@ export const {
     getReportsStatisticRequest,
     getSellerRequests,
     approveSellerRequest,
-    getWithdrawRequests
+    getWithdrawRequests,
+    approveWithdrawRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
