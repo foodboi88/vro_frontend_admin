@@ -17,5 +17,6 @@ export enum API_URL {
     GET_ALL_REPORT = "Admin/statistic-report",
     STATISTIC_REPORT = "Admin/statistic-report",
     SELLER_REQUEST = "sellers/registration-form",
-    SELLER_APPROVE = "sellers/approve/"
+    SELLER_APPROVE = "sellers/approve/",
+    WITHDRAW_REQUEST = "withdrawal-requests/",
 }

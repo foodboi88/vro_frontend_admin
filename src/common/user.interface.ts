@@ -32,7 +32,7 @@ export interface IStatisticUser{
 }
 
 export interface ISellerRequest{
-    isApproved: boolean,
+    isApproved?: boolean,
     identityCardNumber: string,
     vatCode: string,
     bankAccountNumber: string,

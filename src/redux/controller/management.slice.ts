@@ -16,6 +16,8 @@ import StatisticAPI from "../../api/statistic/statistic.api";
 import { get } from "http";
 import { IReport, IStatisticReport } from "../../common/report.interface";
 import ReportApi from "../../api/report/report.api";
+import { IWithdrawRequest } from "../../common/withdraw-request.interface";
+import WithdrawApi from "../../api/withdraw/withdraw.api";
 
 
 interface ManagementState {
@@ -36,7 +38,9 @@ interface ManagementState {
     reportStatistic: IStatisticReport | undefined;
     totalReportRecords: number;
     sellerRequestList: any[];
-    numberOfSellerRequest: number
+    numberOfSellerRequest: number;
+    withdrawRequestList: IWithdrawRequest[];
+    totalWithdrawRequestRecord: number
 }
 
 const initState: ManagementState = {
@@ -58,6 +62,8 @@ const initState: ManagementState = {
     userStatistic: undefined,
     sellerRequestList: [],
     numberOfSellerRequest: 0,
+    withdrawRequestList: [],
+    totalWithdrawRequestRecord: 0,
 };
 
 const managementSlice = createSlice({
@@ -322,6 +328,7 @@ const managementSlice = createSlice({
 
         },
 
+        // become seller request 
         getSellerRequests(state, action: PayloadAction<any>) {
             state.loading = true;
             // console.log("da chui vao",state.loading)
@@ -368,6 +375,34 @@ const managementSlice = createSlice({
         },
         approveSellerRequestFail(state, action: any) {
             state.loading = false;
+        },
+
+        // get list withdraw request 
+        getWithdrawRequests(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getWithdrawRequestsSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.withdrawRequestList = action.payload.items
+            state.totalWithdrawRequestRecord = action.payload.total
+
+        },
+        getWithdrawRequestsFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
         },
     },
 });
@@ -634,6 +669,25 @@ const approveSellerRequest$: RootEpic = (action$) =>
         })
     );
 
+const getWithdrawRequests$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getWithdrawRequests.match),
+        mergeMap((re) => {
+            console.log(re);
+
+
+            return WithdrawApi.getAllWithdrawRequests(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getWithdrawRequestsSuccess(res.data),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getWithdrawRequestsFail(err)])
+            )
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -648,7 +702,8 @@ export const ManagementEpics = [
     getReports$,
     getReportsStatistic$,
     getSellerRequests$,
-    approveSellerRequest$
+    approveSellerRequest$,
+    getWithdrawRequests$
 ];
 export const {
     getUsersRequest,
@@ -665,6 +720,7 @@ export const {
     getReportsRequest,
     getReportsStatisticRequest,
     getSellerRequests,
-    approveSellerRequest
+    approveSellerRequest,
+    getWithdrawRequests
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

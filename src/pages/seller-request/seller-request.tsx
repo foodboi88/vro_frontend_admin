@@ -205,7 +205,7 @@ const SellerRequest = () => {
           
           <div className='table-area'>
             <CTable
-              tableMainTitle='Danh sách sản phẩm'
+              tableMainTitle='Danh sách yêu cầu bán hàng'
               allowDateRangeSearch={true}
               allowTextSearch={true}
               onChangeInput={onChangeInput}

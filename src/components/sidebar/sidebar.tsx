@@ -56,9 +56,12 @@ const Sidebar = () => {
                     <AiOutlineKey />
                     <span>Yêu cầu bán hàng</span>
                 </div>
-                <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => setActive(7)}>
+                <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => {
+                    setActive(7)
+                    navigate('/management/withdraw-requests')
+                }}>
                     <AiFillGift />
-                    <span>Quản lý khuyến mãi</span>
+                    <span>Yêu cầu rút tiền</span>
                 </div>
                 <div className={'sidebar-item' + (active === 8 ? ' active' : '')} onClick={() => {
                     setActive(8)
