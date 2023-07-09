@@ -5,7 +5,9 @@ import { motion } from 'framer-motion'
 import StatisticalChart from './StatisticalChart'
 import is from 'date-fns/esm/locale/is'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
-import { getOverviewStatisticDayRequest, getOverviewStatisticMonthRequest, getOverviewStatisticQuarterRequest, getOverviewStatisticYearRequest, setViewStatistic } from '../../redux/controller'
+import { getOverviewStatisticDayRequest, getOverviewStatisticMonthRequest, getOverviewStatisticQuarterRequest, getOverviewStatisticSellerDayRequest, getOverviewStatisticUserDayRequest, getOverviewStatisticYearRequest, setViewStatistic } from '../../redux/controller'
+import StatisticalUserChart from './StatisticalUserChart'
+import { IStatictisSellerDay, IStatictisUserDay } from '../../common/statistic.interface'
 const { RangePicker } = DatePicker;
 
 const Statistical = () => {
@@ -14,8 +16,42 @@ const Statistical = () => {
     const [startDate, setStartDate] = useState<string>('') // Biến lưu trữ ngày bắt đầu thống kê
     const [endDate, setEndDate] = useState<string>('') // Biến lưu trữ ngày kết thúc thống kê
     const dispatch = useDispatchRoot() // dispatch action
-    const { overViewStatisticDay, overViewStatisticMonth, overViewStatisticQuarter, overViewStatisticYear, typeViewStatistic } = useSelectorRoot((state) => state.management); // lấy ra state từ store
+    const { overViewStatisticDay, overViewStatisticMonth, overViewStatisticQuarter, overViewStatisticYear, typeViewStatistic, overViewStatisticUserDay, overViewStatisticSellerDay } = useSelectorRoot((state) => state.management); // lấy ra state từ store
 
+    const [dataUserChart, setDataUserChart] = useState<IStatictisUserDay>() // Biến lưu trữ dữ liệu thống kê
+    const [dataSellerChart, setDataSellerChart] = useState<IStatictisSellerDay>() // Biến lưu trữ dữ liệu thống kê
+    const [startDateUser, setStartDateUser] = useState<string>('') // Biến lưu trữ ngày bắt đầu thống kê
+    const [endDateUser, setEndDateUser] = useState<string>('') // Biến lưu trữ ngày kết thúc thống kê
+    useEffect(() => {
+        if (startDateUser && endDateUser) {
+            if (isDateRangeValid4Day(startDateUser, endDateUser)) {
+                const req = {
+                    startTime: startDateUser,
+                    endTime: endDateUser
+                }
+                dispatch(getOverviewStatisticUserDayRequest(req))
+                dispatch(getOverviewStatisticSellerDayRequest(req))
+            }
+            else {
+                notification.error({
+                    message: 'Lấy dữ liệu không thành công',
+                    description: 'Khoảng thời gian thống kê không được vượt quá 7 ngày',
+                });
+            }
+        }
+    }, [startDateUser, endDateUser])
+
+    useEffect(() => {
+        console.log(overViewStatisticUserDay, overViewStatisticSellerDay);
+
+        overViewStatisticUserDay && setDataUserChart(overViewStatisticUserDay);
+        overViewStatisticSellerDay && setDataSellerChart(overViewStatisticSellerDay);
+    }, [overViewStatisticUserDay, overViewStatisticSellerDay])
+
+    useEffect(() => {
+        console.log(dataUserChart, dataSellerChart);
+
+    }, [dataUserChart, dataSellerChart])
 
     // Hàm gọi khi thay đổi ngày thống kê
     const handleChangeDate = (date: any) => {
@@ -26,22 +62,32 @@ const Statistical = () => {
 
     }
 
+    const handleChangeDateUser = (date: any) => {
+        if (date) {
+            setStartDateUser(date[0].format('YYYY-MM-DD'))
+            setEndDateUser(date[1].format('YYYY-MM-DD'))
+        }
+    }
+
     const isDateRangeValid = (startDate: string, endDate: string) => {
         const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-
         const start = new Date(startDate);
         const end = new Date(endDate);
-
         const diffInDays = Math.round(Math.abs((end.getTime() - start.getTime()) / oneDay));
-
         return diffInDays <= 7;
+    }
+    const isDateRangeValid4Day = (startDate: string, endDate: string) => {
+        const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffInDays = Math.round(Math.abs((end.getTime() - start.getTime()) / oneDay));
+        return diffInDays <= 4;
     }
 
 
     useEffect(() => {
         if (startDate && endDate) {
             console.log(startDate, endDate);
-
             if (typeViewStatistic === 'day') {
                 if (isDateRangeValid(startDate, endDate)) {
                     console.log(startDate, endDate);
@@ -112,65 +158,82 @@ const Statistical = () => {
     }, [overViewStatisticYear])
 
     return (
-        <div className="main-statistical">
-            <div className="statistical-title">
-                <div className='title-text'>
-                    Báo cáo doanh thu
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="main-statistical">
+                <div className="statistical-title">
+                    <div className='title-text'>
+                        Báo cáo doanh thu
+                    </div>
+                    <div className='type-statistical'>
+                        <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={`type-item ${typeViewStatistic === 'day' ? 'active' : ''}`}
+                            onClick={() => dispatch(setViewStatistic('day'))}
+                        >
+                            Ngày
+                        </motion.div>
+                        <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={`type-item ${typeViewStatistic === 'month' ? 'active' : ''}`}
+                            onClick={() => dispatch(setViewStatistic('month'))}
+                        >
+                            Tháng
+                        </motion.div>
+                        <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={`type-item ${typeViewStatistic === 'quarter' ? 'active' : ''}`}
+                            onClick={() => dispatch(setViewStatistic('quarter'))}
+                        >
+                            Quý
+                        </motion.div>
+                        <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className={`type-item ${typeViewStatistic === 'year' ? 'active' : ''}`}
+                            onClick={() => dispatch(setViewStatistic('year'))}
+                        >
+                            Năm
+                        </motion.div>
+                        {typeViewStatistic === 'day' &&
+                            <RangePicker placeholder={['Ngày bắt đầu', 'Ngày kết thúc']} onChange={handleChangeDate} />
+                        }
+
+                        {typeViewStatistic === 'month' &&
+                            <RangePicker placeholder={['Tháng bắt đầu', 'Tháng kết thúc']} onChange={handleChangeDate} picker="month" />
+                        }
+
+                        {typeViewStatistic === 'quarter' &&
+                            <RangePicker placeholder={['Quý bắt đầu', 'Quý kết thúc']} onChange={handleChangeDate} picker="quarter" />
+                        }
+
+                        {typeViewStatistic === 'year' &&
+                            <RangePicker placeholder={['Năm bắt đầu', 'Năm kết thúc']} onChange={handleChangeDate} picker="year" />
+                        }
+
+                    </div>
                 </div>
-                <div className='type-statistical'>
-                    <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className={`type-item ${typeViewStatistic === 'day' ? 'active' : ''}`}
-                        onClick={() => dispatch(setViewStatistic('day'))}
-                    >
-                        Ngày
-                    </motion.div>
-                    <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className={`type-item ${typeViewStatistic === 'month' ? 'active' : ''}`}
-                        onClick={() => dispatch(setViewStatistic('month'))}
-                    >
-                        Tháng
-                    </motion.div>
-                    <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className={`type-item ${typeViewStatistic === 'quarter' ? 'active' : ''}`}
-                        onClick={() => dispatch(setViewStatistic('quarter'))}
-                    >
-                        Quý
-                    </motion.div>
-                    <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className={`type-item ${typeViewStatistic === 'year' ? 'active' : ''}`}
-                        onClick={() => dispatch(setViewStatistic('year'))}
-                    >
-                        Năm
-                    </motion.div>
-                    {typeViewStatistic === 'day' &&
-                        <RangePicker placeholder={['Ngày bắt đầu', 'Ngày kết thúc']} onChange={handleChangeDate} />
-                    }
-
-                    {typeViewStatistic === 'month' &&
-                        <RangePicker placeholder={['Tháng bắt đầu', 'Tháng kết thúc']} onChange={handleChangeDate} picker="month" />
-                    }
-
-                    {typeViewStatistic === 'quarter' &&
-                        <RangePicker placeholder={['Quý bắt đầu', 'Quý kết thúc']} onChange={handleChangeDate} picker="quarter" />
-                    }
-
-                    {typeViewStatistic === 'year' &&
-                        <RangePicker placeholder={['Năm bắt đầu', 'Năm kết thúc']} onChange={handleChangeDate} picker="year" />
-                    }
-
-                </div>
+                <StatisticalChart
+                    data={dataChart}
+                />
             </div>
-            <StatisticalChart
-                data={dataChart}
-            />
+
+            <div className="main-statistical">
+                <div className="statistical-title">
+                    <div className='title-text'>
+                        Thống kê số tài khoản mới
+                    </div>
+                    <div className='type-statistical'>
+                        <RangePicker placeholder={['Ngày bắt đầu', 'Ngày kết thúc']} onChange={handleChangeDateUser} />
+                    </div>
+                </div>
+                <StatisticalUserChart
+                    dataUserChart={dataUserChart}
+                    dataSellerChart={dataSellerChart}
+                />
+            </div>
         </div>
     )
 }

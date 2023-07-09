@@ -14,6 +14,8 @@ export enum API_URL {
     OVERVIEW_STATISTIC_MONTH = "Admin/overview-statistic-month",
     OVERVIEW_STATISTIC_QUARTER = "Admin/overview-statistic-quarter",
     OVERVIEW_STATISTIC_YEAR = "Admin/overview-statistic-year",
+    USER_STATISTIC_DAY = "Admin/get-user-day",
+    SELLER_STATISTIC_DAY = "Admin/get-seller-day",
     GET_ALL_REPORT = "Admin/statistic-report",
     STATISTIC_REPORT = "Admin/statistic-report",
     SELLER_REQUEST = "sellers/registration-form",

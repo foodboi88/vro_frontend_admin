@@ -74,4 +74,32 @@ export default class StatisticAPI {
             )
         );
     }
+
+    // Lấy ra thống kế user theo ngày
+    static getUserStatisticDay(body: any): Observable<any> {
+        const queryParam = Utils.parseObjectToQueryParameter(body);
+        const api = `${StatisticAPI.apiURL.HOST}/${this.apiURL.USER_STATISTIC_DAY}${queryParam}`;
+        console.log(api);
+
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
+
+    // Lấy ra thống kế seller theo ngày
+    static getSellerStatisticDay(body: any): Observable<any> {
+        const queryParam = Utils.parseObjectToQueryParameter(body);
+        const api = `${StatisticAPI.apiURL.HOST}/${this.apiURL.SELLER_STATISTIC_DAY}${queryParam}`;
+        console.log(api);
+
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
 }

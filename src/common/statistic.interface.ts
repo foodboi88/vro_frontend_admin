@@ -83,3 +83,26 @@ export interface IStatictisYear {
     createdAt: string,
     updatedAt: string
 }
+
+export interface IStatictisUserDay {
+    items: IStatictisUserDayItem[],
+    total: number,
+}
+export interface IStatictisSellerDay {
+    items: IStatictisSellerDayItem[],
+    total: number,
+}
+export interface IStatictisUserDayItem {
+    totalUser: number,
+    day: string,
+    createdAt: string,
+    updatedAt: string,
+    id: string
+}
+export interface IStatictisSellerDayItem {
+    totalSeller: number,
+    day: string,
+    createdAt: string,
+    updatedAt: string,
+    id: string
+}
