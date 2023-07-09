@@ -724,7 +724,7 @@ const approveWithdrawRequest$: RootEpic = (action$) =>
                         managementSlice.actions.getWithdrawRequests(re.payload.currentSearchValue)
                     ];
                 }),
-                catchError((err) => [managementSlice.actions.blockUsersFail(err)])
+                catchError((err) => [managementSlice.actions.approveWithdrawRequestFail(err)])
             );
         })
     );
