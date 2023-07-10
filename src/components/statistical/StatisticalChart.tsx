@@ -222,9 +222,9 @@ const StatisticalChart = (props: StatisticalChartProps) => {
         setTotalPriceSellerLst(tmpLst);
     }
     const divideRangeIntoFourParts = (maxValue: number) => {
-        const interval = maxValue / 4;
+        const interval = maxValue / 8;
         const divisions = [];
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 8; i++) {
             divisions.push(interval * i);
         }
 
@@ -266,7 +266,7 @@ const StatisticalChart = (props: StatisticalChartProps) => {
                         legendData={[{ name: 'Tiền thu từ khách' }, { name: 'Tiền trả người bán' }, { name: 'Tiền còn nợ' }, { name: 'Hoa hồng' }]}
                         legendOrientation="vertical"
                         legendPosition="right"
-                        height={230}
+                        height={270}
                         maxDomain={{ y: maxValue }}
                         minDomain={{ y: 0 }}
                         name="chart1"
@@ -276,7 +276,7 @@ const StatisticalChart = (props: StatisticalChartProps) => {
                             right: 200, // Adjusted to accommodate legend
                             top: 50
                         }}
-                        width={1200}
+                        width={800}
                         themeColor={ChartThemeColor.multiUnordered}
 
                     >

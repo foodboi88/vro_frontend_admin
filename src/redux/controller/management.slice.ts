@@ -2,7 +2,7 @@
 /* eslint-disable no-debugger */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { notification } from "antd";
-import { catchError, filter, map, mergeMap, switchMap } from "rxjs/operators";
+import { catchError, concatMap, filter, map, mergeMap, switchMap } from "rxjs/operators";
 import { RootEpic } from "../../common/define-type";
 import Utils from "../../utils/base-utils";
 import IdentityApi from "../../api/identity/identity.api";
@@ -11,7 +11,7 @@ import { IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.inter
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
-import { IOverViewStatictis, IOverViewStatictisDay, IOverViewStatictisMonth, IOverViewStatictisQuarter, IOverViewStatictisYear } from "../../common/statistic.interface";
+import { IOverViewStatictis, IOverViewStatictisDay, IOverViewStatictisMonth, IOverViewStatictisQuarter, IOverViewStatictisYear, IStatictisSellerDay, IStatictisUserDay } from "../../common/statistic.interface";
 import StatisticAPI from "../../api/statistic/statistic.api";
 import { get } from "http";
 import { IReport, IStatisticReport } from "../../common/report.interface";
@@ -41,6 +41,8 @@ interface ManagementState {
     numberOfSellerRequest: number;
     withdrawRequestList: IWithdrawRequest[];
     totalWithdrawRequestRecord: number
+    overViewStatisticUserDay: IStatictisUserDay | undefined;
+    overViewStatisticSellerDay: IStatictisSellerDay | undefined;
 }
 
 const initState: ManagementState = {
@@ -64,6 +66,8 @@ const initState: ManagementState = {
     numberOfSellerRequest: 0,
     withdrawRequestList: [],
     totalWithdrawRequestRecord: 0,
+    overViewStatisticUserDay: undefined,
+    overViewStatisticSellerDay: undefined
 };
 
 const managementSlice = createSlice({
@@ -202,7 +206,7 @@ const managementSlice = createSlice({
         getOverviewStatisticDaySuccess(state, action: PayloadAction<any>) {
             console.log(action.payload);
             state.loading = false;
-            state.overViewStatisticDay = action.payload[0];
+            state.overViewStatisticDay = action.payload;
         },
 
         getOverviewStatisticDayFail(state, action: PayloadAction<any>) {
@@ -286,6 +290,54 @@ const managementSlice = createSlice({
             }
         },
 
+        // Get overview statistic user day
+        getOverviewStatisticUserDayRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticUserDaySuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+            state.overViewStatisticUserDay = action.payload[0];
+        },
+
+        getOverviewStatisticUserDayFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+            if (action.payload.status === 400 || action.payload.status === 404) {
+                notification.open({
+                    message: action.payload.message,
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                });
+            }
+        },
+
+        // Get overview statistic seller day
+
+        getOverviewStatisticSellerDayRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        getOverviewStatisticSellerDaySuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+            state.overViewStatisticSellerDay = action.payload[0];
+        },
+
+        getOverviewStatisticSellerDayFail(state, action: PayloadAction<any>) {
+            state.loading = false;
+            if (action.payload.status === 400 || action.payload.status === 404) {
+                notification.open({
+                    message: action.payload.message,
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                });
+            }
+        },
+
+
         getReportsRequest(state, action: PayloadAction<any>) {
             state.loading = true;
             // console.log("da chui vao",state.loading)
@@ -312,7 +364,7 @@ const managementSlice = createSlice({
             });
 
         },
-        
+
         //Get user statistic
         getReportsStatisticRequest(state) {
             state.loading = true;
@@ -405,7 +457,7 @@ const managementSlice = createSlice({
 
         },
 
-        
+
         //Approve withdraw request
         approveWithdrawRequest(state, action: PayloadAction<any>) {
             state.loading = true;
@@ -426,6 +478,7 @@ const managementSlice = createSlice({
         approveWithdrawRequestFail(state, action: any) {
             state.loading = false;
         },
+
     },
 });
 
@@ -614,6 +667,38 @@ const getOverviewStatisticYear$: RootEpic = (action$) =>
         })
     );
 
+const getOverviewStatisticUserDay$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticUserDayRequest.match),
+        concatMap((re) => {
+            console.log(re);
+            return StatisticAPI.getUserStatisticDay(re.payload).pipe(
+                concatMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOverviewStatisticUserDaySuccess(res.data),
+                    ]
+                }),
+                catchError((err) => [managementSlice.actions.getOverviewStatisticUserDayFail(err)])
+            );
+        })
+    );
+
+const getOverviewStatisticSellerDay$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOverviewStatisticSellerDayRequest.match),
+        concatMap((re) => {
+            console.log(re);
+            return StatisticAPI.getSellerStatisticDay(re.payload).pipe(
+                concatMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOverviewStatisticSellerDaySuccess(res.data),
+                    ]
+                }),
+                catchError((err) => [managementSlice.actions.getOverviewStatisticSellerDayFail(err)])
+            );
+        })
+    );
+
 const getReports$: RootEpic = (action$) =>
     action$.pipe(
         filter(getReportsRequest.match),
@@ -745,7 +830,9 @@ export const ManagementEpics = [
     getSellerRequests$,
     approveSellerRequest$,
     getWithdrawRequests$,
-    approveWithdrawRequest$
+    approveWithdrawRequest$,
+    getOverviewStatisticUserDay$,
+    getOverviewStatisticSellerDay$,
 ];
 export const {
     getUsersRequest,
@@ -764,6 +851,9 @@ export const {
     getSellerRequests,
     approveSellerRequest,
     getWithdrawRequests,
-    approveWithdrawRequest
+    approveWithdrawRequest,
+    getOverviewStatisticUserDayRequest,
+    getOverviewStatisticSellerDayRequest,
+
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
