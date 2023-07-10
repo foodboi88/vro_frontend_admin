@@ -11,6 +11,7 @@ import { AnimatePresence } from 'framer-motion';
 import Report from './pages/report/report';
 import SellerRequest from './pages/seller-request/seller-request';
 import WithdrawRequest from './pages/withdraw-request/withdraw-request';
+import Bill from './pages/bill/bill';
 function App() {
   
   return (
@@ -26,6 +27,8 @@ function App() {
                 <Route element={<Report />} path="/management/report" />
                 <Route element={<SellerRequest/>} path='/management/seller-requests' />
                 <Route element={<WithdrawRequest/>} path='/management/withdraw-requests' />
+                <Route element={<Bill/>} path='/management/bill' />
+
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />

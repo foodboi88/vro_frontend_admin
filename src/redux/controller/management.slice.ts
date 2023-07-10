@@ -7,7 +7,7 @@ import { RootEpic } from "../../common/define-type";
 import Utils from "../../utils/base-utils";
 import IdentityApi from "../../api/identity/identity.api";
 import UserApi from "../../api/user/user.api";
-import { IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.interface";
+import { IBill, IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
 import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
@@ -43,6 +43,9 @@ interface ManagementState {
     totalWithdrawRequestRecord: number
     overViewStatisticUserDay: IStatictisUserDay | undefined;
     overViewStatisticSellerDay: IStatictisSellerDay | undefined;
+    billList: IBill[];
+    totalBillRecord: number;
+    detailBill: any | undefined
 }
 
 const initState: ManagementState = {
@@ -67,7 +70,10 @@ const initState: ManagementState = {
     withdrawRequestList: [],
     totalWithdrawRequestRecord: 0,
     overViewStatisticUserDay: undefined,
-    overViewStatisticSellerDay: undefined
+    overViewStatisticSellerDay: undefined,
+    billList: [],
+    totalBillRecord: 0,
+    detailBill: undefined
 };
 
 const managementSlice = createSlice({
@@ -479,6 +485,60 @@ const managementSlice = createSlice({
             state.loading = false;
         },
 
+        // get list bill
+        getBillListRequests(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getBillListSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.billList = action.payload.items
+            state.totalBillRecord = action.payload.total
+
+        },
+        getBillListFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
+
+        // get detail bill
+        getDetailBillRequests(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getDetailBillSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.detailBill = action.payload
+
+        },
+        getDetailBillFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
     },
 });
 
@@ -814,6 +874,43 @@ const approveWithdrawRequest$: RootEpic = (action$) =>
         })
     );
 
+const getBillList$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getBillListRequests.match),
+        mergeMap((re) => {
+            console.log(re);
+
+
+            return UserApi.getBillList(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getBillListSuccess(res.data),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getBillListFail(err)])
+            )
+        })
+    );
+
+const getDetailBill$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getDetailBillRequests.match),
+        mergeMap((re) => {
+            console.log(re);
+
+
+            return UserApi.getDetailBill(re.payload.id).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getDetailBillSuccess(res.data),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getDetailBillFail(err)])
+            )
+        })
+    );
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -833,6 +930,8 @@ export const ManagementEpics = [
     approveWithdrawRequest$,
     getOverviewStatisticUserDay$,
     getOverviewStatisticSellerDay$,
+    getBillList$,
+    getDetailBill$
 ];
 export const {
     getUsersRequest,
@@ -854,6 +953,8 @@ export const {
     approveWithdrawRequest,
     getOverviewStatisticUserDayRequest,
     getOverviewStatisticSellerDayRequest,
+    getBillListRequests,
+    getDetailBillRequests,
 
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

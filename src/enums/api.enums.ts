@@ -21,4 +21,6 @@ export enum API_URL {
     SELLER_REQUEST = "sellers/registration-form",
     SELLER_APPROVE = "sellers/approve/",
     WITHDRAW_REQUEST = "withdrawal-requests/",
+    GET_BILLS = "Admin/get-all-order",
+    DETAIL_BILL = "orders/"
 }
