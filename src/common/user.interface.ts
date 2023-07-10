@@ -47,3 +47,13 @@ export interface ISellerRequest{
     address: string,
     dob: string
   }
+
+export interface IBill{
+    total: number,
+    createdAt: string,
+    orderId: string,
+    status: boolean,
+    paymentMethods: "VNBANK",
+    id: string,
+    userName: string
+}

@@ -62,4 +62,26 @@ export default class UserApi {
             )
         );
     }
+
+    static getBillList(body: any): Observable<any> {
+        const queryParam = Utils.parseObjectToQueryParameter(body);
+        console.log(queryParam)
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.GET_BILLS}${queryParam}`;
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
+
+    static getDetailBill(id: string): Observable<any> {
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.DETAIL_BILL}${id}`;
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
 }

@@ -41,9 +41,12 @@ const Sidebar = () => {
                     <HiOutlineNewspaper />
                     <span>Quản lý bài viết</span>
                 </div>
-                <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => setActive(4)}>
+                <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
+                    setActive(4)
+                    navigate('/management/bill')
+                }}>
                     <RiMoneyDollarCircleLine />
-                    <span>Quản lý thanh toán</span>
+                    <span>Quản lý đơn hàng</span>
                 </div>
                 <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
                     <ImStatsDots />
