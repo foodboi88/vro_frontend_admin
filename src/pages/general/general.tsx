@@ -10,23 +10,6 @@ import Statistical from '../../components/statistical/Statistical'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
 import { getOverviewStatisticRequest } from '../../redux/controller'
 
-const TotalBoxData = [
-    {
-        title: "Tổng doanh thu",
-        number: 10033567,
-        icon: CoinIcon
-    },
-    {
-        title: "Tổng số người bán",
-        number: 258,
-        icon: ShopIcon
-    },
-    {
-        title: "Tổng số người mua",
-        number: 1045,
-        icon: UserIcon
-    }
-]
 
 const General = () => {
 
@@ -47,6 +30,11 @@ const General = () => {
                     title: "Tổng doanh thu",
                     number: overviewStatistic.totalRevenue,
                     icon: CoinIcon
+                },
+                {
+                    title: "Tổng đơn đặt hàng",
+                    number: overviewStatistic.totalOrder,
+                    icon: ShopIcon
                 },
                 {
                     title: "Tổng số người bán",
