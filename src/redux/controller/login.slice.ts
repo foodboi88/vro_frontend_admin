@@ -33,6 +33,7 @@ interface LoginState {
     userMail: string | undefined;
     userPhone: string | undefined;
     accesstokenExpỉred: boolean;
+    userRole: string;
 }
 
 const initState: LoginState = {
@@ -51,6 +52,7 @@ const initState: LoginState = {
     isExistEmail: true,
     registerSuccess: false,
     accesstokenExpỉred: true,
+    userRole: Utils.getValueLocalStorage("role"),
 };
 
 const loginSlice = createSlice({
@@ -62,23 +64,38 @@ const loginSlice = createSlice({
             // console.log("da chui vao",state.loading)
         },
         loginSuccess(state, action: PayloadAction<any>) {
-            Utils.setLocalStorage("token", action.payload.accessToken);
-            Utils.setLocalStorage("refresh_token", action.payload.refreshToken);
-            
-            state.tokenLogin = action.payload.accessToken;
-            state.loading = false;
-            state.isSuccess = true;
-            state.accesstokenExpỉred = false;
-            notification.open({
-                message: "Đăng nhập thành công",
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            if(action.payload.role==="admin"){
+                Utils.setLocalStorage("token", action.payload.accessToken);
+                Utils.setLocalStorage("refresh_token", action.payload.refreshToken);
+                Utils.setLocalStorage("role", action.payload.role);
+    
+                state.userRole = action.payload.role;
+                state.tokenLogin = action.payload.accessToken;
+                state.loading = false;
+                state.isSuccess = true;
+                state.accesstokenExpỉred = false;
+                notification.open({
+                    message: "Đăng nhập thành công",
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                    style: {
+                        marginTop: 50,
+                        paddingTop: 40,
+                    },
+                });
+            } else {
+                notification.open({
+                    message: "Bạn không phải admin",
+                    onClick: () => {
+                        console.log("Notification Clicked!");
+                    },
+                    style: {
+                        marginTop: 50,
+                        paddingTop: 40,
+                    },
+                });
+            }
         },
         loginFail(state, action: any) {
             console.log(action);
