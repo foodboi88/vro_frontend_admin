@@ -152,6 +152,11 @@ const SellerRequest = () => {
       //       icon: UserMinus,
       //   },
       // ]
+
+      useEffect(()=>{
+        dispatch(getSellerRequests(currentSearchValue))
+
+      },[])
     
       const dispatch = useDispatchRoot()
     

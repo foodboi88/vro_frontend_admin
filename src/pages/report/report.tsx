@@ -117,6 +117,11 @@ const Report = () => {
       //       icon: UserMinus,
       //   },
       // ]
+
+      useEffect(()=>{
+        dispatch(getReportsRequest(currentSearchValue))
+
+      },[])
     
       const dispatch = useDispatchRoot()
     

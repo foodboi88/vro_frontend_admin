@@ -120,7 +120,10 @@ const User = () => {
         },
     ];
 
-    
+    useEffect(()=>{
+        dispatch(getUsersRequest(currentSearchValue))
+
+    },[])
 
     const dispatch = useDispatchRoot()
 

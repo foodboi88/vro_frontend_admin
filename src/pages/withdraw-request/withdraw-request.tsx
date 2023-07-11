@@ -1,7 +1,7 @@
 import { Modal, Space } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { motion } from 'framer-motion';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IGetSketchRequest } from '../../common/sketch.interface';
 import { ISellerRequest, IGetUsersRequest } from '../../common/user.interface';
 import CTable from '../../components/table/CTable';
@@ -163,6 +163,11 @@ const WithdrawRequest = () => {
       //       icon: UserMinus,
       //   },
       // ]
+
+      useEffect(()=>{
+        dispatch(getWithdrawRequests(currentSearchValue))
+
+      },[])
     
       const dispatch = useDispatchRoot()
 
