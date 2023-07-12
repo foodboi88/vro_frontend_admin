@@ -63,6 +63,7 @@ const CTable = (props: CTableProps) => {
             </div>
             <div className='table'>
                 <Table
+                    scroll={{ y: 350 }}
                     columns={props.titleOfColumnList}
                     dataSource={props.data}
                     pagination={
