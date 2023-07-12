@@ -8,19 +8,19 @@ type Props = {
 
 const PrivateRoutes = ({children}: Props) => {
     const {
+        userRole,
         tokenLogin
     } = useSelectorRoot((state) => state.login);
-    const navigate = useNavigate();
 
 
-    useEffect(()=>{
-        if(tokenLogin){
-            navigate('/management')
-        }
-    },[tokenLogin])
+    // useEffect(()=>{
+    //     if(userRole === 'admin'){
+    //         navigate('/management')
+    //     }
+    // },[userRole])
 
     return(
-        tokenLogin ? <Outlet/> : <Navigate to="/"/>
+        userRole === 'admin' && tokenLogin ? <Outlet/> : <Navigate to="/"/>
     )
 }
 

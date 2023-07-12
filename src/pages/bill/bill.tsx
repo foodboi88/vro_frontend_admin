@@ -79,9 +79,10 @@ const Bill = () => {
         },
       ];
     
-    //   useEffect(()=>{
-    //     setOpenModal(true)
-    //   },[detailBill])
+      useEffect(()=>{
+        dispatch(getBillListRequests(currentSearchValue));
+
+      },[])
     
       const dispatch = useDispatchRoot()
     

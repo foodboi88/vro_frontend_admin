@@ -140,6 +140,11 @@ const Sketch = () => {
   //   },
   // ]
 
+  useEffect(()=>{
+    dispatch(getSketchsRequest(currentSearchValue))
+
+  },[])
+
   const dispatch = useDispatchRoot()
 
   const handleBlockUser = (record: any) => {

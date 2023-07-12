@@ -19,8 +19,9 @@ const Header = () => {
     ];
 
     const onClickLogout = () => {
-        Utils.removeItemLocalStorage("token");
-        Utils.removeItemLocalStorage("refresh_token");
+        // Utils.removeItemLocalStorage("token");
+        // Utils.removeItemLocalStorage("refresh_token");
+        localStorage.clear()
         navigate('/');
         window.location.reload();
     }
