@@ -237,23 +237,23 @@ const StatisticalChart = (props: StatisticalChartProps) => {
                     {dataChart.length > 0 &&
                         <div className='total-content'>
                             <TotalBoxUser
-                                title='Tổng tiền thu từ khách'
+                                title='Tiền thu từ khách'
                                 number={props.data.totalPriceSum}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tiền trả người bán'
-                                number={props.data.totalPriceSum}
+                                number={props.data.totalPriceIncomeSum}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tiền còn nợ'
-                                number={props.data.totalPriceSum}
+                                number={props.data.totalPriceOwnSum}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tiền hoa hồng'
-                                number={props.data.totalPriceSum}
+                                number={props.data.totalPriceSellerSum}
                                 icon=''
                             />
                         </div>

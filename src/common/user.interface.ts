@@ -1,4 +1,4 @@
-export interface IUser{
+export interface IUser {
     id: string,
     email: string,
     name: string,
@@ -15,7 +15,7 @@ export interface IUser{
     totalBuy: number
 }
 
-export interface IGetUsersRequest{
+export interface IGetUsersRequest {
     size: number;
     offset: number;
     search?: string;
@@ -26,12 +26,12 @@ export interface IGetUsersRequest{
     sortOrder?: string
 }
 
-export interface IStatisticUser{
+export interface IStatisticUser {
     totalUser: number,
     totalUserBlock: number
 }
 
-export interface ISellerRequest{
+export interface ISellerRequest {
     isApproved?: boolean,
     identityCardNumber: string,
     vatCode: string,
@@ -46,14 +46,13 @@ export interface ISellerRequest{
     phone: string,
     address: string,
     dob: string
-  }
+}
 
-export interface IBill{
+export interface IBill {
     total: number,
     createdAt: string,
     orderId: string,
     status: boolean,
-    paymentMethods: "VNBANK",
     id: string,
     userName: string
 }
