@@ -61,6 +61,59 @@ const User = () => {
         dispatch(getUsersStatisticRequest())
     }, [totalUserRecords])
 
+    const formatPhoneNumber = (phoneNumber: string) => {
+        // Remove all non-digit characters from the phone number
+        const digitsOnly = phoneNumber.replace(/\D/g, '');
+
+        // Apply the desired format (e.g., 090-123-4567)
+        const formattedNumber = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+
+        return formattedNumber;
+    }
+
+    // Hàm thực hiện tính toán thời gian
+    const handleChangeTime = (time: Date) => {
+        const options = { timeZone: 'Asia/Ho_Chi_Minh' };
+        const currentDateString = new Date().toLocaleString('en-US', options);
+        const timeDateString = new Date(time).toLocaleString('en-US', options);
+
+        // Convert the current date to UTC
+        const currentDate = new Date(currentDateString);
+        const timeDate = new Date(timeDateString);
+
+        // Calculate the time difference in milliseconds
+        const timeDiff = currentDate.getTime() - timeDate.getTime();
+
+        // Calculate the time difference in seconds, minutes, hours, and days
+        const secondsDiff = Math.floor(timeDiff / 1000);
+        const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+        const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+        // Determine the appropriate time unit based on the time difference
+        let timeUnit;
+        let timeValue;
+
+        if (daysDiff > 0) {
+            timeUnit = 'ngày';
+            timeValue = daysDiff;
+        } else if (hoursDiff > 0) {
+            timeUnit = 'giờ';
+            timeValue = hoursDiff;
+        } else if (minutesDiff > 0) {
+            timeUnit = 'phút';
+            timeValue = minutesDiff;
+        } else {
+            timeUnit = 'giây';
+            timeValue = secondsDiff;
+        }
+
+        // Construct the output message based on the time difference
+        const outputMsg = `${timeValue} ${timeUnit} trước`;
+        if (timeValue <= 0) return ('Vừa xong');
+
+        return (outputMsg);
+    }
     // Các cột của bảng
     const columns: ColumnType<IUser>[] = [
         {
@@ -77,11 +130,21 @@ const User = () => {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
+            render: (_, record) => (
+                <Space size="middle">
+                    <p>{formatPhoneNumber(record.phone)}</p>
+                </Space>
+            ),
         },
         {
             title: 'Thời điểm tạo',
             dataIndex: 'createdAt',
             key: 'createdAt',
+            render: (_, record) => (
+                <Space >
+                    <span>{new Date(record.createdAt).toLocaleDateString('en-GB')}</span>
+                </Space>
+            ),
         },
         {
             title: 'Trạng thái',
@@ -120,10 +183,10 @@ const User = () => {
         },
     ];
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getUsersRequest(currentSearchValue))
 
-    },[])
+    }, [])
 
     const dispatch = useDispatchRoot()
 

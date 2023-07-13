@@ -36,7 +36,7 @@ const Sketch = () => {
 
   useEffect(() => {
     dispatch(getSketchsStatisticRequest())
-    
+
   }, [totalSketchRecords])
 
   const columns: ColumnType<ISketch>[] = [
@@ -49,6 +49,11 @@ const Sketch = () => {
       title: 'Giá',
       dataIndex: 'price',
       key: 'price',
+      render: (_, record) => (
+        <Space >
+          <span>{Utils.formatMoney(record.price)}đ</span>
+        </Space>
+      ),
     },
     {
       title: 'Lượt xem',
@@ -69,11 +74,21 @@ const Sketch = () => {
       title: 'Thời điểm tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      render: (_, record) => (
+        <Space >
+          <span>{new Date(record.createdAt).toLocaleDateString('en-GB')}</span>
+        </Space>
+      ),
     },
     {
       title: 'Thời điểm cập nhật',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
+      render: (_, record) => (
+        <Space >
+          <span>{new Date(record.updatedAt).toLocaleDateString('en-GB')}</span>
+        </Space>
+      ),
     },
     //   {
     //     title: 'id',
@@ -132,7 +147,7 @@ const Sketch = () => {
   //       number: sketchStatistic?.totalSketch ? sketchStatistic?.totalSketch : 0,
   //       icon: UserIcon,
   //   },
- 
+
   //   {
   //       title: "Tổng số bản vẽ mới",
   //       number: sketchStatistic?.totalNewSketch ? sketchStatistic?.totalNewSketch : 0,
@@ -140,10 +155,10 @@ const Sketch = () => {
   //   },
   // ]
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getSketchsRequest(currentSearchValue))
 
-  },[])
+  }, [])
 
   const dispatch = useDispatchRoot()
 
@@ -197,16 +212,16 @@ const Sketch = () => {
       <div>
         <div className="statistical-user">
           <TotalBoxUser
-              key={0}
-              title={"Tổng số bản vẽ toàn sàn"}
-              number={sketchStatistic?.totalProduct ? sketchStatistic?.totalProduct : 0}
-              icon={''}
+            key={0}
+            title={"Tổng số bản vẽ toàn sàn"}
+            number={sketchStatistic?.totalProduct ? sketchStatistic?.totalProduct : 0}
+            icon={''}
           />
           <TotalBoxUser
-              key={1}
-              title={"Tổng số bản vẽ mới"}
-              number={sketchStatistic?.totalProductNew ? sketchStatistic?.totalProductNew : 0}
-              icon={''}
+            key={1}
+            title={"Tổng số bản vẽ mới"}
+            number={sketchStatistic?.totalProductNew ? sketchStatistic?.totalProductNew : 0}
+            icon={''}
           />
         </div>
       </div>

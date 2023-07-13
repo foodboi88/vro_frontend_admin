@@ -1,14 +1,15 @@
-export interface IReport{
+export interface IReport {
     status: number,
     describe: string,
     createdAt: string,
     updatedAt: string,
     id: string,
     userName: string,
-    userRole: string
+    userRole: string,
+    total?: number,
 }
 
-export interface IStatisticReport{
+export interface IStatisticReport {
     totalReport: number,
     totalReportNew: number,
     totalReportProcessed: number,
