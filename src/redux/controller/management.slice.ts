@@ -471,7 +471,7 @@ const managementSlice = createSlice({
         approveWithdrawRequestSuccess(state, action: PayloadAction<any>) {
             state.loading = false;
             notification.open({
-                message: 'Chấp thuận yêu cầu thành công',
+                message: 'Xử lý yêu cầu thành công',
                 onClick: () => {
                     console.log("Notification Clicked!");
                 },
@@ -483,6 +483,16 @@ const managementSlice = createSlice({
         },
         approveWithdrawRequestFail(state, action: any) {
             state.loading = false;
+            notification.open({
+                message: action.payload.response.message ? action.payload.response.message : 'Xử lý yêu cầu thất bại',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
         },
 
         // get list bill
@@ -860,8 +870,9 @@ const approveWithdrawRequest$: RootEpic = (action$) =>
         filter(approveWithdrawRequest.match),
         mergeMap((re) => {
             console.log(re);
+            const {currentSearchValue,...bodyrequest} = re.payload
 
-            return WithdrawApi.approveWithdrawRequest(re.payload).pipe(
+            return WithdrawApi.approveWithdrawRequest(bodyrequest).pipe(
                 mergeMap((res: any) => {
                     console.log(re.payload)
                     return [

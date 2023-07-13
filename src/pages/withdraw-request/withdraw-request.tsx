@@ -22,6 +22,7 @@ const WithdrawRequest = () => {
   const [beginDate, setBeginDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [openModalApprove, setOpenModalApprove] = useState(false);
+  const [openModalReject, setOpenModalReject] = useState(false);
   const [bankId, setBankId] = useState('');
   const [accountNo, setAccountNo] = useState('');
   const [amount, setAmount] = useState(0);
@@ -151,6 +152,7 @@ const WithdrawRequest = () => {
       render: (_, record) => (
         <Space size="middle">
           <a onClick={(event) => handleOpenApprove(record)}>Chấp nhận</a>
+          <a onClick={(event) => handleOpenRejected(record)}>Từ chối</a>
         </Space>
       ),
     },
@@ -187,12 +189,35 @@ const WithdrawRequest = () => {
 
   }
 
+  const handleOpenRejected = (record: IWithdrawRequest) => {
+    setOpenModalReject(true);
+    setBankId(record.bankName);
+    setAccountNo(record.bankAccountNumber);
+    setAmount(record.amount);
+    setReceiverName(record.name);
+    setWithdrawId(record.id)
+
+  }
+
   const handleApprove = () => {
 
     const bodyrequest = {
       id: withdrawId,
-      status: "PENDING",
-      processedComment: "string",
+      status: "APPROVED",
+      processedComment: "Đã chấp nhận yêu cầu",
+      processedAmount: 0,
+      currentSearchValue: currentSearchValue,
+      
+    }
+    dispatch(approveWithdrawRequest(bodyrequest));
+  }
+
+  const handleReject = () => {
+
+    const bodyrequest = {
+      id: withdrawId,
+      status: "REJECTED",
+      processedComment: "Đã từ chối yêu cầu",
       processedAmount: 0,
       currentSearchValue: currentSearchValue
     }
@@ -239,7 +264,7 @@ const WithdrawRequest = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}>
       {
-        bankId && receiverName && accountNo && amount &&
+        bankId && receiverName && accountNo && amount && openModalApprove &&
         <div className='approve-request-modal'>
           <Modal
             open={openModalApprove}
@@ -250,6 +275,21 @@ const WithdrawRequest = () => {
             onCancel={() => setOpenModalApprove(false)}
           >
             <img src={`https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${amount}&addInfo=thanh%toan%tien&accountName=${receiverName}`} />
+          </Modal>
+        </div>
+      }
+      {
+        bankId && receiverName && accountNo && amount && openModalReject &&
+        <div className='approve-request-modal'>
+          <Modal
+            open={openModalReject}
+            onOk={handleReject}
+            okText={'Xác nhận'}
+            cancelText={'Hủy'}
+            closable={true}
+            onCancel={() => setOpenModalReject(false)}
+          >
+            <span>Bạn có chắc chắn muốn từ chối yêu cầu này?</span>
           </Modal>
         </div>
       }

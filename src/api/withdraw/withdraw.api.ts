@@ -20,8 +20,9 @@ export default class WithdrawApi {
     }
 
     static approveWithdrawRequest(body: any): Observable<any> {
-        const api = `${WithdrawApi.apiURL.HOST}/${this.apiURL.WITHDRAW_REQUEST}${body.id}/approve`;
-        return HttpClient.put(api,body).pipe(
+        const api = `${WithdrawApi.apiURL.HOST}/${this.apiURL.WITHDRAW_REQUEST}${body.id}/processing`;
+        const {id,...bodyrequest } = body
+        return HttpClient.put(api,bodyrequest).pipe(
             map(
                 (res) => (res as any) || null,
                 catchError((error) => new Observable())
