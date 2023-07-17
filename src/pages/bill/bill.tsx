@@ -185,11 +185,16 @@ const Bill = () => {
                         <div style={{padding: '10px'}}>
                             {detailBill.products.map((item: any, index: number)=>{
                                 return (
-                                    <div>
-                                        <div>Sản phẩm {index+1}:
+                                    <div style={{marginBottom: "30px"}}>
+                                        <div><b>Sản phẩm {index+1}:</b>
 
-                                            <div style={{display:'flex', justifyContent:'space-between'}}>{item.title}</div>
-                                            <div style={{display:'flex', justifyContent:'space-between'}}>{item.price}</div>
+                                            <div style={{display:'flex', justifyContent:'space-between'}}>
+                                              <div>Tiêu đề:</div>
+                                              <div>{item.title}</div>
+                                            </div>
+                                            <div style={{display:'flex', justifyContent:'space-between'}}>
+                                              <div>Giá:</div>
+                                              <div>{item.price}Đ</div></div>
                                             <div>
                                                 <img style={{width: "200px"}} src={item.image}/>
                                             </div>
