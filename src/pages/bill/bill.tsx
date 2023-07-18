@@ -166,7 +166,7 @@ const Bill = () => {
               <div>{detailBill.createdAt}</div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>Id đơn hàng:</div>
+              <div>Mã đơn hàng:</div>
               <div>{detailBill.orderId}</div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
