@@ -46,6 +46,12 @@ const General = () => {
                     number: overviewStatistic.totalUser,
                     icon: UserIcon
                 },
+                {
+                    title: "Tổng tiền chưa tất toán",
+                    number: overviewStatistic.totalWithDrawal,
+                    icon: ShopIcon
+                },
+                
             ]
             setTotalBoxData(tmp)
         }
