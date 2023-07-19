@@ -48,11 +48,14 @@ const WithdrawRequest = () => {
       dataIndex: 'isProcessed',
       key: 'isProcessed',
       render: (_, record) => {
-        if (record.isProcessed) {
-          return (<span>Đã xử lý</span>)
+        if (record.status === "PENDING") {
+          return (<span>Đang chờ xử lý</span>)
         }
-        else {
-          return (<span>Chưa xử lý</span>)
+        if (record.status === 'APPROVED') {
+          return (<span>Đã thanh toán</span>)
+        }
+        if (record.status === 'REJECTED') {
+          return (<span>Đã từ chối</span>)
         }
       }
     },
@@ -205,9 +208,8 @@ const WithdrawRequest = () => {
       id: withdrawId,
       status: "APPROVED",
       processedComment: "Đã chấp nhận yêu cầu",
-      processedAmount: 0,
       currentSearchValue: currentSearchValue,
-      
+
     }
     dispatch(approveWithdrawRequest(bodyrequest));
   }
@@ -218,7 +220,6 @@ const WithdrawRequest = () => {
       id: withdrawId,
       status: "REJECTED",
       processedComment: "Đã từ chối yêu cầu",
-      processedAmount: 0,
       currentSearchValue: currentSearchValue
     }
     dispatch(approveWithdrawRequest(bodyrequest));
