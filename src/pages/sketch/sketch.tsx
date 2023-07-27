@@ -39,7 +39,13 @@ const Sketch = () => {
 
   const columns: ColumnType<ISketch>[] = [
     {
-      title: 'title',
+      title: 'Số thứ tự',
+      render: (_, __, rowIndex) => (
+          <span className='span-table'>{rowIndex + 1}</span>
+      )
+    },
+    {
+      title: 'Tiêu đề',
       dataIndex: 'title',
       key: 'title',
     },
@@ -49,27 +55,17 @@ const Sketch = () => {
       key: 'price',
     },
     {
-      title: 'views',
-      dataIndex: 'views',
-      key: 'views',
-    },
-    {
-      title: 'likes',
-      dataIndex: 'likes',
-      key: 'likes',
-    },
-    {
-      title: 'quantityPurchased',
+      title: 'Số lượng đã bán',
       dataIndex: 'quantityPurchased',
       key: 'quantityPurchased',
     },
     {
-      title: 'createdAt',
+      title: 'Thời gian tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
     },
     {
-      title: 'updatedAt',
+      title: 'Thời gian cập nhật',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
     },
@@ -79,7 +75,7 @@ const Sketch = () => {
     //     key: 'id',
     // },
     {
-      title: 'image',
+      title: 'Ảnh',
       key: 'image',
       render: (_, record) => (
         <Space size="middle">
@@ -88,7 +84,7 @@ const Sketch = () => {
       ),
     },
     {
-      title: 'nameDesignStyle',
+      title: 'Phong cách',
       dataIndex: 'nameDesignStyle',
       key: 'nameDesignStyle',
     },
@@ -113,7 +109,7 @@ const Sketch = () => {
     //   ),
     // },
     {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
