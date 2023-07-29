@@ -4,6 +4,11 @@ import { format, parseISO } from "date-fns";
 import moment from "moment";
 
 class Utils {
+
+    static formatMoneyToVnd(money: number): string {
+        return Utils.formatMoney(money) + ' VND'
+    }
+
     static setLocalStorage(key: string, value: unknown): void {
         localStorage.setItem(key, JSON.stringify(value));
     }
@@ -330,25 +335,25 @@ class Utils {
         return Math.floor(Math.random() * max);
     };
 
-    static formatMoney(value: any){
+    static formatMoney(value: any) {
         value = value + "";
         value = value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
         return value;
     };
 
-    static parseObjectToQueryParameter(object: any){
+    static parseObjectToQueryParameter(object: any) {
         let result = '?' + new URLSearchParams(object).toString();
         return result;
     }
 
-    static getRidOfUnusedProperties(object: any){
+    static getRidOfUnusedProperties(object: any) {
         Object.keys(object).forEach(key => {
-            if (object[key] === null || 
-                object[key] === undefined || 
+            if (object[key] === null ||
+                object[key] === undefined ||
                 object[key] === '') {
-              delete object[key];
+                delete object[key];
             }
-          });
+        });
         return object;
     }
 }

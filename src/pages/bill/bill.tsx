@@ -12,7 +12,7 @@ import { getReportsStatisticRequest, blockUsersRequest, getReportsRequest, getSk
 import { useSelectorRoot, useDispatchRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
 import Modal from 'antd/lib/modal/Modal';
-
+import './bill.styles.scss'
 const Bill = () => {
     const {
         totalBillRecord,
@@ -29,19 +29,27 @@ const Bill = () => {
             offset: 0
         }
     )
-
-
-
     const columns: ColumnType<IReport>[] = [
         {
-            title: 'Tổng tiền',
-            dataIndex: 'total',
-            key: 'total',
+            title: 'Số thứ tự',
+            render: (_, __, rowIndex) => (
+                <span className='span-table'>{rowIndex + 1}</span>
+            )
+        },
+        {
+            title: 'Mã đơn hàng',
+            dataIndex: 'orderId',
+            key: 'orderId',
             render: (_, record) => (
                 <Space >
-                    <span>{Utils.formatMoney(record.total)}đ</span>
+                    <span style={{ fontSize: 13 }}>{record.orderId}</span>
                 </Space>
-            ),
+            )
+        },
+        {
+            title: 'Tên người dùng',
+            dataIndex: 'userName',
+            key: 'userName',
         },
         {
             title: 'Tạo lúc',
@@ -54,30 +62,46 @@ const Bill = () => {
             ),
         },
         {
-            title: 'Trạng thái',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_, record) => {
-                if (record.status) {
-                    return (<span>Đã hoàn thành</span>)
-                }
-                else {
-                    return (<span>Chưa hoàn thành</span>)
-                }
-            }
+            title: 'Tổng tiền',
+            dataIndex: 'total',
+            key: 'total',
+            render: (_, record) => (
+                <Space >
+                    <span>{Utils.formatMoney(record.total)}đ</span>
+                </Space>
+            ),
         },
+        {
+            title: 'Tổng sản phẩm',
+            dataIndex: 'totalProduct',
+            key: 'totalProduct',
+            render: (_, record) => (
+                <Space >
+                    <span>{record.totalProduct}</span>
+                </Space>
+            ),
+        },
+        // {
+        //     title: 'Trạng thái',
+        //     dataIndex: 'status',
+        //     key: 'status',
+        //     render: (_, record) => {
+        //         if (record.status) {
+        //             return (<span>Đã hoàn thành</span>)
+        //         }
+        //         else {
+        //             return (<span>Chưa hoàn thành</span>)
+        //         }
+        //     }
+        // },
         {
             title: 'Phương thức thanh toán',
             dataIndex: 'paymentMethods',
             key: 'paymentMethods',
+            render: (_, record) => (
+                <span >{record.paymentMethods}</span>
+            )
         },
-        {
-            title: 'Tên người dùng',
-            dataIndex: 'userName',
-            key: 'userName',
-        },
-
-
         {
             title: 'Thao tác',
             key: 'action',
@@ -155,15 +179,17 @@ const Bill = () => {
                     closable={true}
                     onCancel={() => setOpenModal(false)}
                     title={'Chi tiết đơn hàng'}
+                    className='modal-detail-bill'
+                    footer={false}
                 >
                     <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>Tổng tiền:</div>
-                            <div>{detailBill.total}</div>
+                            <div>{Utils.formatMoneyToVnd(detailBill.total)}</div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>Tạo lúc: </div>
-                            <div>{detailBill.createdAt}</div>
+                            <div>{new Date(detailBill.createdAt).toLocaleDateString('en-GB')}</div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>Mã đơn hàng:</div>
@@ -206,7 +232,7 @@ const Bill = () => {
                                             </div>
                                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                 <div>Giá:</div>
-                                                <div>{item.price}Đ</div></div>
+                                                <div>{Utils.formatMoneyToVnd(item.price)}</div></div>
                                             <div>
                                                 <img style={{ width: "200px" }} src={item.image} />
                                             </div>
@@ -237,7 +263,7 @@ const Bill = () => {
                     </div>
                 </Modal>
             }
-            <div className='table-area'>
+            <div className='table-area bill'>
                 <CTable
                     tableMainTitle='Danh sách đơn hàng'
                     allowDateRangeSearch={true}

@@ -9,10 +9,10 @@ import { motion } from 'framer-motion'
 import Statistical from '../../components/statistical/Statistical'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
 import { getOverviewStatisticRequest } from '../../redux/controller'
+import Utils from '../../utils/base-utils'
 
 
 const General = () => {
-
     const { overviewStatistic } = useSelectorRoot((state) => state.management); // lấy ra state từ store
     const dispatch = useDispatchRoot() // dispatch action   
     const [TotalBoxData, setTotalBoxData] = useState<any>([]) // state của component
@@ -28,7 +28,7 @@ const General = () => {
             const tmp = [
                 {
                     title: "Tổng doanh thu",
-                    number: overviewStatistic.totalRevenue,
+                    number: Utils.formatMoney(overviewStatistic.totalRevenue) + ' VND',
                     icon: CoinIcon
                 },
                 {
@@ -71,7 +71,7 @@ const General = () => {
             exit={{ opacity: 0 }}
         >
             <div className='total-boxs'>
-                {TotalBoxData.map((item: { title: string; number: number; icon: any }, index: React.Key | null | undefined) => (
+                {TotalBoxData.map((item: any, index: React.Key | null | undefined) => (
                     <TotalBox
                         key={index}
                         title={item.title}

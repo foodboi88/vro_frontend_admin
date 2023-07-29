@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 interface Props {
     title: string
-    number: number
+    number: string
     icon: any
 }
 
