@@ -2,7 +2,7 @@ import React from 'react'
 import './style.totalboxuser.scss'
 interface ITotalBoxUserProps {
     title: string,
-    number: number,
+    number: string,
     icon: string
 }
 
@@ -11,7 +11,7 @@ const TotalBoxUser = (props: ITotalBoxUserProps) => {
     return (
         <div className="total-box-user">
             <div className='total-box-user-content'>
-                <div className="number">{props.number.toLocaleString()}</div>
+                <div className="number">{props.number}</div>
                 <div className="title">{props.title}</div>
             </div>
             <div className="total-box-user-icon">

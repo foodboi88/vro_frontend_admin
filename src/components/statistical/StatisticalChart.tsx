@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Chart, ChartAxis, ChartGroup, ChartLine, ChartThemeColor, ChartVoronoiContainer } from '@patternfly/react-charts';
 import { useSelectorRoot } from '../../redux/store';
 import TotalBoxUser from '../totalBox/TotalBoxUser';
+import Utils from '../../utils/base-utils';
 
 interface StatisticalChartProps {
     data: any
@@ -238,22 +239,22 @@ const StatisticalChart = (props: StatisticalChartProps) => {
                         <div className='total-content'>
                             <TotalBoxUser
                                 title='Tiền thu từ khách'
-                                number={props.data.totalPriceSum}
+                                number={Utils.formatMoney(props.data.totalPriceSum) + ' VND'}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tiền trả người bán'
-                                number={props.data.totalPriceIncomeSum}
+                                number={Utils.formatMoney(props.data.totalPriceIncomeSum) + ' VND'}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tiền còn nợ'
-                                number={props.data.totalPriceOwnSum}
+                                number={Utils.formatMoney(props.data.totalPriceOwnSum) + ' VND'}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tiền hoa hồng'
-                                number={props.data.totalPriceSellerSum}
+                                number={Utils.formatMoney(props.data.totalPriceSellerSum) + ' VND'}
                                 icon=''
                             />
                         </div>

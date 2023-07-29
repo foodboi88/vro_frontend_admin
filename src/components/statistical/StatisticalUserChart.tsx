@@ -85,12 +85,12 @@ const StatisticalUserChart = (props: StatisticalChartProps) => {
                         <div className='total-content'>
                             <TotalBoxUser
                                 title='Tài khoản người bán'
-                                number={totalUser}
+                                number={totalUser.toLocaleString()}
                                 icon=''
                             />
                             <TotalBoxUser
                                 title='Tài khoản người mua'
-                                number={totalSeller}
+                                number={totalSeller.toLocaleString()}
                                 icon=''
                             />
                         </div>

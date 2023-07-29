@@ -36,12 +36,12 @@ const Header = () => {
                 <SearchOutlined className='icon-header' />
             </div>
             <div className="icon-group">
-                <Badge count={5} size="small">
+                {/* <Badge count={5} size="small">
                     <BellOutlined />
                 </Badge>
                 <Badge count={5} size="small">
                     <MessageOutlined />
-                </Badge>
+                </Badge> */}
                 <div className="user-info-content">
                     <Avatar className="avatar" src={UserIcon} />
                     <div className="name-and-balance">

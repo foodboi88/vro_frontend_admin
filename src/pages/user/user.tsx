@@ -172,7 +172,7 @@ const User = () => {
         //   ),
         // },
         {
-            title: 'Action',
+            title: 'Thao tác',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
@@ -247,13 +247,13 @@ const User = () => {
                 <TotalBoxUser
                     key={0}
                     title={"Tổng số người dùng"}
-                    number={userStatistic?.totalUser ? userStatistic?.totalUser : 0}
+                    number={userStatistic?.totalUser ? userStatistic?.totalUser.toString() : '0'}
                     icon={""}
                 />
                 <TotalBoxUser
                     key={1}
                     title={"Tổng số người dùng bị block"}
-                    number={userStatistic?.totalUserBlock ? userStatistic?.totalUserBlock : 0}
+                    number={userStatistic?.totalUserBlock ? userStatistic?.totalUserBlock.toString() : '0'}
                     icon={""}
                 />
             </div>

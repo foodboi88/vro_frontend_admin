@@ -6,12 +6,15 @@ import { BsFillPersonFill } from 'react-icons/bs'
 import { HiOutlineNewspaper } from 'react-icons/hi'
 import { RiMoneyDollarCircleLine } from 'react-icons/ri'
 import { ImStatsDots } from 'react-icons/im'
-import { AiOutlineKey, AiFillGift, AiOutlineQuestionCircle } from 'react-icons/ai'
+import { AiOutlineKey, AiFillGift, AiOutlineQuestionCircle, AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
 import { BiSolidLogIn } from 'react-icons/bi'
+import { GoDotFill, GoDot } from 'react-icons/go'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 const Sidebar = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState<number>(1)
+    const [subActive, setSubActive] = useState<number>(1)
 
     return (
         <div className="main-sidebar">
@@ -33,7 +36,33 @@ const Sidebar = () => {
                 }}>
                     <BsFillPersonFill />
                     <span>Quản lý tài khoản</span>
+                    {active === 2 ? <AiOutlineUp /> : <AiOutlineDown />}
                 </div>
+                {active === 2 &&
+                    <motion.div className={'sub-sidebar'}
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 100 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30, duration: 0.3 }}
+                    >
+                        <div className={'sub-sidebar-item' + (subActive === 1 ? ' active' : '')}
+                            onClick={() => {
+                                setSubActive(1)
+                                navigate('/management/user')
+                            }}>
+                            {subActive === 1 ? <GoDotFill /> : <GoDot />}
+                            <span>Tài khoản người bán</span>
+                        </div>
+                        <div className={'sub-sidebar-item' + (subActive === 2 ? ' active' : '')}
+                            onClick={() => {
+                                setSubActive(2)
+                                navigate('/management/user')
+                            }}>
+                            {subActive === 2 ? <GoDotFill /> : <GoDot />}
+                            <span>Tài khoản người mua</span>
+                        </div>
+                    </motion.div>
+                }
                 <div className={'sidebar-item' + (active === 3 ? ' active' : '')} onClick={() => {
                     setActive(3)
                     navigate('/management/sketch')

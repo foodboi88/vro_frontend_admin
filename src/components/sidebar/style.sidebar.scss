@@ -36,6 +36,7 @@
             padding: 10px;
             margin: 5px 10px;
             transition: all .2s ease-in-out;
+            z-index: 100;
 
             svg {
                 font-size: 1.75em;
@@ -53,6 +54,35 @@
             background-color: #FFF;
             color: #CF0201;
             border-radius: 1em;
+        }
+
+        .sub-sidebar {
+            background-color: #B80505;
+            margin: 0 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: -1em;
+            border-radius: 0 0 1em 1em;
+
+            .sub-sidebar-item {
+                display: flex;
+                align-items: center;
+                gap: .5em;
+                color: #e8e8e8;
+                font-size: 14px;
+                padding: 10px;
+                margin: 0 10px;
+                transition: all .2s ease-in-out;
+                cursor: pointer;
+            }
+
+            .sub-sidebar-item.active {
+                color: white;
+            }
+
+            .sub-sidebar-item:first-child {
+                margin-top: 1em;
+            }
         }
     }
 

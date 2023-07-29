@@ -130,7 +130,7 @@ const Sketch = () => {
     //   ),
     // },
     {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
@@ -214,13 +214,13 @@ const Sketch = () => {
           <TotalBoxUser
             key={0}
             title={"Tổng số bản vẽ toàn sàn"}
-            number={sketchStatistic?.totalProduct ? sketchStatistic?.totalProduct : 0}
+            number={sketchStatistic?.totalProduct ? sketchStatistic?.totalProduct.toString() : '0'}
             icon={''}
           />
           <TotalBoxUser
             key={1}
             title={"Tổng số bản vẽ mới"}
-            number={sketchStatistic?.totalProductNew ? sketchStatistic?.totalProductNew : 0}
+            number={sketchStatistic?.totalProductNew ? sketchStatistic?.totalProductNew.toString() : '0'}
             icon={''}
           />
         </div>
