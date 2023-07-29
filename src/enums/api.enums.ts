@@ -22,5 +22,9 @@ export enum API_URL {
     SELLER_APPROVE = "sellers/approve/",
     WITHDRAW_REQUEST = "withdrawal-requests/",
     GET_BILLS = "Admin/get-all-order",
-    DETAIL_BILL = "orders/"
+    DETAIL_BILL = "orders/",
+    BLOCK_SKETCH = "Admin/disable-product",
+    DELETE_SKETCH = "products/delete-product-by-id",
+    GET_ALL_STYLE = "type-of-architectures",
+
 }

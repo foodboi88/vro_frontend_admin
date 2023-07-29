@@ -1,3 +1,4 @@
+import { ISellerRequest } from "./user.interface";
 
 export interface ISketch {
     title: string,
@@ -10,6 +11,7 @@ export interface ISketch {
     id: string,
     image: string,
     nameDesignStyle: string
+    seller?: ISellerRequest
 }
 
 export interface IGetSketchRequest{
@@ -26,4 +28,14 @@ export interface IGetSketchRequest{
 export interface IStatisticSketch{
     totalProduct: number;
     totalProductNew: number;
+}
+export interface ITool {
+    name: string;
+    description: string;
+    id: string;
+}
+
+export interface IReqGetLatestSketchs {
+    size: number;
+    offset: number;
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-debugger */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { notification } from "antd";
+import { CheckboxOptionType, notification } from "antd";
 import { catchError, concatMap, filter, map, mergeMap, switchMap } from "rxjs/operators";
 import { RootEpic } from "../../common/define-type";
 import Utils from "../../utils/base-utils";
@@ -10,7 +10,7 @@ import UserApi from "../../api/user/user.api";
 import { IBill, IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.interface";
 import { QUERY_PARAM } from "../../constants/get-api.constant";
 import SketchApi from "../../api/sketch/sketch.api";
-import { ISketch, IStatisticSketch } from "../../common/sketch.interface";
+import { ISketch, IStatisticSketch, ITool } from "../../common/sketch.interface";
 import { IOverViewStatictis, IOverViewStatictisDay, IOverViewStatictisMonth, IOverViewStatictisQuarter, IOverViewStatictisYear, IStatictisSellerDay, IStatictisUserDay } from "../../common/statistic.interface";
 import StatisticAPI from "../../api/statistic/statistic.api";
 import { get } from "http";
@@ -45,7 +45,9 @@ interface ManagementState {
     overViewStatisticSellerDay: IStatictisSellerDay | undefined;
     billList: IBill[];
     totalBillRecord: number;
-    detailBill: any | undefined
+    detailBill: any | undefined;
+    styleList: CheckboxOptionType[];
+
 }
 
 const initState: ManagementState = {
@@ -73,7 +75,8 @@ const initState: ManagementState = {
     overViewStatisticSellerDay: undefined,
     billList: [],
     totalBillRecord: 0,
-    detailBill: undefined
+    detailBill: undefined,
+    styleList:[]
 };
 
 const managementSlice = createSlice({
@@ -549,6 +552,85 @@ const managementSlice = createSlice({
             });
 
         },
+
+        //Block san pham khoi san
+        blockSketchRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        blockSketchSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            notification.open({
+                message: 'Khóa bản vẽ thành công!',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+        },
+        blockSketchFail(state, action: any) {
+            state.loading = false;
+
+
+        },
+
+        //Block san pham khoi san
+        deleteSketchRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        deleteSketchSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            notification.open({
+                message: 'Xóa bản vẽ thành công!',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+        },
+        deleteSketchFail(state, action: any) {
+            state.loading = false;
+
+
+        },
+
+
+        getAllStylesRequest(state, action: PayloadAction<any>) {
+            console.log("Da chui vao voi action: ", action);
+        },
+
+        getAllStylesSuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload.data);
+            if(action.payload.data){
+
+                state.styleList = action?.payload?.data?.map(
+                    (item: ITool) =>
+                    ({
+                        label: item.name,
+                        value: item.id,
+                    } as CheckboxOptionType)
+                );
+            }
+            console.log("Da chui vao voi action: ", action);
+        },
+
+        getAllStylesFail(state, action: PayloadAction<any>) {
+            // console.log(action.payload.data);
+            // state.styleList = action.payload.data.map(
+            //     (item: ITool) =>
+            //     ({
+            //         label: item.name,
+            //         value: item.id,
+            //     } as CheckboxOptionType)
+            // );
+            console.log("Da chui vao voi action: ", action);
+        },
+
     },
 });
 
@@ -922,6 +1004,69 @@ const getDetailBill$: RootEpic = (action$) =>
             )
         })
     );
+
+const blockSketchRequest$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(blockSketchRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            const {currentSearchValue,...bodyrequest} = re.payload
+
+            return SketchApi.blockSketch(bodyrequest).pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.blockSketchSuccess(res.data),
+                        managementSlice.actions.getSketchsRequest(re.payload.currentSearchValue)
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.blockSketchFail(err)])
+            );
+        })
+    );
+
+    
+
+const deleteSketchRequest$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(deleteSketchRequest.match),
+        mergeMap((re) => {
+            console.log(re);
+            const {currentSearchValue,...bodyrequest} = re.payload
+
+            return SketchApi.deleteSketch(bodyrequest).pipe(
+                mergeMap((res: any) => {
+                    console.log(re.payload)
+                    return [
+                        managementSlice.actions.deleteSketchSuccess(res.data),
+                        managementSlice.actions.getSketchsRequest(re.payload.currentSearchValue)
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.deleteSketchFail(err)])
+            );
+        })
+    );
+
+const getAllStyles$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getAllStylesRequest.match),
+        switchMap((re) => {
+            // IdentityApi.login(re.payload) ?
+            console.log(re);
+
+            return SketchApi.getStyles(re.payload).pipe(
+                mergeMap((res: any) => {
+                    console.log(res);
+
+                    return [managementSlice.actions.getAllStylesSuccess(res)];
+                }),
+                catchError((err) => [
+                    managementSlice.actions.getAllStylesFail(err)
+                ])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -942,7 +1087,10 @@ export const ManagementEpics = [
     getOverviewStatisticUserDay$,
     getOverviewStatisticSellerDay$,
     getBillList$,
-    getDetailBill$
+    getDetailBill$,
+    blockSketchRequest$,
+    deleteSketchRequest$,
+    getAllStyles$
 ];
 export const {
     getUsersRequest,
@@ -966,6 +1114,8 @@ export const {
     getOverviewStatisticSellerDayRequest,
     getBillListRequests,
     getDetailBillRequests,
-
+    blockSketchRequest,
+    deleteSketchRequest,
+    getAllStylesRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

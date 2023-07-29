@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
-import { blockUsersRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
+import { blockSketchRequest, blockUsersRequest, deleteSketchRequest, getAllStylesRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
 import './sketch.styles.scss'
 import { Space } from 'antd';
@@ -10,7 +10,7 @@ import { IGetUsersRequest, IUser } from '../../common/user.interface';
 import { ColumnType } from 'antd/lib/table';
 import Utils from '../../utils/base-utils';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
-import { IGetSketchRequest, ISketch } from '../../common/sketch.interface';
+import { IGetSketchRequest, IReqGetLatestSketchs, ISketch } from '../../common/sketch.interface';
 import UserIcon from '../../assets/image/user.png'
 import UserMinus from '../../assets/image/user-minus.png'
 import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
@@ -20,12 +20,14 @@ const Sketch = () => {
   const {
     sketchList,
     totalSketchRecords,
-    sketchStatistic
+    sketchStatistic,
+    styleList,
   } = useSelectorRoot((state) => state.management);
 
   const [textSearch, setTextSearch] = useState('');
   const [beginDate, setBeginDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [selectedStyle,setSelectedStyle] = useState('')
   const [currentSearchValue, setCurrentSearchValue] = useState<IGetSketchRequest>(
     {
       size: QUERY_PARAM.size,
@@ -35,11 +37,31 @@ const Sketch = () => {
 
 
   useEffect(() => {
+    const bodyrequest: IReqGetLatestSketchs = {
+      size: 10,
+      offset: 0,
+    };
     dispatch(getSketchsStatisticRequest())
-
+    dispatch(getAllStylesRequest(bodyrequest))
   }, [totalSketchRecords])
 
   const columns: ColumnType<ISketch>[] = [
+    {
+      title: 'Số thứ tự',
+      render: (_, __, rowIndex) => (
+          <span className='span-table'>{rowIndex + 1}</span>
+      )
+    },
+    {
+      title: 'Tên tác giả',
+      dataIndex: 'sellerName',
+      key: 'sellerName',
+      render: (_, record) => (
+        <Space >
+          <span>{record.seller?.name}</span>
+        </Space>
+      ),
+    },
     {
       title: 'Tiêu đề',
       dataIndex: 'title',
@@ -56,22 +78,12 @@ const Sketch = () => {
       ),
     },
     {
-      title: 'Lượt xem',
-      dataIndex: 'views',
-      key: 'views',
-    },
-    {
-      title: 'Lượt thích',
-      dataIndex: 'likes',
-      key: 'likes',
-    },
-    {
       title: 'Số lượng đã bán',
       dataIndex: 'quantityPurchased',
       key: 'quantityPurchased',
     },
     {
-      title: 'Thời điểm tạo',
+      title: 'Thời gian tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (_, record) => (
@@ -81,7 +93,7 @@ const Sketch = () => {
       ),
     },
     {
-      title: 'Thời điểm cập nhật',
+      title: 'Thời gian cập nhật',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       render: (_, record) => (
@@ -134,8 +146,8 @@ const Sketch = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={(event) => handleBlockUser(record)}>Block</a>
-          <a>Delete</a>
+          <a onClick={(event) => handleBlockSketch(record)}>Block</a>
+          <a onClick={(event) => handleDeleteSketch(record)}>Delete</a>
         </Space>
       ),
     },
@@ -162,16 +174,29 @@ const Sketch = () => {
 
   const dispatch = useDispatchRoot()
 
-  const handleBlockUser = (record: any) => {
+  const handleBlockSketch = (record: any) => {
     const bodyrequest = {
-      userId: record.id,
+      sketchId: record.id,
       currentSearchValue: currentSearchValue
     }
-    dispatch(blockUsersRequest(bodyrequest));
+    dispatch(blockSketchRequest(bodyrequest));
+  }
+
+  const handleDeleteSketch = (record: any) => {
+    const bodyrequest = {
+      productId: record.id,
+      currentSearchValue: currentSearchValue
+    }
+    dispatch(deleteSketchRequest(bodyrequest));
   }
 
   const onChangeInput = (event: any) => {
     setTextSearch(event.target.value);
+  }
+
+  const onChangeSelectBox = (event: any) => {
+    console.log(event)
+    setSelectedStyle(event)
   }
 
   const onChangeRangePicker = (event: any) => {
@@ -182,7 +207,6 @@ const Sketch = () => {
   }
 
   const onSearch = () => {
-    console.log('hehee')
     const body: IGetUsersRequest = {
       size: QUERY_PARAM.size,
       offset: 0,
@@ -192,7 +216,10 @@ const Sketch = () => {
       status: '',
       sortBy: '',
       sortOrder: '',
+      typeId: selectedStyle,
     };
+    console.log(body)
+
     const finalBody = Utils.getRidOfUnusedProperties(body)
     setCurrentSearchValue(finalBody);
     dispatch(getSketchsRequest(finalBody))
@@ -230,6 +257,10 @@ const Sketch = () => {
           tableMainTitle='Danh sách sản phẩm'
           allowDateRangeSearch={true}
           allowTextSearch={true}
+          allowSelectBox={true}
+          onChangeSelectBox={onChangeSelectBox}
+          selectBoxPlaceholder= "Chọn kiểu kiến trúc"
+          selectBoxData={styleList}
           onChangeInput={onChangeInput}
           onChangeRangePicker={onChangeRangePicker}
           onSearch={onSearch}

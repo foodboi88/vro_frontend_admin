@@ -23,7 +23,8 @@ export interface IGetUsersRequest {
     endTime?: string;
     status?: string
     sortBy?: string
-    sortOrder?: string
+    sortOrder?: string;
+    typeId?: string
 }
 
 export interface IStatisticUser {
