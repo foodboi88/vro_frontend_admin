@@ -216,7 +216,7 @@ const Sketch = () => {
       status: '',
       sortBy: '',
       sortOrder: '',
-      type: selectedStyle,
+      typeId: selectedStyle,
     };
     console.log(body)
 
