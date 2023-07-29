@@ -1,4 +1,4 @@
-import { Modal, Space } from 'antd';
+import { Button, Divider, Form, Input, Modal, Space } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
@@ -11,6 +11,7 @@ import { useSelectorRoot, useDispatchRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
 import { IWithdrawRequest } from '../../common/withdraw-request.interface';
 import './withdraw-request.styles.scss';
+import form from 'antd/lib/form';
 
 const WithdrawRequest = () => {
   const {
@@ -28,12 +29,19 @@ const WithdrawRequest = () => {
   const [amount, setAmount] = useState(0);
   const [receiverName, setReceiverName] = useState('');
   const [withdrawId, setWithdrawId] = useState('');
+  const [openModalCreate, setOpenModalCreate] = useState(false);
+  const [openDetailModal,setOpenDetailModal] = useState(false);
+  const [detailBill,setDetailBill] = useState<IWithdrawRequest>();
+
   const [currentSearchValue, setCurrentSearchValue] = useState<IGetSketchRequest>(
     {
       size: QUERY_PARAM.size,
       offset: 0
     }
   )
+
+  const [form] = Form.useForm();
+
 
 
 
@@ -44,18 +52,29 @@ const WithdrawRequest = () => {
     //     key: 'status'
     //   },
     {
+      title: 'Số thứ tự',
+      render: (_, __, rowIndex) => (
+        <span className='span-table'>{rowIndex + 1}</span>
+      )
+    },
+    {
+      title: 'Mã yêu cầu',
+      dataIndex: 'withdrawalCode',
+      key: 'withdrawalCode',
+    },
+    {
       title: 'Tình trạng xử lý',
-      dataIndex: 'isProcessed',
-      key: 'isProcessed',
+      dataIndex: 'status',
+      key: 'status',
       render: (_, record) => {
-        if (record.status === "PENDING") {
-          return (<span>Đang chờ xử lý</span>)
+        if (record.status === "APPROVED") {
+          return (<span>Đã chuyển</span>)
         }
-        if (record.status === 'APPROVED') {
-          return (<span>Đã thanh toán</span>)
+        else if(record.status === "REJECTED") {
+          return (<span>Từ chối</span>)
         }
-        if (record.status === 'REJECTED') {
-          return (<span>Đã từ chối</span>)
+        else {
+          return (<span>Chưa chuyển</span>)
         }
       }
     },
@@ -63,99 +82,25 @@ const WithdrawRequest = () => {
       title: 'Lượng tiền',
       dataIndex: 'amount',
       key: 'amount',
+      render: (_, record) => (
+        <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.amount)} đ</span>
+      )
     },
     {
       title: 'Thời gian tạo yêu cầu',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (_, record) => {
-        return (<span>{new Date(record.createdAt).toLocaleDateString('en-GB')}</span>)
-      }
+      render: (_, record) => (
+        <span>{new Date(record.createdAt).toLocaleDateString('en-GB')}</span>
+      )
     },
-    {
-      title: 'Ngân hàng',
-      dataIndex: 'bankName',
-      key: 'bankName',
-    },
-    {
-      title: 'Chi nhánh ngân hàng',
-      dataIndex: 'bankBranch',
-      key: 'bankBranch',
-    },
-    {
-      title: 'Tạo lúc',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (_, record) => {
-        return (<span>{new Date(record.createdAt).toLocaleDateString('en-GB')}</span>)
-      }
-    },
-    //   {
-    //     title: 'updatedAt',
-    //     dataIndex: 'updatedAt',
-    //     key: 'updatedAt',
-    // },
-
-    {
-      title: 'Tên',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Loại tài khoản',
-      dataIndex: 'sellerType',
-      key: 'sellerType',
-      render: (_, record) => {
-        if (record.sellerType === "ARCHITECT") {
-          return (<span>Kiến trúc sư</span>)
-        }
-        else {
-          return (<span>Công ty</span>)
-        }
-      }
-    },
-    {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    //   {
-    //     title: 'dob',
-    //     dataIndex: 'dob',
-    //     key: 'dob',
-    //   },
-    // {
-    //   title: 'Tags',
-    //   key: 'tags',
-    //   dataIndex: 'tags',
-    //   render: (_, { tags }) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-    //         if (tag === 'loser') {
-    //           color = 'volcano';
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
-    //   ),
-    // },
     {
       title: 'Thao tác',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={(event) => handleOpenApprove(record)}>Chấp nhận</a>
-          <a onClick={(event) => handleOpenRejected(record)}>Từ chối</a>
+          <a onClick={(event) => handleOpenDetail(record)}>Xử lý yêu cầu</a>
+          {/* <a onClick={(event) => handleOpenRejected(record)}>Từ chối</a> */}
         </Space>
       ),
     },
@@ -182,24 +127,28 @@ const WithdrawRequest = () => {
 
   const dispatch = useDispatchRoot()
 
-  const handleOpenApprove = (record: IWithdrawRequest) => {
-    setOpenModalApprove(true);
+  const saveBodyrequest = (record: IWithdrawRequest) => {
+    setDetailBill(record)
     setBankId(record.bankName);
     setAccountNo(record.bankAccountNumber);
     setAmount(record.amount);
     setReceiverName(record.name);
     setWithdrawId(record.id)
-
   }
 
-  const handleOpenRejected = (record: IWithdrawRequest) => {
-    setOpenModalReject(true);
-    setBankId(record.bankName);
-    setAccountNo(record.bankAccountNumber);
-    setAmount(record.amount);
-    setReceiverName(record.name);
-    setWithdrawId(record.id)
+  // const handleOpenApprove = (record: IWithdrawRequest) => {
+  //   setOpenModalApprove(true);
+  //   saveBodyrequest(record)
+  // }
 
+  // const handleOpenRejected = (record: IWithdrawRequest) => {
+  //   saveBodyrequest(record)
+
+  // }
+
+  const handleOpenDetail = (record: IWithdrawRequest) => {
+    saveBodyrequest(record)
+    setOpenDetailModal(true);
   }
 
   const handleApprove = () => {
@@ -212,6 +161,8 @@ const WithdrawRequest = () => {
 
     }
     dispatch(approveWithdrawRequest(bodyrequest));
+    setOpenModalApprove(false)
+    setOpenDetailModal(false)
   }
 
   const handleReject = () => {
@@ -223,6 +174,8 @@ const WithdrawRequest = () => {
       currentSearchValue: currentSearchValue
     }
     dispatch(approveWithdrawRequest(bodyrequest));
+    setOpenDetailModal(false)
+
   }
 
   const onChangeInput = (event: any) => {
@@ -265,6 +218,146 @@ const WithdrawRequest = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}>
       {
+        openDetailModal && detailBill &&
+        <div className='approve-request-modal'>
+          <Modal
+            open={openDetailModal}
+            title={"Xử lý yêu cầu rút tiền"}
+            closable={true}
+            onCancel={() => setOpenDetailModal(false)}
+            footer={false}
+          >
+
+            <Form
+              name="basic"
+              form={form}
+
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              style={{ maxWidth: 600 }}
+              initialValues={detailBill}
+              // onFinish={handleCreate}
+              autoComplete="off"
+            >
+              <Form.Item
+                label="Trạng thái"
+                name="status"
+                
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Mã yêu cầu"
+                name="withdrawalCode"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Lượng tiền"
+                name="amount"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Thời gian tạo"
+                name="createdAt"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Ghi chú của admin"
+                name="processedComment"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Divider>Thông tin người rút</Divider>
+
+              <Form.Item
+                label="Tên cá nhân/tổ chức"
+                name="name"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Địa chỉ"
+                name="address"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Số điện thoại"
+                name="phone"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Email"
+                name="email"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Loại tài khoản"
+                name="sellerType"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Mã số thuế"
+                name="taxCode"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Số tài khoản"
+                name="bankAccountNumber"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Ngân hàng"
+                name="bankName"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item
+                label="Chi nhánh"
+                name="bankBranch"
+              >
+                <Input readOnly={true}/>
+              </Form.Item>
+
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                
+                  <Button style={{marginRight: '15px'}} type="primary" onClick={() => {
+                    setOpenModalApprove(true);
+                  }}>Chấp nhận</Button>
+
+                  <Button type="default" onClick={() => {
+                    handleReject()
+                  }}>Từ chối</Button>
+
+              </Form.Item>
+              
+            </Form>
+
+          </Modal>
+        </div>
+      }
+      {
         bankId && receiverName && accountNo && amount && openModalApprove &&
         <div className='approve-request-modal'>
           <Modal
@@ -279,7 +372,7 @@ const WithdrawRequest = () => {
           </Modal>
         </div>
       }
-      {
+      {/* {
         bankId && receiverName && accountNo && amount && openModalReject &&
         <div className='approve-request-modal'>
           <Modal
@@ -293,7 +386,7 @@ const WithdrawRequest = () => {
             <span>Bạn có chắc chắn muốn từ chối yêu cầu này?</span>
           </Modal>
         </div>
-      }
+      } */}
       <div className='table-area'>
         <CTable
           tableMainTitle='Danh sách yêu cầu rút tiền'
