@@ -1,12 +1,13 @@
 export interface IReport {
-    status: number,
-    describe: string,
+    total: string,
     createdAt: string,
-    updatedAt: string,
+    orderId: string,
+    status: boolean,
+    paymentMethods: string,
     id: string,
+    totalProduct: number,
     userName: string,
-    userRole: string,
-    total?: number,
+
 }
 
 export interface IStatisticReport {
