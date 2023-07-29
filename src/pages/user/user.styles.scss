@@ -4,7 +4,7 @@
 
     .statistical-user {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 
     .table-area {
@@ -12,4 +12,13 @@
         margin-top: 1em;
         background-color: white;
     }
+
+    .ant-table-thead {
+        tr {
+            .ant-table-cell:nth-child(5) {
+                width: 10px;
+            }
+        }
+    }
+
 }

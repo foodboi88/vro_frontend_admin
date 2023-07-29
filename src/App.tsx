@@ -8,6 +8,10 @@ import General from './pages/general/general';
 import Sketch from './pages/sketch/sketch';
 import User from './pages/user/user';
 import { AnimatePresence } from 'framer-motion';
+import Report from './pages/report/report';
+import SellerRequest from './pages/seller-request/seller-request';
+import WithdrawRequest from './pages/withdraw-request/withdraw-request';
+import Bill from './pages/bill/bill';
 function App() {
   
   return (
@@ -20,6 +24,11 @@ function App() {
                 <Route element={<General />} path="/management" />
                 <Route element={<Sketch />} path="/management/sketch" />
                 <Route element={<User />} path="/management/user" />
+                <Route element={<Report />} path="/management/report" />
+                <Route element={<SellerRequest/>} path='/management/seller-requests' />
+                <Route element={<WithdrawRequest/>} path='/management/withdraw-requests' />
+                <Route element={<Bill/>} path='/management/bill' />
+
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />

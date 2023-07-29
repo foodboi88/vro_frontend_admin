@@ -4,6 +4,7 @@ import { SearchOutlined, BellOutlined, MessageOutlined, DownOutlined } from '@an
 import './style.header.scss'
 import UserIcon from '../../assets/image/user-icon.png'
 import { Link, useNavigate } from 'react-router-dom';
+import Utils from '../../utils/base-utils';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -12,16 +13,17 @@ const Header = () => {
 
         {
             key: "4",
-            label: (
-                <Link to="/" onClick={() => onClickLogout}>
-                    Đăng xuất
-                </Link>
-            ),
+            label: "Đăng xuất",
+            onClick: () => onClickLogout()
         },
     ];
 
     const onClickLogout = () => {
-        navigate('/')
+        // Utils.removeItemLocalStorage("token");
+        // Utils.removeItemLocalStorage("refresh_token");
+        localStorage.clear()
+        navigate('/');
+        window.location.reload();
     }
 
     return (

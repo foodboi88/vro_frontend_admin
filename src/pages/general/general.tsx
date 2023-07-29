@@ -10,28 +10,11 @@ import Statistical from '../../components/statistical/Statistical'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
 import { getOverviewStatisticRequest } from '../../redux/controller'
 
-const TotalBoxData = [
-    {
-        title: "Tổng doanh thu",
-        number: 10033567,
-        icon: CoinIcon
-    },
-    {
-        title: "Tổng số người bán",
-        number: 258,
-        icon: ShopIcon
-    },
-    {
-        title: "Tổng số người mua",
-        number: 1045,
-        icon: UserIcon
-    }
-]
 
 const General = () => {
 
     const { overviewStatistic } = useSelectorRoot((state) => state.management); // lấy ra state từ store
-    const dispatch = useDispatchRoot() // dispatch action
+    const dispatch = useDispatchRoot() // dispatch action   
     const [TotalBoxData, setTotalBoxData] = useState<any>([]) // state của component
 
     // Gọi api lấy ra tổng số người bán, người mua, tổng doanh thu
@@ -49,6 +32,11 @@ const General = () => {
                     icon: CoinIcon
                 },
                 {
+                    title: "Tổng đơn đặt hàng",
+                    number: overviewStatistic.totalOrder,
+                    icon: ShopIcon
+                },
+                {
                     title: "Tổng số người bán",
                     number: overviewStatistic.totalSeller,
                     icon: ShopIcon
@@ -58,6 +46,12 @@ const General = () => {
                     number: overviewStatistic.totalUser,
                     icon: UserIcon
                 },
+                {
+                    title: "Tổng tiền chưa tất toán",
+                    number: overviewStatistic.totalWithDrawal,
+                    icon: ShopIcon
+                },
+                
             ]
             setTotalBoxData(tmp)
         }

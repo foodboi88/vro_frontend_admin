@@ -41,23 +41,35 @@ const Sidebar = () => {
                     <HiOutlineNewspaper />
                     <span>Quản lý bài viết</span>
                 </div>
-                <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => setActive(4)}>
+                <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
+                    setActive(4)
+                    navigate('/management/bill')
+                }}>
                     <RiMoneyDollarCircleLine />
-                    <span>Quản lý thanh toán</span>
+                    <span>Quản lý đơn hàng</span>
                 </div>
                 <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
                     <ImStatsDots />
                     <span>Công cụ marketing</span>
                 </div>
-                <div className={'sidebar-item' + (active === 6 ? ' active' : '')} onClick={() => setActive(6)}>
+                <div className={'sidebar-item' + (active === 6 ? ' active' : '')} onClick={() => {
+                    setActive(6)
+                    navigate('/management/seller-requests')
+                }}>
                     <AiOutlineKey />
-                    <span>Quản lý từ khóa</span>
+                    <span>Yêu cầu bán hàng</span>
                 </div>
-                <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => setActive(7)}>
+                <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => {
+                    setActive(7)
+                    navigate('/management/withdraw-requests')
+                }}>
                     <AiFillGift />
-                    <span>Quản lý khuyến mãi</span>
+                    <span>Yêu cầu rút tiền</span>
                 </div>
-                <div className={'sidebar-item' + (active === 8 ? ' active' : '')} onClick={() => setActive(8)}>
+                <div className={'sidebar-item' + (active === 8 ? ' active' : '')} onClick={() => {
+                    setActive(8)
+                    navigate('/management/report')
+                }}>
                     <AiOutlineQuestionCircle />
                     <span>Giải quyết phản hồi</span>
                 </div>
