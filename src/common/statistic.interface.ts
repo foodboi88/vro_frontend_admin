@@ -4,6 +4,7 @@ export interface IOverViewStatictis {
     totalSeller: number;
     totalUser: number;
     totalWithDrawal: number;
+    totalBuyer: number;
 }
 
 export interface IOverViewStatictisDay {

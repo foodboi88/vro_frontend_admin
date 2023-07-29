@@ -37,13 +37,18 @@ const General = () => {
                     icon: ShopIcon
                 },
                 {
+                    title: "Tổng số người dùng",
+                    number: overviewStatistic.totalUser,
+                    icon: ShopIcon
+                },
+                {
                     title: "Tổng số người bán",
                     number: overviewStatistic.totalSeller,
                     icon: ShopIcon
                 },
                 {
                     title: "Tổng số người mua",
-                    number: overviewStatistic.totalUser,
+                    number: overviewStatistic.totalBuyer,
                     icon: UserIcon
                 },
                 {
@@ -51,7 +56,7 @@ const General = () => {
                     number: overviewStatistic.totalWithDrawal,
                     icon: ShopIcon
                 },
-                
+
             ]
             setTotalBoxData(tmp)
         }

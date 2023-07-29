@@ -193,7 +193,7 @@ const managementSlice = createSlice({
         getOverviewStatisticSuccess(state, action: PayloadAction<IOverViewStatictis>) {
             state.loading = false;
             console.log(action.payload)
-            state.overviewStatistic = action.payload;
+            state.overviewStatistic = action?.payload;
         },
 
         getOverviewStatisticFail(state, action: PayloadAction<any>) {
@@ -870,7 +870,7 @@ const approveWithdrawRequest$: RootEpic = (action$) =>
         filter(approveWithdrawRequest.match),
         mergeMap((re) => {
             console.log(re);
-            const {currentSearchValue,...bodyrequest} = re.payload
+            const { currentSearchValue, ...bodyrequest } = re.payload
 
             return WithdrawApi.approveWithdrawRequest(bodyrequest).pipe(
                 mergeMap((res: any) => {

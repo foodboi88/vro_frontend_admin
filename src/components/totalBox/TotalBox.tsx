@@ -16,9 +16,9 @@ const TotalBox = (props: Props) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
         >
-            <div className='total-box-icon' >
+            {/* <div className='total-box-icon' >
                 <img src={props.icon} alt="" />
-            </div >
+            </div > */}
             <div className='total-box-content'>
                 <div className="total-box-title">
                     {props.title}
