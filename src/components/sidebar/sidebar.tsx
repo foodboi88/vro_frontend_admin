@@ -48,7 +48,7 @@ const Sidebar = () => {
                         <div className={'sub-sidebar-item' + (subActive === 1 ? ' active' : '')}
                             onClick={() => {
                                 setSubActive(1)
-                                navigate('/management/user')
+                                navigate('/management/seller')
                             }}>
                             {subActive === 1 ? <GoDotFill /> : <GoDot />}
                             <span>Tài khoản người bán</span>

@@ -12,6 +12,7 @@ import Report from './pages/report/report';
 import SellerRequest from './pages/seller-request/seller-request';
 import WithdrawRequest from './pages/withdraw-request/withdraw-request';
 import Bill from './pages/bill/bill';
+import Seller from './pages/seller/seller';
 function App() {
   
   return (
@@ -24,6 +25,8 @@ function App() {
                 <Route element={<General />} path="/management" />
                 <Route element={<Sketch />} path="/management/sketch" />
                 <Route element={<User />} path="/management/user" />
+                <Route element={<Seller />} path="/management/seller" />
+
                 <Route element={<Report />} path="/management/report" />
                 <Route element={<SellerRequest/>} path='/management/seller-requests' />
                 <Route element={<WithdrawRequest/>} path='/management/withdraw-requests' />

@@ -36,7 +36,7 @@ const CTable = (props: CTableProps) => {
         <div className='table-main'>
             <div className='title-and-search'>
                 <div className='title'>{props.tableMainTitle}</div>
-                {/* <div className='total'>Tổng số bản ghi: {props.totalRecord}</div> */}
+                <div className='total'>Tổng số bản ghi: {props.totalRecord}</div>
                 <div className='search-area'>
                     {
                         props.allowTextSearch &&

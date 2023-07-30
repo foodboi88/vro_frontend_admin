@@ -37,7 +37,7 @@ const SellerRequest = () => {
             key: 'email',
         },
         {
-            title: 'SĐT',
+            title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
         },

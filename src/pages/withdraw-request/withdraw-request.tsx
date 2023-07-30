@@ -3,13 +3,12 @@ import { ColumnType } from 'antd/lib/table';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
 import { IGetSketchRequest } from '../../common/sketch.interface';
-import { ISellerRequest, IGetUsersRequest } from '../../common/user.interface';
 import CTable from '../../components/table/CTable';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
 import { approveSellerRequest, approveWithdrawRequest, getSellerRequests, getWithdrawRequests } from '../../redux/controller';
 import { useSelectorRoot, useDispatchRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
-import { IWithdrawRequest } from '../../common/withdraw-request.interface';
+import { IGetWithdrawsRequest, IWithdrawRequest } from '../../common/withdraw-request.interface';
 import './withdraw-request.styles.scss';
 import form from 'antd/lib/form';
 
@@ -191,7 +190,7 @@ const WithdrawRequest = () => {
 
   const onSearch = () => {
     console.log('hehee')
-    const body: IGetUsersRequest = {
+    const body: IGetWithdrawsRequest = {
       size: QUERY_PARAM.size,
       offset: 0,
       search: textSearch,

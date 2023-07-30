@@ -2,15 +2,13 @@ import { Space } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
-import { IGetSketchRequest, ISketch } from '../../common/sketch.interface';
-import { IGetUsersRequest } from '../../common/user.interface';
 import CTable from '../../components/table/CTable';
 import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
 import { getSketchsStatisticRequest, blockUsersRequest, getSketchsRequest, getReportsStatisticRequest, getReportsRequest } from '../../redux/controller';
 import { useSelectorRoot, useDispatchRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
-import { IReport } from '../../common/report.interface';
+import { IGetReportsRequest, IReport } from '../../common/report.interface';
 
 const Report = () => {
   const {
@@ -22,7 +20,7 @@ const Report = () => {
   const [textSearch, setTextSearch] = useState('');
   const [beginDate, setBeginDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [currentSearchValue, setCurrentSearchValue] = useState<IGetSketchRequest>(
+  const [currentSearchValue, setCurrentSearchValue] = useState<IGetReportsRequest>(
     {
       size: QUERY_PARAM.size,
       offset: 0
@@ -37,86 +35,49 @@ const Report = () => {
 
   const columns: ColumnType<IReport>[] = [
     {
-      title: 'status',
+      title: 'Số thứ tự',
+      render: (_, __, rowIndex) => (
+        <span className='span-table'>{rowIndex + 1}</span>
+      )
+    },
+    {
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
     },
     {
-      title: 'describe',
+      title: 'Mô tả',
       dataIndex: 'describe',
       key: 'describe',
     },
     {
-      title: 'createdAt',
+      title: 'Thời gian tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
     },
     {
-      title: 'updatedAt',
+      title: 'Thời gian cập nhật',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
     },
     {
-      title: 'userName',
+      title: 'Tên người dùng',
       dataIndex: 'userName',
       key: 'userName',
     },
-    {
-      title: 'userRole',
-      dataIndex: 'userRole',
-      key: 'userRole',
-    },
-    {
-      title: 'updatedAt',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-    },
 
     // {
-    //   title: 'Tags',
-    //   key: 'tags',
-    //   dataIndex: 'tags',
-    //   render: (_, { tags }) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-    //         if (tag === 'loser') {
-    //           color = 'volcano';
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
+    //   title: 'Thao tác',
+    //   key: 'action',
+    //   render: (_, record) => (
+    //     <Space size="middle">
+    //       <a onClick={(event) => handleBlockUser(record)}>Block</a>
+    //       <a>Delete</a>
+    //     </Space>
     //   ),
     // },
-    {
-      title: 'Thao tác',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <a onClick={(event) => handleBlockUser(record)}>Block</a>
-          <a>Delete</a>
-        </Space>
-      ),
-    },
   ];
 
-  // let statisticalUser = [
-  //   {
-  //       title: "Tổng số bản vẽ toàn sàn",
-  //       number: sketchStatistic?.totalSketch ? sketchStatistic?.totalSketch : 0,
-  //       icon: UserIcon,
-  //   },
-
-  //   {
-  //       title: "Tổng số bản vẽ mới",
-  //       number: sketchStatistic?.totalNewSketch ? sketchStatistic?.totalNewSketch : 0,
-  //       icon: UserMinus,
-  //   },
-  // ]
 
   useEffect(() => {
     dispatch(getReportsRequest(currentSearchValue))
@@ -125,13 +86,6 @@ const Report = () => {
 
   const dispatch = useDispatchRoot()
 
-  const handleBlockUser = (record: any) => {
-    const bodyrequest = {
-      userId: record.id,
-      currentSearchValue: currentSearchValue
-    }
-    dispatch(blockUsersRequest(bodyrequest));
-  }
 
   const onChangeInput = (event: any) => {
     setTextSearch(event.target.value);
@@ -146,7 +100,7 @@ const Report = () => {
 
   const onSearch = () => {
     console.log('hehee')
-    const body: IGetUsersRequest = {
+    const body: IGetReportsRequest = {
       size: QUERY_PARAM.size,
       offset: 0,
       search: textSearch,

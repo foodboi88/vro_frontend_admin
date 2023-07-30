@@ -24,7 +24,7 @@ export interface IGetUsersRequest {
     status?: string
     sortBy?: string
     sortOrder?: string;
-    typeId?: string
+    type?: string
 }
 
 export interface IStatisticUser {

@@ -10,6 +10,17 @@ export interface IReport {
 
 }
 
+export interface IGetReportsRequest {
+    size: number;
+    offset: number;
+    search?: string;
+    startTime?: string;
+    endTime?: string;
+    status?: string
+    sortBy?: string
+    sortOrder?: string;
+}
+
 export interface IStatisticReport {
     totalReport: number,
     totalReportNew: number,

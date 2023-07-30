@@ -22,7 +22,8 @@ export interface IGetSketchRequest{
     endTime?: string;
     status?: string
     sortBy?: string
-    sortOrder?: string
+    sortOrder?: string;
+    typeId?: string
 }
 
 export interface IStatisticSketch{

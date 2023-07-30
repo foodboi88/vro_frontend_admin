@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
-import { blockSketchRequest, blockUsersRequest, deleteSketchRequest, getAllStylesRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
+import { blockSketchRequest , deleteSketchRequest, getAllStylesRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
 import './sketch.styles.scss'
 import { Space } from 'antd';
-import { ColumnsType } from 'rc-table/lib/interface';
-import { IGetUsersRequest, IUser } from '../../common/user.interface';
 import { ColumnType } from 'antd/lib/table';
 import Utils from '../../utils/base-utils';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
 import { IGetSketchRequest, IReqGetLatestSketchs, ISketch } from '../../common/sketch.interface';
-import UserIcon from '../../assets/image/user.png'
-import UserMinus from '../../assets/image/user-minus.png'
 import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
 
 
@@ -207,7 +203,7 @@ const Sketch = () => {
   }
 
   const onSearch = () => {
-    const body: IGetUsersRequest = {
+    const body: IGetSketchRequest = {
       size: QUERY_PARAM.size,
       offset: 0,
       search: textSearch,

@@ -4,15 +4,14 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
 import { IReport } from '../../common/report.interface';
 import { IGetSketchRequest } from '../../common/sketch.interface';
-import { IGetUsersRequest } from '../../common/user.interface';
 import CTable from '../../components/table/CTable';
-import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
 import { getReportsStatisticRequest, blockUsersRequest, getReportsRequest, getSketchsRequest, getBillListRequests, getDetailBillRequests } from '../../redux/controller';
 import { useSelectorRoot, useDispatchRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
 import Modal from 'antd/lib/modal/Modal';
 import './bill.styles.scss'
+import { IGetBillsRequest } from '../../common/bill.interface';
 const Bill = () => {
     const {
         totalBillRecord,
@@ -143,7 +142,7 @@ const Bill = () => {
 
     const onSearch = () => {
         console.log('hehee')
-        const body: IGetUsersRequest = {
+        const body: IGetBillsRequest = {
             size: QUERY_PARAM.size,
             offset: 0,
             search: textSearch,

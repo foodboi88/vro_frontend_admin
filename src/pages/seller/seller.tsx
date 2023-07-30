@@ -3,7 +3,7 @@ import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
 import { blockUsersRequest, getUsersRequest, getUsersStatisticRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
-import './user.styles.scss'
+import './seller.styles.scss'
 import { Space } from 'antd';
 import { ColumnsType } from 'rc-table/lib/interface';
 import { IGetUsersRequest, IUser } from '../../common/user.interface';
@@ -40,7 +40,7 @@ const statisticalUser = [
     }
 ]
 
-const User = () => {
+const Seller = () => {
     const {
         userList,
         totalUserRecords,
@@ -53,7 +53,7 @@ const User = () => {
     const [currentSearchValue, setCurrentSearchValue] = useState<IGetUsersRequest>({
         size: QUERY_PARAM.size,
         offset: 0,
-        type: USER_TYPE.BUYER
+        type: USER_TYPE.SELLER
     }) // giá trị của request gọi api lấy danh sách user
 
 
@@ -232,7 +232,7 @@ const User = () => {
             status: '',
             sortBy: '',
             sortOrder: '',
-            type: USER_TYPE.BUYER
+            type: USER_TYPE.SELLER
 
         };
         const finalBody = Utils.getRidOfUnusedProperties(body)
@@ -268,7 +268,7 @@ const User = () => {
             </div>
             <div className='table-area'>
                 <CTable
-                    tableMainTitle='Danh sách tài khoản mua hàng'
+                    tableMainTitle='Danh sách tài khoản bán hàng'
                     allowDateRangeSearch={true}
                     allowTextSearch={true}
                     onChangeInput={onChangeInput}
@@ -284,4 +284,4 @@ const User = () => {
     )
 }
 
-export default User
+export default Seller
