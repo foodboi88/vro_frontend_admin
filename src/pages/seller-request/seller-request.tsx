@@ -40,6 +40,11 @@ const SellerRequest = () => {
             title: 'Số điện thoại',
             dataIndex: 'phone',
             key: 'phone',
+            render: (_, record) => (
+                <p>{Utils.formatPhoneNumber(record.phone)}</p>
+            )
+            
+
         },
         {
             title: 'Địa chỉ',
@@ -89,7 +94,7 @@ const SellerRequest = () => {
             },
         },
         {
-            title: 'Tạo lúc',
+            title: 'Thời gian tạo',
             dataIndex: 'createdAt',
             key: 'createdAt',
             render: (_, record) => (

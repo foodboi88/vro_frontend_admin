@@ -356,6 +356,16 @@ class Utils {
         });
         return object;
     }
+
+    static formatPhoneNumber (phoneNumber: string){
+        // Remove all non-digit characters from the phone number
+        const digitsOnly = phoneNumber.replace(/\D/g, '');
+
+        // Apply the desired format (e.g., 090-123-4567)
+        const formattedNumber = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+
+        return formattedNumber;
+    }
 }
 
 export default Utils;

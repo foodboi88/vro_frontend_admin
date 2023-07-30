@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style.sidebar.scss'
 import Logo from '../../assets/image/logo.png'
 import { BiGridAlt } from 'react-icons/bi'
@@ -15,6 +15,19 @@ const Sidebar = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState<number>(1)
     const [subActive, setSubActive] = useState<number>(1)
+
+    useEffect(() => {
+		if (window.location.pathname === "/management") setActive(1);
+		if (window.location.pathname === "/management/user") setSubActive(2);
+		if (window.location.pathname === "/management/seller") setSubActive(1);
+
+		if (window.location.pathname === "/management/sketch") setActive(3);
+		if (window.location.pathname === "/management/bill") setActive(4);
+		if (window.location.pathname === "/management/seller-requests") setActive(6);
+		if (window.location.pathname === "/management/withdraw-requests") setActive(7);
+        if (window.location.pathname === "/management/report") setActive(8);
+
+	}, []);
 
     return (
         <div className="main-sidebar">
@@ -68,7 +81,7 @@ const Sidebar = () => {
                     navigate('/management/sketch')
                 }}>
                     <HiOutlineNewspaper />
-                    <span>Quản lý bài viết</span>
+                    <span>Quản lý sản phẩm</span>
                 </div>
                 <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
                     setActive(4)

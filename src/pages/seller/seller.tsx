@@ -63,15 +63,6 @@ const Seller = () => {
         dispatch(getUsersStatisticRequest())
     }, [totalUserRecords])
 
-    const formatPhoneNumber = (phoneNumber: string) => {
-        // Remove all non-digit characters from the phone number
-        const digitsOnly = phoneNumber.replace(/\D/g, '');
-
-        // Apply the desired format (e.g., 090-123-4567)
-        const formattedNumber = digitsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
-
-        return formattedNumber;
-    }
 
     // Hàm thực hiện tính toán thời gian
     const handleChangeTime = (time: Date) => {
@@ -140,7 +131,7 @@ const Seller = () => {
             key: 'phone',
             render: (_, record) => (
                 <Space size="middle">
-                    <p>{formatPhoneNumber(record.phone)}</p>
+                    <p>{Utils.formatPhoneNumber(record.phone)}</p>
                 </Space>
             ),
         },

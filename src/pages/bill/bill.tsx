@@ -65,9 +65,7 @@ const Bill = () => {
             dataIndex: 'total',
             key: 'total',
             render: (_, record) => (
-                <Space >
-                    <span>{Utils.formatMoney(record.total)}đ</span>
-                </Space>
+                    <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.total)}</span>
             ),
         },
         {

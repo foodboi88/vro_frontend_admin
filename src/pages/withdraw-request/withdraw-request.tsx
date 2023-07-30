@@ -82,7 +82,7 @@ const WithdrawRequest = () => {
       dataIndex: 'amount',
       key: 'amount',
       render: (_, record) => (
-        <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.amount)} đ</span>
+        <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.amount)}</span>
       )
     },
     {
