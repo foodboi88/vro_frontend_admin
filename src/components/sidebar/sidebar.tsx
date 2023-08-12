@@ -18,8 +18,9 @@ const Sidebar = () => {
 
     useEffect(() => {
 		if (window.location.pathname === "/management") setActive(1);
-		if (window.location.pathname === "/management/user") setSubActive(2);
+        if(window.location.pathname === "/management/seller" || window.location.pathname === "/management/user") setActive(2);
 		if (window.location.pathname === "/management/seller") setSubActive(1);
+		if (window.location.pathname === "/management/user") setSubActive(2);
 
 		if (window.location.pathname === "/management/sketch") setActive(3);
 		if (window.location.pathname === "/management/bill") setActive(4);

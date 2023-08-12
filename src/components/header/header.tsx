@@ -7,10 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Utils from '../../utils/base-utils';
 
 const Header = () => {
-    const navigate = useNavigate();
-
     const items: MenuProps["items"] = [
-
         {
             key: "4",
             label: "Đăng xuất",
@@ -19,10 +16,7 @@ const Header = () => {
     ];
 
     const onClickLogout = () => {
-        // Utils.removeItemLocalStorage("token");
-        // Utils.removeItemLocalStorage("refresh_token");
-        localStorage.clear()
-        navigate('/');
+        localStorage.clear();
         window.location.reload();
     }
 
