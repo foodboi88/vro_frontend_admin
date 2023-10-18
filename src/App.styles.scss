@@ -1,2 +1,97 @@
 @import 'antd/dist/antd.css';
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "/src/theme/color.css";
+
+// .ant-picker {
+//     background-color: var(--black-color-v2-300) !important;
+//     color: var(--white-color-v2) !important;
+//     border: none;
+
+//     .ant-picker-input>input {
+//         color: var(--white-color-v2) !important;
+//     }
+
+//     .ant-picker-clear {
+//         background-color: var(--black-color-v2) !important;
+//         color: var(--white-color-v2) !important;
+//     }
+// }
+
+// .ant-btn {
+//     background-color: var(--black-color-v2) !important;
+//     color: var(--white-color-v2) !important;
+//     border-color: var(--white-color-v2) !important;
+// }
+
+// .ant-btn-primary {
+//     background-color: var(--main-color) !important;
+//     color: var(--white-color-v2) !important;
+//     border-color: var(--main-color) !important;
+
+
+// }
+
+// .ant-table-cell {
+//     color: var(--white-color-v2) !important;
+//     background-color: var(--black-color-v2) !important;
+// }
+
+// .ant-pagination-disabled .ant-pagination-item-link,
+// .ant-pagination-disabled:hover .ant-pagination-item-link {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     background-color: var(--black-color-v2) !important;
+//     color: var(--white-color-v2) !important;
+// }
+
+// .ant-pagination-item a {
+//     color: var(--white-color-v2) !important;
+//     background-color: var(--black-color-v2) !important;
+//     border: none !important;
+// }
+
+// .ant-pagination-item-active a {
+//     color: var(--black-color-v2) !important;
+//     background-color: var(--white-color-v2) !important;
+//     border: none !important;
+// }
+
+// .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+//     border-radius: 4px !important;
+//     background-color: var(--black-color-v2-300) !important;
+// }
+
+// .ant-checkbox-inner {
+//     background-color: var(--black-color-v2) !important;
+// }
+
+// .ant-upload {
+//     background-color: var(--black-color-v2) !important;
+//     color: var(--white-color-v2) !important;
+// }
+
+// .ant-modal-content {
+//     background-color: var(--black-color-v2) !important;
+//     color: var(--white-color-v2) !important;
+
+//     .ant-modal-close {
+//         color: var(--white-color-v2) !important;
+//     }
+
+//     .ant-modal-header {
+//         border-bottom: 1px solid var(--white-color-v2) !important;
+//         background-color: var(--black-color-v2) !important;
+//         color: var(--white-color-v2) !important;
+
+//         .ant-modal-title {
+//             color: var(--white-color-v2) !important;
+//         }
+//     }
+
+//     .ant-modal-body {
+//         .ant-divider-inner-text {
+//             color: var(--white-color-v2) !important;
+//         }
+//     }
+// }

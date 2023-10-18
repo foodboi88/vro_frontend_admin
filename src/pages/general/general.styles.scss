@@ -10,3 +10,97 @@
     }
 
 }
+
+@media (max-width: 1440px) {
+    .main-general {
+        .total-boxs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            place-items: center;
+            margin: 0;
+            /* Center both horizontally and vertically */
+
+            .total-box {
+                width: 100%;
+                display: flex;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+@media (max-width: 1440px) {
+    .main-general {
+        .total-boxs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            place-items: center;
+            margin: 0;
+            /* Center both horizontally and vertically */
+
+            .total-box {
+                width: 100%;
+                display: flex;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .main-general {
+        .total-boxs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+
+            .total-box {
+                width: 100%;
+                display: flex;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .main-general {
+        .total-boxs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+
+            .total-box {
+                .total-box-content {
+                    .total-box-title {
+                        font-size: .8em;
+                        font-weight: 600;
+                        margin-top: 1em;
+                    }
+
+                    .total-box-number {
+                        font-size: 1.15em;
+                    }
+                }
+            }
+
+
+        }
+    }
+}

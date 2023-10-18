@@ -13,8 +13,6 @@ interface Props {
 const TotalBox = (props: Props) => {
     return (
         <motion.div className='total-box'
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
         >
             {/* <div className='total-box-icon' >
                 <img src={props.icon} alt="" />

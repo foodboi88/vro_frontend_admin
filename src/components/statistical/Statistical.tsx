@@ -167,45 +167,47 @@ const Statistical = () => {
     }, [overViewStatisticYear])
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className='general-statistical'>
             <div className="main-statistical">
                 <div className="statistical-title">
                     <div className='title-text'>
                         Báo cáo doanh thu
                     </div>
                     <div className='type-statistical'>
-                        <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={`type-item ${typeViewStatistic === 'day' ? 'active' : ''}`}
-                            onClick={() => dispatch(setViewStatistic('day'))}
-                        >
-                            Ngày
-                        </motion.div>
-                        <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={`type-item ${typeViewStatistic === 'month' ? 'active' : ''}`}
-                            onClick={() => dispatch(setViewStatistic('month'))}
-                        >
-                            Tháng
-                        </motion.div>
-                        <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={`type-item ${typeViewStatistic === 'quarter' ? 'active' : ''}`}
-                            onClick={() => dispatch(setViewStatistic('quarter'))}
-                        >
-                            Quý
-                        </motion.div>
-                        <motion.div
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className={`type-item ${typeViewStatistic === 'year' ? 'active' : ''}`}
-                            onClick={() => dispatch(setViewStatistic('year'))}
-                        >
-                            Năm
-                        </motion.div>
+                        <div className='type-content'>
+                            <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className={`type-item ${typeViewStatistic === 'day' ? 'active' : ''}`}
+                                onClick={() => dispatch(setViewStatistic('day'))}
+                            >
+                                Ngày
+                            </motion.div>
+                            <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className={`type-item ${typeViewStatistic === 'month' ? 'active' : ''}`}
+                                onClick={() => dispatch(setViewStatistic('month'))}
+                            >
+                                Tháng
+                            </motion.div>
+                            <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className={`type-item ${typeViewStatistic === 'quarter' ? 'active' : ''}`}
+                                onClick={() => dispatch(setViewStatistic('quarter'))}
+                            >
+                                Quý
+                            </motion.div>
+                            <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className={`type-item ${typeViewStatistic === 'year' ? 'active' : ''}`}
+                                onClick={() => dispatch(setViewStatistic('year'))}
+                            >
+                                Năm
+                            </motion.div>
+                        </div>
                         {typeViewStatistic === 'day' &&
                             <RangePicker
                                 placeholder={['Ngày bắt đầu', 'Ngày kết thúc']}

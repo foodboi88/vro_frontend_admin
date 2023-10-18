@@ -20,7 +20,7 @@ interface CTableProps {
     totalRecord: number;
     onChangeInput?: (event: any) => void;
     onChangeRangePicker?: (event: any) => void;
-    onChangeSelectBox?: (event:any) => void;
+    onChangeSelectBox?: (event: any) => void;
     onSearch?: () => void;
     onChangePagination: (event: any) => void;
 
@@ -36,53 +36,57 @@ const CTable = (props: CTableProps) => {
         <div className='table-main'>
             <div className='title-and-search'>
                 <div className='title'>{props.tableMainTitle}</div>
-                <div className='total'>Tổng số bản ghi: {props.totalRecord}</div>
-                <div className='search-area'>
-                    {
-                        props.allowTextSearch &&
-                        <Input onChange={
-                            (event) => {
-                                if (props.onChangeInput) props.onChangeInput(event)
-                            }
-                        } />
-                    }
-                    {
-                        props.allowDateRangeSearch &&
-                        <RangePicker
-                            onChange={(event) => {
-                                if (props.onChangeRangePicker) props.onChangeRangePicker(event)
-                            }}
-                            placeholder={['Từ ngày', 'Đến ngày']}
-                        />
-                    }
-                    {
-                        props.allowSelectBox && 
-                        <Select
-                            // showSearch
-                            // filterOption={(input, option) =>
-                            //     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                            // }
-                            placeholder={props.selectBoxPlaceholder}
-                            onChange={(event)=>{
-                                if(props.onChangeSelectBox) props.onChangeSelectBox(event)
-                            }}
-                            options={props.selectBoxData}
-                        />
-                    }
-                    {
-                        (props.allowDateRangeSearch ||
-                            props.allowTextSearch) &&
-                        <Button
-                            onClick={() => {
-                                if (props.onSearch) props.onSearch()
-                            }}
-                        >Tìm kiếm</Button>
-                    }
+                <div>
+                    <div className='total'>Tổng số bản ghi: {props.totalRecord}</div>
+                    <div className='search-area'>
+                        {
+                            props.allowTextSearch &&
+                            <Input
+                                placeholder='Tìm kiếm'
+                                onChange={
+                                    (event) => {
+                                        if (props.onChangeInput) props.onChangeInput(event)
+                                    }
+                                } />
+                        }
+                        {
+                            props.allowDateRangeSearch &&
+                            <RangePicker
+                                onChange={(event) => {
+                                    if (props.onChangeRangePicker) props.onChangeRangePicker(event)
+                                }}
+                                placeholder={['Từ ngày', 'Đến ngày']}
+                            />
+                        }
+                        {
+                            props.allowSelectBox &&
+                            <Select
+                                // showSearch
+                                // filterOption={(input, option) =>
+                                //     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                // }
+                                placeholder={props.selectBoxPlaceholder}
+                                onChange={(event) => {
+                                    if (props.onChangeSelectBox) props.onChangeSelectBox(event)
+                                }}
+                                options={props.selectBoxData}
+                            />
+                        }
+                        {
+                            (props.allowDateRangeSearch ||
+                                props.allowTextSearch) &&
+                            <Button
+                                onClick={() => {
+                                    if (props.onSearch) props.onSearch()
+                                }}
+                            >Tìm kiếm</Button>
+                        }
+                    </div>
                 </div>
             </div>
             <div className='table'>
                 <Table
-                    scroll={{ y: 350 }}
+                    scroll={{ y: 250 }}
                     columns={props.titleOfColumnList}
                     dataSource={props.data}
                     pagination={

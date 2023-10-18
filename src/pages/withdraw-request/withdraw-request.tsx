@@ -29,8 +29,8 @@ const WithdrawRequest = () => {
   const [receiverName, setReceiverName] = useState('');
   const [withdrawId, setWithdrawId] = useState('');
   const [openModalCreate, setOpenModalCreate] = useState(false);
-  const [openDetailModal,setOpenDetailModal] = useState(false);
-  const [detailBill,setDetailBill] = useState<IWithdrawRequest>();
+  const [openDetailModal, setOpenDetailModal] = useState(false);
+  const [detailBill, setDetailBill] = useState<IWithdrawRequest>();
 
   const [currentSearchValue, setCurrentSearchValue] = useState<IGetSketchRequest>(
     {
@@ -69,7 +69,7 @@ const WithdrawRequest = () => {
         if (record.status === "APPROVED") {
           return (<span>Đã chuyển</span>)
         }
-        else if(record.status === "REJECTED") {
+        else if (record.status === "REJECTED") {
           return (<span>Từ chối</span>)
         }
         else {
@@ -212,7 +212,7 @@ const WithdrawRequest = () => {
   }
 
   return (
-    <motion.div className='withdraw-main'
+    <motion.div className='user-main'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}>
@@ -241,37 +241,37 @@ const WithdrawRequest = () => {
               <Form.Item
                 label="Trạng thái"
                 name="status"
-                
+
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Mã yêu cầu"
                 name="withdrawalCode"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Lượng tiền"
                 name="amount"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Thời gian tạo"
                 name="createdAt"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Ghi chú của admin"
                 name="processedComment"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Divider>Thông tin người rút</Divider>
@@ -280,77 +280,77 @@ const WithdrawRequest = () => {
                 label="Tên cá nhân/tổ chức"
                 name="name"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Địa chỉ"
                 name="address"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Số điện thoại"
                 name="phone"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Email"
                 name="email"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Loại tài khoản"
                 name="sellerType"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Mã số thuế"
                 name="taxCode"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Số tài khoản"
                 name="bankAccountNumber"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Ngân hàng"
                 name="bankName"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item
                 label="Chi nhánh"
                 name="bankBranch"
               >
-                <Input readOnly={true}/>
+                <Input readOnly={true} />
               </Form.Item>
 
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                
-                  <Button style={{marginRight: '15px'}} type="primary" onClick={() => {
-                    setOpenModalApprove(true);
-                  }}>Chấp nhận</Button>
 
-                  <Button type="default" onClick={() => {
-                    handleReject()
-                  }}>Từ chối</Button>
+                <Button style={{ marginRight: '15px' }} type="primary" onClick={() => {
+                  setOpenModalApprove(true);
+                }}>Chấp nhận</Button>
+
+                <Button type="default" onClick={() => {
+                  handleReject()
+                }}>Từ chối</Button>
 
               </Form.Item>
-              
+
             </Form>
 
           </Modal>

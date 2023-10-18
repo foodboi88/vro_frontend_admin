@@ -111,9 +111,9 @@ const User = () => {
         {
             title: 'Số thứ tự',
             render: (_, __, rowIndex) => (
-              <span className='span-table'>{rowIndex + 1}</span>
+                <span className='span-table'>{rowIndex + 1}</span>
             )
-          },
+        },
         {
             title: 'Tên',
             dataIndex: 'name',

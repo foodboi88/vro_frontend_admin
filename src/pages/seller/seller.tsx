@@ -46,7 +46,25 @@ const Seller = () => {
         totalUserRecords,
         userStatistic
     } = useSelectorRoot((state) => state.management); // lấy ra state từ store
+    const [windowSize, setWindowSize] = useState([window.innerWidth, window.innerHeight]);
+    const [isReponsive, setIsReponsive] = useState<boolean>(false);
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setWindowSize([window.innerWidth, window.innerHeight]);
+        };
 
+        window.addEventListener('resize', handleWindowResize);
+        if (window.innerWidth > 400) {
+            setIsReponsive(false)
+        }
+
+        if (window.innerWidth <= 400) {
+            setIsReponsive(true)
+        }
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, [windowSize]);
     const [textSearch, setTextSearch] = useState(''); // giá trị của ô search
     const [beginDate, setBeginDate] = useState('');  // giá trị của ngày bắt đầu
     const [endDate, setEndDate] = useState(''); // giá trị của ngày kết thúc
@@ -112,9 +130,9 @@ const Seller = () => {
         {
             title: 'Số thứ tự',
             render: (_, __, rowIndex) => (
-              <span className='span-table'>{rowIndex + 1}</span>
+                <span className='span-table'>{rowIndex + 1}</span>
             )
-          },
+        },
         {
             title: 'Tên',
             dataIndex: 'name',

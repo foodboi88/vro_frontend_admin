@@ -2,7 +2,7 @@
 
     .title-and-search {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         margin-bottom: 1em;
 
         .title {
@@ -27,6 +27,7 @@
                 }
             }
         }
+
     }
 
     .ant-picker.ant-picker-range {
@@ -37,4 +38,137 @@
 
 .ant-modal.modal-detail-bill {
     top: 1em;
+}
+
+@media (max-width: 600px) {
+    .table-main {
+
+        .title-and-search {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1em;
+
+            .title {
+                color: #4E4E4E;
+                font-size: 1.5em;
+                font-weight: 600;
+            }
+
+            .search-area {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+
+                .ant-input {
+                    font-size: .8em;
+                }
+
+                .ant-btn {
+                    font-size: .8em;
+                }
+            }
+        }
+
+        .table {
+            .ant-table-thead {
+                tr {
+                    th {
+                        font-size: .5em !important;
+                        font-weight: 700;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .ant-table-tbody {
+                tr {
+                    td {
+                        font-size: .5em !important;
+                        text-align: center;
+                    }
+                }
+            }
+
+        }
+
+        .ant-picker.ant-picker-range {
+            width: 100%;
+
+            .ant-picker-input {
+                input {
+                    font-size: .8em;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .table-main {
+
+        .title-and-search {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1em;
+
+            .title {
+                color: #4E4E4E;
+                font-size: 1.5em;
+                font-weight: 600;
+            }
+
+            .search-area {
+                display: flex;
+                align-items: center;
+                gap: 1em;
+
+                .ant-input {
+                    font-size: .8em;
+                }
+
+                .ant-btn {
+                    font-size: .8em;
+                }
+            }
+        }
+
+        .table {
+            .ant-table-thead {
+                tr {
+                    th {
+                        font-size: .5em;
+                        font-weight: 700;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .ant-table-tbody {
+                tr {
+                    td {
+                        font-size: .5em;
+                        text-align: center;
+                    }
+                }
+            }
+
+        }
+
+        .ant-picker.ant-picker-range {
+            width: 100%;
+
+            .ant-picker-input {
+                input {
+                    font-size: .8em;
+                }
+            }
+        }
+
+        .ant-table-thead>tr>th,
+        .ant-table-tbody>tr>td,
+        .ant-table tfoot>tr>th,
+        .ant-table tfoot>tr>td {
+            padding: 8px 4px;
+        }
+    }
 }

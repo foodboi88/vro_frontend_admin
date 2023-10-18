@@ -43,7 +43,7 @@ const SellerRequest = () => {
             render: (_, record) => (
                 <p>{Utils.formatPhoneNumber(record.phone)}</p>
             )
-            
+
 
         },
         {
@@ -184,7 +184,7 @@ const SellerRequest = () => {
     }
 
     return (
-        <motion.div className='sketch-main'
+        <motion.div className='user-main'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}>

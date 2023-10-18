@@ -17,7 +17,48 @@ const StatisticalUserChart = (props: StatisticalChartProps) => {
     const [dataSellerChart, setDataSellerChart] = useState<any[]>([]); // state của component
     const [totalUser, setTotalUser] = useState<number>(0); // state của component
     const [totalSeller, setTotalSeller] = useState<number>(0); // state của component
+
+    const [heightChart, setHeightChart] = useState<number>(270); // state của component
+    const [widthChart, setWidthChart] = useState<number>(800); // state của component
+    const [paddingChart, setPaddingChart] = useState<any>({}); // state của component
+    const [windowSize, setWindowSize] = useState([window.innerWidth, window.innerHeight]);
     useEffect(() => {
+        const handleWindowResize = () => {
+            setWindowSize([window.innerWidth, window.innerHeight]);
+        };
+
+        window.addEventListener('resize', handleWindowResize);
+        if (window.innerWidth > 1440) {
+            setHeightChart(300);
+            setWidthChart(600);
+            setPaddingChart({
+                bottom: 50,
+                left: 100,
+                right: 200, // Adjusted to accommodate legend
+                top: 10
+            });
+        }
+
+
+        if (window.innerWidth <= 1440) {
+            setHeightChart(350);
+            setWidthChart(600);
+            setPaddingChart({
+                bottom: 80,
+                left: 100,
+                right: 200, // Adjusted to accommodate legend
+                top: 10
+            });
+        }
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, [windowSize]);
+    useEffect(() => {
+        console.log('====================================');
+        console.log(props.dataUserChart);
+        console.log(props.dataSellerChart);
+        console.log('====================================');
         if (props.dataUserChart && props.dataSellerChart && props.dataUserChart.items && props.dataSellerChart.items) {
             // setDataChart(props.data.items)
             console.log(props.dataUserChart);
@@ -95,39 +136,33 @@ const StatisticalUserChart = (props: StatisticalChartProps) => {
                             />
                         </div>
                     }
+                    <div className='style-chart' >
+                        <Chart
+                            containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />}
+                            legendData={[{ name: 'Tài khoản người bán' }, { name: 'Tài khoản người mua' }]}
+                            legendOrientation="vertical"
+                            legendPosition="right"
+                            height={heightChart}
+                            maxDomain={{ y: maxValue }}
+                            minDomain={{ y: 0 }}
+                            name="chart1"
+                            padding={paddingChart}
+                            width={widthChart}
+                            themeColor={ChartThemeColor.multiUnordered}
 
-                    <Chart
-                        ariaDesc="Average number of pets"
-                        ariaTitle="Line chart example"
-                        containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />}
-                        legendData={[{ name: 'Tài khoản người bán' }, { name: 'Tài khoản người mua' }]}
-                        legendOrientation="vertical"
-                        legendPosition="right"
-                        height={230}
-                        maxDomain={{ y: maxValue }}
-                        minDomain={{ y: 0 }}
-                        name="chart1"
-                        padding={{
-                            bottom: 50,
-                            left: 50,
-                            right: 200, // Adjusted to accommodate legend
-                            top: 50
-                        }}
-                        width={500}
-                        themeColor={ChartThemeColor.multiUnordered}
-
-                    >
-                        <ChartAxis tickValues={divideRangeIntoFourParts(maxValue)} />
-                        <ChartAxis dependentAxis showGrid tickValues={divideRangeIntoFourParts(maxValue)} />
-                        <ChartGroup>
-                            <ChartLine
-                                data={dataUserChart}
-                            />
-                            <ChartLine
+                        >
+                            <ChartAxis tickValues={divideRangeIntoFourParts(maxValue)} />
+                            <ChartAxis dependentAxis showGrid tickValues={divideRangeIntoFourParts(maxValue)} />
+                            <ChartGroup>
+                                <ChartLine
+                                    data={dataUserChart}
+                                />
+                                {/* <ChartLine
                                 data={dataSellerChart}
-                            />
-                        </ChartGroup>
-                    </Chart>
+                            /> */}
+                            </ChartGroup>
+                        </Chart>
+                    </div>
                 </div>
 
             }

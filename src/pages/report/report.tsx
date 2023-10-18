@@ -122,12 +122,12 @@ const Report = () => {
   }
 
   return (
-    <motion.div className='sketch-main'
+    <motion.div className='user-main'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}>
       <div>
-        <div className="statistical-user">
+        <div className="statistical-user statistical-report">
           <TotalBoxUser
             key={0}
             title={"Tổng số phản hồi toàn sàn"}

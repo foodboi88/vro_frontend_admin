@@ -74,3 +74,20 @@
         background-color: #FF0000;
     }
 }
+
+@media (max-width: 400px) {
+    .total-box-user {
+        border: 1px solid #DFDFDF;
+
+        .total-box-user-content {
+            .number {
+                font-size: .8em;
+                text-align: start;
+            }
+
+            .title {
+                font-size: .6em;
+            }
+        }
+    }
+}

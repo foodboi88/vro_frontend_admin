@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CTable from '../../components/table/CTable'
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
-import { blockSketchRequest , deleteSketchRequest, getAllStylesRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
+import { blockSketchRequest, deleteSketchRequest, getAllStylesRequest, getSketchsRequest, getSketchsStatisticRequest, getUsersRequest } from '../../redux/controller';
 import { motion } from 'framer-motion';
 import './sketch.styles.scss'
 import { Space } from 'antd';
@@ -23,7 +23,7 @@ const Sketch = () => {
   const [textSearch, setTextSearch] = useState('');
   const [beginDate, setBeginDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [selectedStyle,setSelectedStyle] = useState('')
+  const [selectedStyle, setSelectedStyle] = useState('')
   const [currentSearchValue, setCurrentSearchValue] = useState<IGetSketchRequest>(
     {
       size: QUERY_PARAM.size,
@@ -41,11 +41,31 @@ const Sketch = () => {
     dispatch(getAllStylesRequest(bodyrequest))
   }, [totalSketchRecords])
 
+  const [isReponsive, setIsReponsive] = useState<boolean>(false);
+  const [windowSize, setWindowSize] = useState([window.innerWidth, window.innerHeight]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+    if (window.innerWidth > 400) {
+      setIsReponsive(false)
+    }
+
+    if (window.innerWidth <= 400) {
+      setIsReponsive(true)
+    }
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, [windowSize]);
   const columns: ColumnType<ISketch>[] = [
     {
       title: 'Số thứ tự',
       render: (_, __, rowIndex) => (
-          <span className='span-table'>{rowIndex + 1}</span>
+        <span className='span-table'>{rowIndex + 1}</span>
       )
     },
     {
@@ -68,7 +88,7 @@ const Sketch = () => {
       dataIndex: 'price',
       key: 'price',
       render: (_, record) => (
-          <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.price)}</span>
+        <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.price)}</span>
       ),
     },
     {
@@ -146,7 +166,111 @@ const Sketch = () => {
       ),
     },
   ];
-
+  const columnsReponsive: ColumnType<ISketch>[] = [
+    {
+      title: 'Số thứ tự',
+      render: (_, __, rowIndex) => (
+        <span className='span-table'>{rowIndex + 1}</span>
+      )
+    },
+    {
+      title: 'Tên tác giả',
+      dataIndex: 'sellerName',
+      key: 'sellerName',
+      render: (_, record) => (
+        <Space >
+          <span>{record.seller?.name}</span>
+        </Space>
+      ),
+    },
+    {
+      title: 'Tiêu đề',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      render: (_, record) => (
+        <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.price)}</span>
+      ),
+    },
+    {
+      title: 'Số lượng đã bán',
+      dataIndex: 'quantityPurchased',
+      key: 'quantityPurchased',
+    },
+    {
+      title: 'Thời gian tạo',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (_, record) => (
+        <Space >
+          <span>{new Date(record.createdAt).toLocaleDateString('en-GB')}</span>
+        </Space>
+      ),
+    },
+    {
+      title: 'Thời gian cập nhật',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      render: (_, record) => (
+        <Space >
+          <span>{new Date(record.updatedAt).toLocaleDateString('en-GB')}</span>
+        </Space>
+      ),
+    },
+    //   {
+    //     title: 'id',
+    //     dataIndex: 'id',
+    //     key: 'id',
+    // },
+    {
+      title: 'Ảnh',
+      key: 'image',
+      render: (_, record) => (
+        <Space size="middle">
+          <img style={{ width: '90px' }} src={record.image} />
+        </Space>
+      ),
+    },
+    {
+      title: 'Phong cách',
+      dataIndex: 'nameDesignStyle',
+      key: 'nameDesignStyle',
+    },
+    // {
+    //   title: 'Tags',
+    //   key: 'tags',
+    //   dataIndex: 'tags',
+    //   render: (_, { tags }) => (
+    //     <>
+    //       {tags.map((tag) => {
+    //         let color = tag.length > 5 ? 'geekblue' : 'green';
+    //         if (tag === 'loser') {
+    //           color = 'volcano';
+    //         }
+    //         return (
+    //           <Tag color={color} key={tag}>
+    //             {tag.toUpperCase()}
+    //           </Tag>
+    //         );
+    //       })}
+    //     </>
+    //   ),
+    // },
+    {
+      title: 'Thao tác',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <a onClick={(event) => handleBlockSketch(record)}>Block</a>
+          <a onClick={(event) => handleDeleteSketch(record)}>Delete</a>
+        </Space>
+      ),
+    },
+  ];
   // let statisticalUser = [
   //   {
   //       title: "Tổng số bản vẽ toàn sàn",
@@ -253,7 +377,7 @@ const Sketch = () => {
           allowTextSearch={true}
           allowSelectBox={true}
           onChangeSelectBox={onChangeSelectBox}
-          selectBoxPlaceholder= "Chọn kiểu kiến trúc"
+          selectBoxPlaceholder="Chọn kiểu kiến trúc"
           selectBoxData={styleList}
           onChangeInput={onChangeInput}
           onChangeRangePicker={onChangeRangePicker}

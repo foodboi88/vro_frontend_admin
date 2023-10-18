@@ -3,28 +3,15 @@
     flex-direction: column;
     align-items: center;
     padding: 1em;
-    width: 15%;
+    width: 20%;
     height: 80px;
     position: relative;
     border-radius: 16px;
     cursor: pointer;
     user-select: none;
 
-    .total-box-icon {
-        position: absolute;
-        top: 1em;
-        right: 1em;
-
-        img {
-            width: 50px;
-            height: 50px;
-        }
-    }
-
     .total-box-content {
-        position: absolute;
-        bottom: 1em;
-        left: 1em;
+
         display: flex;
         flex-direction: column;
         justify-content: center;

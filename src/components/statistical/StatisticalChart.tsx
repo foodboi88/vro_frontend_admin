@@ -18,11 +18,58 @@ const StatisticalChart = (props: StatisticalChartProps) => {
     const [totalPriceIncomeLst, setTotalPriceIncomeLst] = useState<any[]>([]); // state của component
     const [totalPriceOwnLst, setTotalPriceOwnLst] = useState<any[]>([]); // state của component
     const [totalPriceSellerLst, setTotalPriceSellerLst] = useState<any[]>([]); // state của component
+
+    const [heightChart, setHeightChart] = useState<number>(270); // state của component
+    const [widthChart, setWidthChart] = useState<number>(800); // state của component
+    const [paddingChart, setPaddingChart] = useState<any>({}); // state của component
+    const [windowSize, setWindowSize] = useState([window.innerWidth, window.innerHeight]);
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setWindowSize([window.innerWidth, window.innerHeight]);
+        };
+
+        window.addEventListener('resize', handleWindowResize);
+        if (window.innerWidth > 1440) {
+            setHeightChart(270);
+            setWidthChart(800);
+            setPaddingChart({
+                bottom: 50,
+                left: 100,
+                right: 200, // Adjusted to accommodate legend
+                top: 50
+            });
+        }
+
+
+        if (window.innerWidth <= 1440) {
+            setHeightChart(250);
+            setWidthChart(700);
+            setPaddingChart({
+                bottom: 100,
+                left: 100,
+                right: 200, // Adjusted to accommodate legend
+                top: 0
+            });
+        }
+        if (window.innerWidth <= 1000) {
+            setHeightChart(250);
+            setWidthChart(700);
+            setPaddingChart({
+                bottom: 40,
+                left: 100,
+                right: 200, // Adjusted to accommodate legend
+                top: 60
+            });
+        }
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, [windowSize]);
+
     useEffect(() => {
         if (props.data && props.data.items) {
             console.log(props.data);
             setDataChart(props.data.items)
-
             const maxTotalPrice = Math.max(...props.data.items.map((item: { totalPrice: any; }) => item.totalPrice));
             const maxTotalPriceIncome = Math.max(...props.data.items.map((item: { totalPriceIncome: any; }) => item.totalPriceIncome));
             const maxTotalPriceOwn = Math.max(...props.data.items.map((item: { totalPriceOwn: any; }) => item.totalPriceOwn));
@@ -222,6 +269,7 @@ const StatisticalChart = (props: StatisticalChartProps) => {
         }
         setTotalPriceSellerLst(tmpLst);
     }
+
     const divideRangeIntoFourParts = (maxValue: number) => {
         const interval = maxValue / 8;
         const divisions = [];
@@ -231,6 +279,7 @@ const StatisticalChart = (props: StatisticalChartProps) => {
 
         return divisions;
     }
+
     return (
         <>
             {(dataChart && dataChart.length > 0 && maxValue > 0) &&
@@ -260,45 +309,42 @@ const StatisticalChart = (props: StatisticalChartProps) => {
                         </div>
                     }
 
-                    <Chart
-                        ariaDesc="Average number of pets"
-                        ariaTitle="Line chart example"
-                        containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />}
-                        legendData={[{ name: 'Tiền thu từ khách' }, { name: 'Tiền trả người bán' }, { name: 'Tiền còn nợ' }, { name: 'Hoa hồng' }]}
-                        legendOrientation="vertical"
-                        legendPosition="right"
-                        height={270}
-                        maxDomain={{ y: maxValue }}
-                        minDomain={{ y: 0 }}
-                        name="chart1"
-                        padding={{
-                            bottom: 50,
-                            left: 50,
-                            right: 200, // Adjusted to accommodate legend
-                            top: 50
-                        }}
-                        width={800}
-                        themeColor={ChartThemeColor.multiUnordered}
+                    {(totalPriceLst.length > 0 && totalPriceIncomeLst.length > 0 && totalPriceOwnLst.length > 0 && totalPriceSellerLst.length > 0) &&
+                        <Chart
+                            ariaDesc="Average number of pets"
+                            ariaTitle="Line chart example"
+                            containerComponent={<ChartVoronoiContainer labels={({ datum }) => `${datum.name}: ${datum.y}`} constrainToVisibleArea />}
+                            legendData={[{ name: 'Tiền thu từ khách' }, { name: 'Tiền trả người bán' }, { name: 'Tiền còn nợ' }, { name: 'Hoa hồng' }]}
+                            legendOrientation="vertical"
+                            legendPosition="right"
+                            height={heightChart}
+                            maxDomain={{ y: maxValue }}
+                            minDomain={{ y: 0 }}
+                            name="chart1"
+                            padding={paddingChart}
+                            width={widthChart}
+                            themeColor={ChartThemeColor.multiUnordered}
 
-                    >
-                        <ChartAxis tickValues={divideRangeIntoFourParts(maxValue)} />
-                        <ChartAxis dependentAxis showGrid tickValues={divideRangeIntoFourParts(maxValue)} />
-                        <ChartGroup>
-                            <ChartLine
-                                data={totalPriceLst}
-                            />
-                            <ChartLine
-                                data={totalPriceIncomeLst}
+                        >
+                            <ChartAxis tickValues={divideRangeIntoFourParts(maxValue)} />
+                            <ChartAxis dependentAxis showGrid tickValues={divideRangeIntoFourParts(maxValue)} />
+                            <ChartGroup>
+                                <ChartLine
+                                    data={totalPriceLst}
+                                />
+                                <ChartLine
+                                    data={totalPriceIncomeLst}
 
-                            />
-                            <ChartLine
-                                data={totalPriceOwnLst}
-                            />
-                            <ChartLine
-                                data={totalPriceSellerLst}
-                            />
-                        </ChartGroup>
-                    </Chart>
+                                />
+                                <ChartLine
+                                    data={totalPriceOwnLst}
+                                />
+                                <ChartLine
+                                    data={totalPriceSellerLst}
+                                />
+                            </ChartGroup>
+                        </Chart>
+                    }
                 </div>
 
             }

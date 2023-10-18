@@ -53,7 +53,7 @@ const General = () => {
                 },
                 {
                     title: "Tổng tiền chưa tất toán",
-                    number: overviewStatistic.totalWithDrawal,
+                    number: Utils.formatMoney(overviewStatistic.totalWithDrawal) + ' VND',
                     icon: ShopIcon
                 },
 
@@ -70,15 +70,17 @@ const General = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
         >
-            <div className='total-boxs'>
-                {TotalBoxData.map((item: any, index: React.Key | null | undefined) => (
-                    <TotalBox
-                        key={index}
-                        title={item.title}
-                        number={item.number}
-                        icon={item.icon}
-                    />
-                ))}
+            <div className='main-total-boxs'>
+                <div className='total-boxs'>
+                    {TotalBoxData.map((item: any, index: React.Key | null | undefined) => (
+                        <TotalBox
+                            key={index}
+                            title={item.title}
+                            number={item.number}
+                            icon={item.icon}
+                        />
+                    ))}
+                </div>
             </div>
 
             <Statistical />

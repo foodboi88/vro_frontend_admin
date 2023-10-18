@@ -14,7 +14,7 @@ import WithdrawRequest from './pages/withdraw-request/withdraw-request';
 import Bill from './pages/bill/bill';
 import Seller from './pages/seller/seller';
 function App() {
-  
+
   return (
     <div className="App">
       <AnimatePresence>
@@ -28,9 +28,9 @@ function App() {
                 <Route element={<Seller />} path="/management/seller" />
 
                 <Route element={<Report />} path="/management/report" />
-                <Route element={<SellerRequest/>} path='/management/seller-requests' />
-                <Route element={<WithdrawRequest/>} path='/management/withdraw-requests' />
-                <Route element={<Bill/>} path='/management/bill' />
+                <Route element={<SellerRequest />} path='/management/seller-requests' />
+                <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
+                <Route element={<Bill />} path='/management/bill' />
 
               </Route>
             </Route>

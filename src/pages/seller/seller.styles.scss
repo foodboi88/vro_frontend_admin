@@ -22,3 +22,45 @@
     }
 
 }
+
+@media (max-width: 400px) {
+    .user-main {
+        margin: 1em 0;
+        font-family: Arial, Helvetica, sans-serif;
+
+        .statistical-user.statistical-report {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 1em;
+        }
+
+        .statistical-user {
+            display: flex;
+            justify-content: space-around;
+        }
+
+
+
+        .table-area {
+            padding: 1em;
+            margin-top: 1em;
+            background-color: white;
+        }
+
+        .ant-table-thead {
+            tr {
+                .ant-table-cell:nth-child(5) {
+                    width: 10px;
+                }
+            }
+        }
+
+        .ant-table-thead>tr>th,
+        .ant-table-tbody>tr>td,
+        .ant-table tfoot>tr>th,
+        .ant-table tfoot>tr>td {
+            padding: 8px 4px;
+        }
+    }
+}

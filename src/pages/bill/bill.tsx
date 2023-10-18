@@ -41,7 +41,7 @@ const Bill = () => {
             key: 'orderId',
             render: (_, record) => (
                 <Space >
-                    <span style={{ fontSize: 13 }}>{record.orderId}</span>
+                    <span >{record.orderId}</span>
                 </Space>
             )
         },
@@ -65,7 +65,7 @@ const Bill = () => {
             dataIndex: 'total',
             key: 'total',
             render: (_, record) => (
-                    <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.total)}</span>
+                <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.total)}</span>
             ),
         },
         {
@@ -162,7 +162,7 @@ const Bill = () => {
     }
 
     return (
-        <motion.div className='sketch-main'
+        <motion.div className='user-main'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}>
