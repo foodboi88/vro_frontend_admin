@@ -17,6 +17,8 @@ import { GoDotFill, GoDot } from 'react-icons/go'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { motion } from 'framer-motion';
 const Header = () => {
+    const navigate = useNavigate();
+
     const items: MenuProps["items"] = [
         {
             key: "4",
