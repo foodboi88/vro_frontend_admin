@@ -21,6 +21,10 @@ const Sidebar = () => {
         const handleWindowResize = () => {
             setWindowSize([window.innerWidth, window.innerHeight]);
         };
+        if (window.location.pathname === "/management") setActive(1);
+        if (window.location.pathname === "/management/seller" || window.location.pathname === "/management/user") setActive(2);
+        if (window.location.pathname === "/management/seller") setSubActive(1);
+        if (window.location.pathname === "/management/user") setSubActive(2);
 
         window.addEventListener('resize', handleWindowResize);
         if (window.innerWidth > 800) {
