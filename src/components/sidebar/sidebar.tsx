@@ -107,17 +107,17 @@ const Sidebar = () => {
                             <HiOutlineNewspaper />
                             <span>Quản lý sản phẩm</span>
                         </div>
-                        <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
+                        {/* <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
                             setActive(4)
                             navigate('/management/bill')
                         }}>
                             <RiMoneyDollarCircleLine />
                             <span>Quản lý đơn hàng</span>
-                        </div>
-                        <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
+                        </div> */}
+                        {/* <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
                             <ImStatsDots />
                             <span>Công cụ marketing</span>
-                        </div>
+                        </div> */}
                         <div className={'sidebar-item' + (active === 6 ? ' active' : '')} onClick={() => {
                             setActive(6)
                             navigate('/management/seller-requests')
@@ -125,13 +125,13 @@ const Sidebar = () => {
                             <AiOutlineKey />
                             <span>Yêu cầu bán hàng</span>
                         </div>
-                        <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => {
+                        {/* <div className={'sidebar-item' + (active === 7 ? ' active' : '')} onClick={() => {
                             setActive(7)
                             navigate('/management/withdraw-requests')
                         }}>
                             <AiFillGift />
                             <span>Yêu cầu rút tiền</span>
-                        </div>
+                        </div> */}
                         <div className={'sidebar-item' + (active === 8 ? ' active' : '')} onClick={() => {
                             setActive(8)
                             navigate('/management/report')

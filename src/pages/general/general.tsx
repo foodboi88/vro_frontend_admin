@@ -26,16 +26,16 @@ const General = () => {
     useEffect(() => {
         if (overviewStatistic) {
             const tmp = [
-                {
-                    title: "Tổng doanh thu",
-                    number: Utils.formatMoney(overviewStatistic.totalRevenue) + ' VND',
-                    icon: CoinIcon
-                },
-                {
-                    title: "Tổng đơn đặt hàng",
-                    number: overviewStatistic.totalOrder,
-                    icon: ShopIcon
-                },
+                // {
+                //     title: "Tổng doanh thu",
+                //     number: Utils.formatMoney(overviewStatistic.totalRevenue) + ' VND',
+                //     icon: CoinIcon
+                // },
+                // {
+                //     title: "Tổng đơn đặt hàng",
+                //     number: overviewStatistic.totalOrder,
+                //     icon: ShopIcon
+                // },
                 {
                     title: "Tổng số người dùng",
                     number: overviewStatistic.totalUser,
@@ -51,11 +51,11 @@ const General = () => {
                     number: overviewStatistic.totalBuyer,
                     icon: UserIcon
                 },
-                {
-                    title: "Tổng tiền chưa tất toán",
-                    number: Utils.formatMoney(overviewStatistic.totalWithDrawal) + ' VND',
-                    icon: ShopIcon
-                },
+                // {
+                //     title: "Tổng tiền chưa tất toán",
+                //     number: Utils.formatMoney(overviewStatistic.totalWithDrawal) + ' VND',
+                //     icon: ShopIcon
+                // },
 
             ]
             setTotalBoxData(tmp)

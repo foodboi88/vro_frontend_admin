@@ -83,19 +83,19 @@ const Sketch = () => {
       dataIndex: 'title',
       key: 'title',
     },
-    {
-      title: 'Giá',
-      dataIndex: 'price',
-      key: 'price',
-      render: (_, record) => (
-        <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.price)}</span>
-      ),
-    },
-    {
-      title: 'Số lượng đã bán',
-      dataIndex: 'quantityPurchased',
-      key: 'quantityPurchased',
-    },
+    // {
+    //   title: 'Giá',
+    //   dataIndex: 'price',
+    //   key: 'price',
+    //   render: (_, record) => (
+    //     <span style={{ display: 'flex', justifyContent: 'end' }}>{Utils.formatMoney(record.price)}</span>
+    //   ),
+    // },
+    // {
+    //   title: 'Số lượng đã bán',
+    //   dataIndex: 'quantityPurchased',
+    //   key: 'quantityPurchased',
+    // },
     {
       title: 'Thời gian tạo',
       dataIndex: 'createdAt',

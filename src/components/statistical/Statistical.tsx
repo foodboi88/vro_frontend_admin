@@ -168,7 +168,7 @@ const Statistical = () => {
 
     return (
         <div className='general-statistical'>
-            <div className="main-statistical">
+            {/* <div className="main-statistical">
                 <div className="statistical-title">
                     <div className='title-text'>
                         Báo cáo doanh thu
@@ -233,7 +233,7 @@ const Statistical = () => {
                 <StatisticalChart
                     data={dataChart}
                 />
-            </div>
+            </div> */}
 
             <div className="main-statistical">
                 <div className="statistical-title">
