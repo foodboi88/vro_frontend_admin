@@ -89,11 +89,15 @@ const CTable = (props: CTableProps) => {
                     scroll={{ y: 250 }}
                     columns={props.titleOfColumnList}
                     dataSource={props.data}
+                    
                     pagination={
                         {
                             total: props.totalRecord,
-                            onChange: (event) => {
-                                props.onChangePagination(event)
+                            onChange: (page: number, pageSize: number)=> {
+                                props.onChangePagination({
+                                    page,
+                                    pageSize
+                                })
 
                             }
                         }

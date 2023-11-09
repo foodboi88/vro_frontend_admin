@@ -16,6 +16,7 @@ import UserMinus from '../../assets/image/user-minus.png'
 import UserBlock from '../../assets/image/user-remove.png'
 import TotalBoxUser from '../../components/totalBox/TotalBoxUser';
 import { USER_TYPE } from '../../enums/user.enums';
+import { current } from '@reduxjs/toolkit';
 
 const statisticalUser = [
     {
@@ -111,7 +112,7 @@ const User = () => {
         {
             title: 'Số thứ tự',
             render: (_, __, rowIndex) => (
-                <span className='span-table'>{rowIndex + 1}</span>
+                <span className='span-table'>{rowIndex + 1 + currentSearchValue.offset}</span>
             )
         },
         {
@@ -232,9 +233,15 @@ const User = () => {
 
     // Hàm xử lý khi thay đổi giá trị của pagination
     const onChangePagination = (event: any) => {
-        currentSearchValue.offset = (event - 1) * QUERY_PARAM.size;
+        console.log(event);
+
+        currentSearchValue.size = event.pageSize;
+        currentSearchValue.offset = (event.page - 1) * event.pageSize;
         setCurrentSearchValue(currentSearchValue);
         dispatch(getUsersRequest(currentSearchValue))
+
+        console.log(currentSearchValue)
+        console.log((currentSearchValue.offset*currentSearchValue.size))
     }
 
     return (

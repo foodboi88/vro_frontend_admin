@@ -46,11 +46,11 @@ const General = () => {
                     number: overviewStatistic.totalSeller,
                     icon: ShopIcon
                 },
-                {
-                    title: "Tổng số người mua",
-                    number: overviewStatistic.totalBuyer,
-                    icon: UserIcon
-                },
+                // {
+                //     title: "Tổng số người mua",
+                //     number: overviewStatistic.totalBuyer,
+                //     icon: UserIcon
+                // },
                 // {
                 //     title: "Tổng tiền chưa tất toán",
                 //     number: Utils.formatMoney(overviewStatistic.totalWithDrawal) + ' VND',
