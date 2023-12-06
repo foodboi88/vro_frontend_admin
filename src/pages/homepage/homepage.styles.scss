@@ -1,0 +1,14 @@
+.list{
+    overflow:hidden; 
+    overflow-y:scroll;
+    width: 445px;
+    height: 300px;
+    .item{
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-around;
+        .action{
+            cursor: pointer;
+        }
+    }
+}

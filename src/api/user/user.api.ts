@@ -96,4 +96,16 @@ export default class UserApi {
             )
         );
     }
+
+    static getOutTopArchitect(body: any): Observable<any> {
+        const queryParam = Utils.parseObjectToQueryParameter(body);
+        console.log(queryParam)
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.GET_OUT_TOP_ARCHITECT}${queryParam}`;
+        return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
 }

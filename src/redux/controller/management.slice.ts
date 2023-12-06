@@ -48,6 +48,7 @@ interface ManagementState {
     detailBill: any | undefined;
     styleList: CheckboxOptionType[];
     topArchitect: any[];
+    outTopArchitect: any[];
 }
 
 const initState: ManagementState = {
@@ -77,7 +78,8 @@ const initState: ManagementState = {
     totalBillRecord: 0,
     detailBill: undefined,
     styleList:[],
-    topArchitect: []
+    topArchitect: [],
+    outTopArchitect: []
 };
 
 const managementSlice = createSlice({
@@ -640,10 +642,36 @@ const managementSlice = createSlice({
         getTopArchitectSuccess(state, action: PayloadAction<any>) {
             state.loading = false;
             console.log(action.payload)
-            state.topArchitect = action.payload.data
+            state.topArchitect = action.payload.data.items
 
         },
         getTopArchitectFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
+
+        // Get OutTop Architect
+        getOutTopArchitectRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getOutTopArchitectSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            console.log(action.payload)
+            state.outTopArchitect = action.payload.data.items
+        },
+        getOutTopArchitectFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
             notification.open({
@@ -1098,7 +1126,7 @@ const getTopArchitect$: RootEpic = (action$) =>
     action$.pipe(
         filter(getTopArchitectRequest.match),
         mergeMap((re) => {
-            return UserApi.getAllUsers(re.payload).pipe(
+            return UserApi.getTopArchitect(re.payload).pipe(
                 mergeMap((res: any) => {
                     return [
                         managementSlice.actions.getTopArchitectSuccess(res),
@@ -1106,6 +1134,22 @@ const getTopArchitect$: RootEpic = (action$) =>
                     ];
                 }),
                 catchError((err) => [managementSlice.actions.getTopArchitectFail(err)])
+            );
+        })
+    );
+
+const getOutTopArchitect$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getOutTopArchitectRequest.match),
+        mergeMap((re) => {
+            return UserApi.getOutTopArchitect(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getOutTopArchitectSuccess(res),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getOutTopArchitectFail(err)])
             );
         })
     );
@@ -1134,7 +1178,8 @@ export const ManagementEpics = [
     blockSketchRequest$,
     deleteSketchRequest$,
     getAllStyles$,
-    getTopArchitect$
+    getTopArchitect$,
+    getOutTopArchitect$
 ];
 export const {
     getUsersRequest,
@@ -1161,6 +1206,7 @@ export const {
     blockSketchRequest,
     deleteSketchRequest,
     getAllStylesRequest,
-    getTopArchitectRequest
+    getTopArchitectRequest,
+    getOutTopArchitectRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
