@@ -107,13 +107,13 @@ const Sidebar = () => {
                             <HiOutlineNewspaper />
                             <span>Quản lý sản phẩm</span>
                         </div>
-                        {/* <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
+                        <div className={'sidebar-item' + (active === 4 ? ' active' : '')} onClick={() => {
                             setActive(4)
-                            navigate('/management/bill')
+                            navigate('/management/homepage')
                         }}>
                             <RiMoneyDollarCircleLine />
-                            <span>Quản lý đơn hàng</span>
-                        </div> */}
+                            <span>Quản lý giao diện Home</span>
+                        </div>
                         {/* <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
                             <ImStatsDots />
                             <span>Công cụ marketing</span>

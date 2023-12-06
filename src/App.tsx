@@ -13,6 +13,7 @@ import SellerRequest from './pages/seller-request/seller-request';
 import WithdrawRequest from './pages/withdraw-request/withdraw-request';
 import Bill from './pages/bill/bill';
 import Seller from './pages/seller/seller';
+import HomePage from './pages/homepage/homepage';
 function App() {
 
   return (
@@ -31,6 +32,8 @@ function App() {
                 <Route element={<SellerRequest />} path='/management/seller-requests' />
                 <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
                 <Route element={<Bill />} path='/management/bill' />
+                <Route element={<HomePage />} path='/management/homepage' />
+
 
               </Route>
             </Route>
