@@ -111,7 +111,7 @@ function mapAjaxRequest(request?: PartAjaxRequest) {
     const newHeaders = {
         Authorization: token ? `Bearer ${token}` : "",
         Accept: "application/json",
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         // "Content-Type": "multipart/form-data",
         // timezone: -new Date().getTimezoneOffset() / 60,
         // ...mapHeaders,
