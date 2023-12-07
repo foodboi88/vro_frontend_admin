@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import './homepage.styles.scss'
-import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
-import { getOutTopArchitectRequest, getTopArchitectRequest } from '../../redux/controller'
-import { Button, notification } from 'antd'
-import AddArchitectModal from '../../components/modal/add-architect-modal/add-architect-modal'
 import { DeleteOutlined } from '@ant-design/icons'
+import { Button, notification } from 'antd'
+import { useEffect, useRef, useState } from 'react'
+import { IPriorityUser } from '../../common/user.interface'
+import AddArchitectModal from '../../components/modal/add-architect-modal/add-architect-modal'
+import { addOutTopArchitectRequest, getOutTopArchitectRequest, getTopArchitectRequest, removeOutTopArchitectRequest, saveTopArchitectRequest } from '../../redux/controller'
+import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
+import './homepage.styles.scss'
 
 export default function HomePage() {
     const dispatch = useDispatchRoot()
@@ -12,7 +13,7 @@ export default function HomePage() {
       topArchitect,
       outTopArchitect
     } = useSelectorRoot((state) => state.management);
-  const [people, setPeople] = useState<any[]>([]);
+  const [people, setPeople] = useState<IPriorityUser[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const dragPerson = useRef<number>(0)
@@ -41,7 +42,7 @@ export default function HomePage() {
     setPeople(peopleClone)
   }
 
-  function handleAddArchitect(architect: any) {
+  function handleAddArchitect(architect: IPriorityUser) {
     // people.push(architect)
     if(people.find(item => item === architect)){
       notification.open({
@@ -53,7 +54,28 @@ export default function HomePage() {
       return null
     }
     const peopleClone = [...people,architect]
-    setPeople(peopleClone);
+    setPeople(peopleClone); // Lưu KTS được thêm vào list top KTS
+    dispatch(removeOutTopArchitectRequest(architect)); // Xóa bỏ KTS khỏi list OutTop KTS 
+  }
+
+  function handleDelete(person: IPriorityUser) {
+    const objWithIdIndex = people.findIndex((obj) => person === obj);
+
+    if (objWithIdIndex > -1) {
+      const peopleClone = [...people];
+      peopleClone.splice(objWithIdIndex, 1);
+      setPeople(peopleClone) // Loại bỏ KTS khỏi list top KTS
+    }
+
+    dispatch(addOutTopArchitectRequest(person)); // Thêm KTS bị xóa vào list OutTop KTS
+  }
+
+  function handleSave() {
+    const bodyrequest = {
+      userIds: people.map(item => item.id)
+    }
+    console.log(bodyrequest)
+    dispatch(saveTopArchitectRequest(bodyrequest));
   }
 
   return (
@@ -85,7 +107,7 @@ export default function HomePage() {
                     onDragOver={(e) => e.preventDefault()}
                 >
                     <div>{person.name}</div>
-                    <div className='action'>
+                    <div onClick={() => handleDelete(person)} className='action'>
                       <DeleteOutlined />
                     </div>
                 </div>
@@ -93,9 +115,9 @@ export default function HomePage() {
         </div>
         <div>
           <Button
-            onClick={()=>setIsOpenModal(true)}
+            onClick={()=>handleSave()}
           >
-            Lưu
+            Lưu thay đổi
           </Button>
         </div>
     </main>

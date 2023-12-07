@@ -1,8 +1,8 @@
 import { Observable } from "rxjs/internal/Observable";
 import { catchError, map } from "rxjs/operators";
 import { API_URL } from "../../enums/api.enums";
-import HttpClient from "../http-client";
 import Utils from "../../utils/base-utils";
+import HttpClient from "../http-client";
 
 export default class UserApi {
     static apiURL = API_URL;
@@ -33,7 +33,7 @@ export default class UserApi {
         const queryParam = Utils.parseObjectToQueryParameter(body);
         console.log(queryParam)
         const api = `${UserApi.apiURL.HOST}/${this.apiURL.BLOCK_USER}${queryParam}`;
-        return HttpClient.put(api,body).pipe(
+        return HttpClient.put(api, body).pipe(
             map(
                 (res) => (res as any) || null,
                 catchError((error) => new Observable())
@@ -52,10 +52,10 @@ export default class UserApi {
             )
         );
     }
-    
+
     static approveSellerRequest(body: any): Observable<any> {
         const api = `${UserApi.apiURL.HOST}/${this.apiURL.SELLER_APPROVE}${body.id}`;
-        return HttpClient.put(api,body).pipe(
+        return HttpClient.put(api, body).pipe(
             map(
                 (res) => (res as any) || null,
                 catchError((error) => new Observable())
@@ -102,6 +102,16 @@ export default class UserApi {
         console.log(queryParam)
         const api = `${UserApi.apiURL.HOST}/${this.apiURL.GET_OUT_TOP_ARCHITECT}${queryParam}`;
         return HttpClient.get(api).pipe(
+            map(
+                (res) => (res as any) || null,
+                catchError((error) => new Observable())
+            )
+        );
+    }
+
+    static saveTopArchitect(body: any): Observable<any> {
+        const api = `${UserApi.apiURL.HOST}/${this.apiURL.SAVE_TOP_ARCHITECT}`;
+        return HttpClient.put(api, body).pipe(
             map(
                 (res) => (res as any) || null,
                 catchError((error) => new Observable())

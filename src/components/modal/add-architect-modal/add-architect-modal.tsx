@@ -20,8 +20,9 @@ const AddArchitectModal = (props: MyProps) => {
         <Modal
             open={props.isOpenModal}
             closable={true}
-            cancelText='Đóng'
-            onCancel={()=> props.setIsOpenModal(false)}
+            onCancel={() => props.setIsOpenModal(false)}
+            footer={null}
+
         >
             <div>
                 {

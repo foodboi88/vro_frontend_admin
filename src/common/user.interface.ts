@@ -57,3 +57,14 @@ export interface IBill {
     id: string,
     userName: string
 }
+
+export interface IPriorityUser {
+    email: string
+    name: string
+    phone: string
+    createdAt: string
+    updatedAt: string
+    id: string
+    linkImage: string
+}
+

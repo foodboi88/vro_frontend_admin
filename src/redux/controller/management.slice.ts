@@ -2,22 +2,18 @@
 /* eslint-disable no-debugger */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CheckboxOptionType, notification } from "antd";
-import { catchError, concatMap, filter, map, mergeMap, switchMap } from "rxjs/operators";
-import { RootEpic } from "../../common/define-type";
-import Utils from "../../utils/base-utils";
-import IdentityApi from "../../api/identity/identity.api";
-import UserApi from "../../api/user/user.api";
-import { IBill, IGetUsersRequest, IStatisticUser, IUser } from "../../common/user.interface";
-import { QUERY_PARAM } from "../../constants/get-api.constant";
+import { catchError, concatMap, filter, mergeMap, switchMap } from "rxjs/operators";
+import ReportApi from "../../api/report/report.api";
 import SketchApi from "../../api/sketch/sketch.api";
+import StatisticAPI from "../../api/statistic/statistic.api";
+import UserApi from "../../api/user/user.api";
+import WithdrawApi from "../../api/withdraw/withdraw.api";
+import { RootEpic } from "../../common/define-type";
+import { IReport, IStatisticReport } from "../../common/report.interface";
 import { ISketch, IStatisticSketch, ITool } from "../../common/sketch.interface";
 import { IOverViewStatictis, IOverViewStatictisDay, IOverViewStatictisMonth, IOverViewStatictisQuarter, IOverViewStatictisYear, IStatictisSellerDay, IStatictisUserDay } from "../../common/statistic.interface";
-import StatisticAPI from "../../api/statistic/statistic.api";
-import { get } from "http";
-import { IReport, IStatisticReport } from "../../common/report.interface";
-import ReportApi from "../../api/report/report.api";
+import { IBill, IPriorityUser, IStatisticUser, IUser } from "../../common/user.interface";
 import { IWithdrawRequest } from "../../common/withdraw-request.interface";
-import WithdrawApi from "../../api/withdraw/withdraw.api";
 
 
 interface ManagementState {
@@ -47,8 +43,8 @@ interface ManagementState {
     totalBillRecord: number;
     detailBill: any | undefined;
     styleList: CheckboxOptionType[];
-    topArchitect: any[];
-    outTopArchitect: any[];
+    topArchitect: IPriorityUser[];
+    outTopArchitect: IPriorityUser[];
 }
 
 const initState: ManagementState = {
@@ -77,7 +73,7 @@ const initState: ManagementState = {
     billList: [],
     totalBillRecord: 0,
     detailBill: undefined,
-    styleList:[],
+    styleList: [],
     topArchitect: [],
     outTopArchitect: []
 };
@@ -609,7 +605,7 @@ const managementSlice = createSlice({
 
         getAllStylesSuccess(state, action: PayloadAction<any>) {
             console.log(action.payload.data);
-            if(action.payload.data){
+            if (action.payload.data) {
 
                 state.styleList = action?.payload?.data?.map(
                     (item: ITool) =>
@@ -661,6 +657,16 @@ const managementSlice = createSlice({
 
         },
 
+        addOutTopArchitectRequest(state, action: PayloadAction<any>) {
+            state.outTopArchitect = [...state.outTopArchitect, action.payload]
+        },
+
+        removeOutTopArchitectRequest(state, action: PayloadAction<any>) {
+            const peopleClone = [...state.outTopArchitect];
+            peopleClone.splice(peopleClone.indexOf(action.payload), 1);
+            state.outTopArchitect = peopleClone;
+        },
+
         // Get OutTop Architect
         getOutTopArchitectRequest(state, action: PayloadAction<any>) {
             state.loading = true;
@@ -672,6 +678,31 @@ const managementSlice = createSlice({
             state.outTopArchitect = action.payload.data.items
         },
         getOutTopArchitectFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
+
+        // Get OutTop Architect
+        saveTopArchitectRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        saveTopArchitectSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+
+        },
+        saveTopArchitectFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
             notification.open({
@@ -1065,7 +1096,7 @@ const blockSketchRequest$: RootEpic = (action$) =>
         filter(blockSketchRequest.match),
         mergeMap((re) => {
             console.log(re);
-            const {currentSearchValue,...bodyrequest} = re.payload
+            const { currentSearchValue, ...bodyrequest } = re.payload
 
             return SketchApi.blockSketch(bodyrequest).pipe(
                 mergeMap((res: any) => {
@@ -1080,14 +1111,14 @@ const blockSketchRequest$: RootEpic = (action$) =>
         })
     );
 
-    
+
 
 const deleteSketchRequest$: RootEpic = (action$) =>
     action$.pipe(
         filter(deleteSketchRequest.match),
         mergeMap((re) => {
             console.log(re);
-            const {currentSearchValue,...bodyrequest} = re.payload
+            const { currentSearchValue, ...bodyrequest } = re.payload
 
             return SketchApi.deleteSketch(bodyrequest).pipe(
                 mergeMap((res: any) => {
@@ -1154,6 +1185,22 @@ const getOutTopArchitect$: RootEpic = (action$) =>
         })
     );
 
+const saveTopArchitect$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(saveTopArchitectRequest.match),
+        mergeMap((re) => {
+            return UserApi.saveTopArchitect(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.saveTopArchitectSuccess(res),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.saveTopArchitectFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -1179,7 +1226,8 @@ export const ManagementEpics = [
     deleteSketchRequest$,
     getAllStyles$,
     getTopArchitect$,
-    getOutTopArchitect$
+    getOutTopArchitect$,
+    saveTopArchitect$
 ];
 export const {
     getUsersRequest,
@@ -1207,6 +1255,9 @@ export const {
     deleteSketchRequest,
     getAllStylesRequest,
     getTopArchitectRequest,
-    getOutTopArchitectRequest
+    getOutTopArchitectRequest,
+    addOutTopArchitectRequest,
+    removeOutTopArchitectRequest,
+    saveTopArchitectRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
