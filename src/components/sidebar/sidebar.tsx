@@ -112,7 +112,7 @@ const Sidebar = () => {
                             navigate('/management/homepage')
                         }}>
                             <RiMoneyDollarCircleLine />
-                            <span>Quản lý giao diện Home</span>
+                            <span>Quản lý kiến trúc sư</span>
                         </div>
                         {/* <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
                             <ImStatsDots />

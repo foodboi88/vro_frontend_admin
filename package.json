@@ -29,6 +29,7 @@
     "numeral": "^2.0.6",
     "rc-switch": "^4.0.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
@@ -76,6 +77,7 @@
     "@types/babel__core": "^7.20.1",
     "@types/chart.js": "^2.9.37",
     "@types/numeral": "^2.0.2",
+    "@types/react-beautiful-dnd": "^13.1.7",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6"

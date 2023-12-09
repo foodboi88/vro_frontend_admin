@@ -1,14 +1,118 @@
-.list{
-    overflow:hidden; 
-    overflow-y:scroll;
-    width: 445px;
-    height: 300px;
-    .item{
-        margin-bottom: 10px;
+.main-homepage {
+    display: flex;
+    padding: 24px 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    background-color: hsl(0, 0%, 100%);
+    margin: 32px;
+
+    .action-main-home {
         display: flex;
-        justify-content: space-around;
-        .action{
-            cursor: pointer;
+        align-items: center;
+        gap: 8px;
+        align-self: stretch;
+        border-bottom: 1px solid #e5e5e5;
+
+        .title {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex: 1 0 0;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 32px;
+            /* 133.333% */
+        }
+
+        .btn-add {
+            display: flex;
+            padding: 6px 24px;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            border-radius: 4px;
+            background: var(--Mu-chnh, #ED1C24);
+            color: #fff;
+        }
+    }
+
+    .list {
+        margin: 0 auto;
+        padding: 1em 0;
+        width: 100%;
+        overflow: auto;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            user-select: none;
+
+            th,
+            td {
+                padding: 8px;
+                border-bottom: 1px solid #ddd;
+                text-align: left;
+            }
+
+            th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #fafafa;
+                color: black;
+            }
+
+            tr {
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #ddd;
+                }
+            }
+
+            .action {
+                cursor: pointer;
+                color: red;
+                width: 6em;
+                text-align: center;
+            }
+
+            .drag-icon {
+                cursor: grab;
+                width: 1em;
+            }
+        }
+    }
+}
+
+.modal-confirm {
+    .ant-modal-header {
+        background-color: #ED1C24;
+        color: white;
+    }
+
+    .ant-modal-title {
+        color: white;
+    }
+
+    .ant-modal-body {
+        background-color: #f2f2f2;
+    }
+
+    .ant-modal-footer {
+        border-top: 1px solid #ddd;
+    }
+
+    .ant-btn-primary {
+        background-color: #ED1C24;
+        border-color: #ED1C24;
+
+        &:hover {
+            background-color: #ED1C24;
+            border-color: #ED1C24;
         }
     }
 }
