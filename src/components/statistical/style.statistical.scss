@@ -88,7 +88,7 @@
 
 .main-statistical:nth-child(1) {
     margin-right: 0em;
-    width: 58%;
+    width: 95%;
 }
 
 .main-statistical:nth-child(2) {
@@ -154,7 +154,6 @@
 
         .statistical-title {
             display: flex;
-            flex-direction: column;
             align-items: baseline;
             justify-content: space-between;
             width: 100%;
@@ -244,7 +243,6 @@
 
         .statistical-title {
             display: flex;
-            flex-direction: column;
             align-items: baseline;
             justify-content: space-between;
             width: 100%;
