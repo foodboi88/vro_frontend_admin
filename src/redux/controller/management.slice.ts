@@ -306,7 +306,7 @@ const managementSlice = createSlice({
         getOverviewStatisticUserDaySuccess(state, action: PayloadAction<any>) {
             console.log(action.payload);
             state.loading = false;
-            state.overViewStatisticUserDay = action.payload[0];
+            state.overViewStatisticUserDay = action.payload;
         },
 
         getOverviewStatisticUserDayFail(state, action: PayloadAction<any>) {
@@ -330,7 +330,7 @@ const managementSlice = createSlice({
         getOverviewStatisticSellerDaySuccess(state, action: PayloadAction<any>) {
             console.log(action.payload);
             state.loading = false;
-            state.overViewStatisticSellerDay = action.payload[0];
+            state.overViewStatisticSellerDay = action.payload;
         },
 
         getOverviewStatisticSellerDayFail(state, action: PayloadAction<any>) {

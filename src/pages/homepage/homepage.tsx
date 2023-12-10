@@ -127,6 +127,14 @@ export default function HomePage() {
         }
         console.log(bodyrequest)
         dispatch(saveTopArchitectRequest(bodyrequest));
+
+        // Sau khi lưu thành công, hiển thị thông báo
+        notification.open({
+            message: "Lưu thành công",
+            onClick: () => {
+                console.log("Notification Clicked!");
+            },
+        });
     }
 
     return (
@@ -188,6 +196,13 @@ export default function HomePage() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            <div className='btn-save'>
+                <Button
+                    onClick={handleSave}
+                >
+                    Lưu thay đổi
+                </Button>
             </div>
             <AddArchitectModal
                 isOpenModal={isOpenModal}

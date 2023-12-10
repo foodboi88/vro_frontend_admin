@@ -86,6 +86,26 @@
             }
         }
     }
+
+    .btn-save {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .ant-btn {
+            background-color: #ED1C24;
+            border-color: #ED1C24;
+            color: #fff;
+
+            &:hover {
+                background-color: #ED1C24;
+                border-color: #ED1C24;
+                opacity: 0.8;
+            }
+
+        }
+    }
 }
 
 .modal-confirm {
