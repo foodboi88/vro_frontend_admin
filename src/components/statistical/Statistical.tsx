@@ -24,13 +24,13 @@ const Statistical = () => {
     const [startDateUser, setStartDateUser] = useState<string>('') // Biến lưu trữ ngày bắt đầu thống kê
     const [endDateUser, setEndDateUser] = useState<string>('') // Biến lưu trữ ngày kết thúc thống kê
 
-    useEffect(() => {
-        switch (typeViewStatistic) {
-            case 'day':
-                setStartDate(moment().subtract(7, 'days').format('YYYY-MM-DD'))
-                setEndDate(moment().format('YYYY-MM-DD'))
-        }
-    }, [typeViewStatistic])
+    // useEffect(() => {
+    //     switch (typeViewStatistic) {
+    //         case 'day':
+    //             setStartDate(moment().subtract(7, 'days').format('YYYY-MM-DD'))
+    //             setEndDate(moment().format('YYYY-MM-DD'))
+    //     }
+    // }, [typeViewStatistic])
 
     useEffect(() => {
         if (startDateUser && endDateUser) {

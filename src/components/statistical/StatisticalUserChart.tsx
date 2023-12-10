@@ -2,6 +2,7 @@ import { Chart, ChartAxis, ChartGroup, ChartLine, ChartThemeColor, ChartVoronoiC
 import { useEffect, useState } from 'react';
 import { IStatictisSellerDay, IStatictisUserDay } from '../../common/statistic.interface';
 import TotalBoxUser from '../totalBox/TotalBoxUser';
+import { notification } from 'antd';
 
 interface StatisticalChartProps {
     dataUserChart: IStatictisUserDay | undefined,
@@ -73,6 +74,17 @@ const StatisticalUserChart = (props: StatisticalChartProps) => {
             setTotalSeller(props.dataSellerChart.items.map((item: { totalSeller: any; }) => item.totalSeller).reduce((a: number, b: number) => a + b, 0));
             getValueUser(props.dataUserChart.items);
             getValueSeller(props.dataSellerChart.items);
+        }
+        else {
+            console.log('====================================');
+            setMaxValue(0);
+            // // Hiển thị thông báo
+            // notification.open({
+            //     message: "Không có dữ liệu",
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            // });
         }
 
     }, [props.dataUserChart, props.dataSellerChart])
