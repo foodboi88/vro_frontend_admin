@@ -54,6 +54,25 @@ const Statistical = () => {
     useEffect(() => {
         console.log(overViewStatisticUserDay, overViewStatisticSellerDay);
 
+        // Lấy ra tổng user và seller
+        let totalUser = 0
+        let totalSeller = 0
+
+        overViewStatisticUserDay && overViewStatisticUserDay.items.map((item) => {
+            totalUser += item.totalUser
+        })
+
+        overViewStatisticSellerDay && overViewStatisticSellerDay.items.map((item) => {
+            totalSeller += item.totalSeller
+        })
+
+        if (!totalUser && !totalSeller && overViewStatisticUserDay && overViewStatisticSellerDay) {
+            notification.error({
+                message: 'Lấy dữ liệu không thành công',
+                description: 'Ngày thống kê không có dữ liệu',
+            });
+        }
+
         overViewStatisticUserDay && setDataUserChart(overViewStatisticUserDay);
         overViewStatisticSellerDay && setDataSellerChart(overViewStatisticSellerDay);
     }, [overViewStatisticUserDay, overViewStatisticSellerDay])
