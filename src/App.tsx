@@ -1,19 +1,19 @@
+import { AnimatePresence } from 'framer-motion';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import './App.styles.scss';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import PrivateRoutes from './utils/PrivateRoutes'
-import OutLoginLayout from './layouts/out-login/out-login';
 import InLoginLayout from './layouts/in-login/in-login';
+import OutLoginLayout from './layouts/out-login/out-login';
+import Bill from './pages/bill/bill';
 import General from './pages/general/general';
-import Sketch from './pages/sketch/sketch';
-import User from './pages/user/user';
-import { AnimatePresence } from 'framer-motion';
+import HomePage from './pages/homepage/homepage';
 import Report from './pages/report/report';
 import SellerRequest from './pages/seller-request/seller-request';
-import WithdrawRequest from './pages/withdraw-request/withdraw-request';
-import Bill from './pages/bill/bill';
 import Seller from './pages/seller/seller';
-import HomePage from './pages/homepage/homepage';
+import Sketch from './pages/sketch/sketch';
+import User from './pages/user/user';
+import WithdrawRequest from './pages/withdraw-request/withdraw-request';
+import PrivateRoutes from './utils/PrivateRoutes';
 function App() {
 
   return (
@@ -33,8 +33,6 @@ function App() {
                 <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
                 <Route element={<Bill />} path='/management/bill' />
                 <Route element={<HomePage />} path='/management/homepage' />
-
-
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />
