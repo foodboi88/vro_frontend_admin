@@ -1,0 +1,16 @@
+.block-list{
+  padding: 20px;
+  .block-ui{
+    margin: 25px;
+    .property{
+      margin: 10px;
+      display: flex;
+      justify-content: space-between;
+      .input{
+        border: solid 1px black;
+        border-radius: 10px;
+        padding: 10px;
+      }
+    }
+  }
+}

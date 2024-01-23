@@ -1,10 +1,10 @@
-import Utils from "../utils/base-utils";
+import { notification } from "antd";
 import { throwError } from "rxjs";
 import { ajax, AjaxError, AjaxRequest, AjaxResponse } from "rxjs/ajax";
 import { Observable } from "rxjs/internal/Observable";
 import { catchError, map, retry } from "rxjs/operators";
+import Utils from "../utils/base-utils";
 import IdentityApi from "./identity/identity.api";
-import { notification } from "antd";
 
 /** types */
 type PartAjaxRequest = Omit<AjaxRequest, "url" | "method" | "body">;
@@ -110,11 +110,6 @@ function mapAjaxRequest(request?: PartAjaxRequest) {
         : undefined;
     const newHeaders = {
         Authorization: token ? `Bearer ${token}` : "",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        // "Content-Type": "multipart/form-data",
-        // timezone: -new Date().getTimezoneOffset() / 60,
-        // ...mapHeaders,
     };
     return { ...request, headers: { ...newHeaders } };
 }

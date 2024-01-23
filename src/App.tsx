@@ -7,6 +7,7 @@ import OutLoginLayout from './layouts/out-login/out-login';
 import Bill from './pages/bill/bill';
 import General from './pages/general/general';
 import HomePage from './pages/homepage/homepage';
+import MissionPage from './pages/mission-page/mission-page';
 import Report from './pages/report/report';
 import SellerRequest from './pages/seller-request/seller-request';
 import Seller from './pages/seller/seller';
@@ -33,9 +34,11 @@ function App() {
                 <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
                 <Route element={<Bill />} path='/management/bill' />
                 <Route element={<HomePage />} path='/management/homepage' />
+                <Route element={<MissionPage />} path="/management/mission-page" />
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />
+
           </Routes>
         </Router>
       </AnimatePresence>

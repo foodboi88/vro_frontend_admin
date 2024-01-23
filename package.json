@@ -32,7 +32,6 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.49.3",
     "react-icons": "^4.10.1",
     "react-intersection-observer": "^9.4.2",
     "react-map-gl": "^7.0.21",

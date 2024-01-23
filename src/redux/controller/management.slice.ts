@@ -3,11 +3,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CheckboxOptionType, notification } from "antd";
 import { catchError, concatMap, filter, mergeMap, switchMap } from "rxjs/operators";
+import CustomUIAPI from "../../api/custom-ui/custom-ui.api";
 import ReportApi from "../../api/report/report.api";
 import SketchApi from "../../api/sketch/sketch.api";
 import StatisticAPI from "../../api/statistic/statistic.api";
 import UserApi from "../../api/user/user.api";
 import WithdrawApi from "../../api/withdraw/withdraw.api";
+import { IMissionPageData } from "../../common/customize-page.interface";
 import { RootEpic } from "../../common/define-type";
 import { IReport, IStatisticReport } from "../../common/report.interface";
 import { ISketch, IStatisticSketch, ITool } from "../../common/sketch.interface";
@@ -45,6 +47,7 @@ interface ManagementState {
     styleList: CheckboxOptionType[];
     topArchitect: IPriorityUser[];
     outTopArchitect: IPriorityUser[];
+    missionPageData: IMissionPageData[]
 }
 
 const initState: ManagementState = {
@@ -75,7 +78,8 @@ const initState: ManagementState = {
     detailBill: undefined,
     styleList: [],
     topArchitect: [],
-    outTopArchitect: []
+    outTopArchitect: [],
+    missionPageData: []
 };
 
 const managementSlice = createSlice({
@@ -717,6 +721,36 @@ const managementSlice = createSlice({
             });
 
         },
+
+        //Get mission page data
+        getMissionPageDataRequest(state) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getMissionPageDataSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.missionPageData = action.payload.data
+
+        },
+        getMissionPageDataFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+        },
+
+        //Get mission page data
+        saveMissionPageDataRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        saveMissionPageDataSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.missionPageData = action.payload.data
+
+        },
+        saveMissionPageDataFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+        },
     },
 });
 
@@ -1201,6 +1235,56 @@ const saveTopArchitect$: RootEpic = (action$) =>
         })
     );
 
+const getMissionPageData$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getMissionPageDataRequest.match),
+        mergeMap((re) => {
+            return CustomUIAPI.getMissionPageData(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getMissionPageDataSuccess(res),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getMissionPageDataFail(err)])
+            );
+        })
+    );
+
+const saveMissionPageData$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(saveMissionPageDataRequest.match),
+        mergeMap((re) => {
+            let missionPageData = new FormData();
+            if (re.payload.images[0]) { // Trường hợp không có ảnh mới được up lên thì array ảnh vẫn dạng string
+                missionPageData.append("title", re.payload.title);
+                missionPageData.append("text", re.payload.text);
+                missionPageData.append("buttonName", re.payload.buttonName);
+                missionPageData.append("buttonLink", re.payload.buttonLink);
+            } else {
+                re.payload.images.fileList.forEach((item: any) => {
+                    missionPageData.append("images", item as File); // chinh lai ten file anh sau
+                });
+                missionPageData.append("title", re.payload.title);
+                missionPageData.append("text", re.payload.text);
+                missionPageData.append("buttonName", re.payload.buttonName);
+                missionPageData.append("buttonLink", re.payload.buttonLink);
+
+            }
+
+            return CustomUIAPI.saveMissionPageData(missionPageData, re.payload.id).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.saveMissionPageDataSuccess(res),
+                        managementSlice.actions.getMissionPageDataRequest(),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.saveMissionPageDataFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -1227,7 +1311,9 @@ export const ManagementEpics = [
     getAllStyles$,
     getTopArchitect$,
     getOutTopArchitect$,
-    saveTopArchitect$
+    saveTopArchitect$,
+    getMissionPageData$,
+    saveMissionPageData$
 ];
 export const {
     getUsersRequest,
@@ -1258,6 +1344,8 @@ export const {
     getOutTopArchitectRequest,
     addOutTopArchitectRequest,
     removeOutTopArchitectRequest,
-    saveTopArchitectRequest
+    saveTopArchitectRequest,
+    getMissionPageDataRequest,
+    saveMissionPageDataRequest
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
