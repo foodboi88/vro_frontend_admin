@@ -746,6 +746,13 @@ const managementSlice = createSlice({
             state.loading = false;
             state.missionPageData = action.payload.data
 
+            notification.success({
+                message: 'Lưu thông tin thành công!',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+            });
+
         },
         saveMissionPageDataFail(state, action: PayloadAction<any>) {
             console.log(action);
@@ -1256,9 +1263,11 @@ const saveMissionPageData$: RootEpic = (action$) =>
         filter(saveMissionPageDataRequest.match),
         mergeMap((re) => {
             let missionPageData = new FormData();
+            
             if (re.payload.images[0]) { // Trường hợp không có ảnh mới được up lên thì array ảnh vẫn dạng string
                 missionPageData.append("title", re.payload.title);
                 missionPageData.append("text", re.payload.text);
+                // missionPageData.append("images", re.payload.images[0]);
                 missionPageData.append("buttonName", re.payload.buttonName);
                 missionPageData.append("buttonLink", re.payload.buttonLink);
             } else {

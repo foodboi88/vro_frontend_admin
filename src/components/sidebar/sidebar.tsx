@@ -9,6 +9,7 @@ import { ImStatsDots } from 'react-icons/im'
 import { AiOutlineKey, AiFillGift, AiOutlineQuestionCircle, AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
 import { BiSolidLogIn } from 'react-icons/bi'
 import { GoDotFill, GoDot } from 'react-icons/go'
+import { IoIosImages } from "react-icons/io";
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 const Sidebar = () => {
@@ -138,6 +139,14 @@ const Sidebar = () => {
                         }}>
                             <AiOutlineQuestionCircle />
                             <span>Giải quyết phản hồi</span>
+                        </div>
+
+                        <div className={'sidebar-item' + (active === 9 ? ' active' : '')} onClick={() => {
+                            setActive(9)
+                            navigate('/management/mission-page')
+                        }}>
+                            <IoIosImages />
+                            <span>Cấu hình sứ mệnh</span>
                         </div>
                     </div>
                     <div className='sidebar-logout'>
