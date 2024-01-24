@@ -8,7 +8,7 @@ import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
 import './mission-page.styles.scss';
 
 const MissionPage = () => {
-    const { missionPageData } = useSelectorRoot((state) => state.management); // Lst cac ban ve   
+    const { missionPageData, isLoadingUpload } = useSelectorRoot((state) => state.management); // Lst cac ban ve   
     const [newFiles, setNewFiles] = useState<RcFile[]>([]);
     const [selectedForm, setSelectedForm] = useState<any>(1); // Form dang duoc chon de edit
     const [form] = Form.useForm();
@@ -184,6 +184,7 @@ const MissionPage = () => {
                                             label='Danh sách ảnh mới'
                                         >
                                             <Upload
+                                                maxCount={1}
                                                 showUploadList={true}
                                                 listType='picture'
                                                 beforeUpload={(file) => {
@@ -202,6 +203,7 @@ const MissionPage = () => {
                                     <div className="btn-submit-upload">
                                         <Button
                                             htmlType='submit'
+                                            loading={isLoadingUpload}
                                         >
                                             Lưu thông tin khối
                                         </Button>

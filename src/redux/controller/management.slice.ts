@@ -47,7 +47,8 @@ interface ManagementState {
     styleList: CheckboxOptionType[];
     topArchitect: IPriorityUser[];
     outTopArchitect: IPriorityUser[];
-    missionPageData: IMissionPageData[]
+    missionPageData: IMissionPageData[];
+    isLoadingUpload: boolean;
 }
 
 const initState: ManagementState = {
@@ -79,7 +80,8 @@ const initState: ManagementState = {
     styleList: [],
     topArchitect: [],
     outTopArchitect: [],
-    missionPageData: []
+    missionPageData: [],
+    isLoadingUpload: false,
 };
 
 const managementSlice = createSlice({
@@ -740,18 +742,20 @@ const managementSlice = createSlice({
         //Get mission page data
         saveMissionPageDataRequest(state, action: PayloadAction<any>) {
             state.loading = true;
+            state.isLoadingUpload = true;
             // console.log("da chui vao",state.loading)
         },
         saveMissionPageDataSuccess(state, action: PayloadAction<any>) {
             state.loading = false;
             state.missionPageData = action.payload.data
-
+            console.log(action.payload.data);
             notification.success({
                 message: 'Lưu thông tin thành công!',
                 onClick: () => {
                     console.log("Notification Clicked!");
                 },
             });
+            state.isLoadingUpload = false;
 
         },
         saveMissionPageDataFail(state, action: PayloadAction<any>) {
@@ -1263,26 +1267,45 @@ const saveMissionPageData$: RootEpic = (action$) =>
         filter(saveMissionPageDataRequest.match),
         mergeMap((re) => {
             let missionPageData = new FormData();
+            console.log(re.payload);
             
-            if (re.payload.images[0]) { // Trường hợp không có ảnh mới được up lên thì array ảnh vẫn dạng string
-                missionPageData.append("title", re.payload.title);
-                missionPageData.append("text", re.payload.text);
-                // missionPageData.append("images", re.payload.images[0]);
-                missionPageData.append("buttonName", re.payload.buttonName);
-                missionPageData.append("buttonLink", re.payload.buttonLink);
-            } else {
-                re.payload.images.fileList.forEach((item: any) => {
-                    missionPageData.append("images", item as File); // chinh lai ten file anh sau
-                });
-                missionPageData.append("title", re.payload.title);
-                missionPageData.append("text", re.payload.text);
-                missionPageData.append("buttonName", re.payload.buttonName);
-                missionPageData.append("buttonLink", re.payload.buttonLink);
+            // if (re.payload.images[0]) { // Trường hợp không có ảnh mới được up lên thì array ảnh vẫn dạng string
+            //     missionPageData.append("title", re.payload.title);
+            //     missionPageData.append("text", re.payload.text);
+            //     // missionPageData.append("images", re.payload.images[0]);
+            //     missionPageData.append("buttonName", re.payload.buttonName);
+            //     missionPageData.append("buttonLink", re.payload.buttonLink);
+            // } else {
+            //     re.payload.images.fileList.forEach((item: any) => {
+            //         missionPageData.append("images", item as File); // chinh lai ten file anh sau
+            //     });
+            //     missionPageData.append("title", re.payload.title);
+            //     missionPageData.append("text", re.payload.text);
+            //     missionPageData.append("buttonName", re.payload.buttonName);
+            //     missionPageData.append("buttonLink", re.payload.buttonLink);
 
+            // }
+
+            if(re.payload.images.file ){
+                missionPageData.append("images", re.payload.images.file);
+                //    re.payload.images.fileList.forEach((item: any) => {
+                    // missionPageData.append("images", item as File); 
+                // });
+                missionPageData.append("title", re.payload.title);
+                missionPageData.append("text", re.payload.text);
+                missionPageData.append("buttonName", re.payload.buttonName);
+                missionPageData.append("buttonLink", re.payload.buttonLink);
+            }
+            else{
+                missionPageData.append("title", re.payload.title);
+                missionPageData.append("text", re.payload.text);
+                missionPageData.append("buttonName", re.payload.buttonName);
+                missionPageData.append("buttonLink", re.payload.buttonLink);
             }
 
             return CustomUIAPI.saveMissionPageData(missionPageData, re.payload.id).pipe(
                 mergeMap((res: any) => {
+                    console.log(res);
                     return [
                         managementSlice.actions.saveMissionPageDataSuccess(res),
                         managementSlice.actions.getMissionPageDataRequest(),
