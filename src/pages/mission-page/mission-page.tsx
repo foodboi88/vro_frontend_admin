@@ -43,6 +43,8 @@ const MissionPage = () => {
     }, [selectedForm, missionPageData])
 
     const handleUploadSketch = (data: any) => {
+        if (selectedForm !== data.index) return;
+        console.log(data);
         Modal.confirm({
             title: 'Bạn có muốn lưu thông tin khối này?',
             cancelText: 'Hủy',
