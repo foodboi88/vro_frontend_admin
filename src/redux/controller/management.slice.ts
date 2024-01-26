@@ -3,11 +3,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CheckboxOptionType, notification } from "antd";
 import { catchError, concatMap, filter, mergeMap, switchMap } from "rxjs/operators";
+import CustomUIAPI from "../../api/custom-ui/custom-ui.api";
 import ReportApi from "../../api/report/report.api";
 import SketchApi from "../../api/sketch/sketch.api";
 import StatisticAPI from "../../api/statistic/statistic.api";
 import UserApi from "../../api/user/user.api";
 import WithdrawApi from "../../api/withdraw/withdraw.api";
+import { IBannerHomepageData, IMissionPageData } from "../../common/customize-page.interface";
 import { RootEpic } from "../../common/define-type";
 import { IReport, IStatisticReport } from "../../common/report.interface";
 import { ISketch, IStatisticSketch, ITool } from "../../common/sketch.interface";
@@ -45,6 +47,10 @@ interface ManagementState {
     styleList: CheckboxOptionType[];
     topArchitect: IPriorityUser[];
     outTopArchitect: IPriorityUser[];
+    missionPageData: IMissionPageData[];
+    isLoadingUpload: boolean;
+    bannerHomepageData: IBannerHomepageData[];
+
 }
 
 const initState: ManagementState = {
@@ -75,7 +81,10 @@ const initState: ManagementState = {
     detailBill: undefined,
     styleList: [],
     topArchitect: [],
-    outTopArchitect: []
+    outTopArchitect: [],
+    missionPageData: [],
+    isLoadingUpload: false,
+    bannerHomepageData: [],
 };
 
 const managementSlice = createSlice({
@@ -717,6 +726,84 @@ const managementSlice = createSlice({
             });
 
         },
+
+        //Get mission page data
+        getMissionPageDataRequest(state) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getMissionPageDataSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.missionPageData = action.payload.data
+
+        },
+        getMissionPageDataFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+        },
+
+        //Save mission page data
+        saveMissionPageDataRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+            state.isLoadingUpload = true;
+            // console.log("da chui vao",state.loading)
+        },
+        saveMissionPageDataSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.missionPageData = action.payload.data
+            console.log(action.payload.data);
+            notification.success({
+                message: 'Lưu thông tin thành công!',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+            });
+            state.isLoadingUpload = false;
+
+        },
+        saveMissionPageDataFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+        },
+
+        //Get homepage banner data
+        getHomepageBannerDataRequest(state) {
+            state.loading = true;
+            // console.log("da chui vao",state.loading)
+        },
+        getHomepageBannerDataSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.bannerHomepageData = action.payload.data
+
+        },
+        getHomepageBannerDataFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+        },
+
+        //Save mission page data
+        saveHomepageBannerDataRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+            state.isLoadingUpload = true;
+            // console.log("da chui vao",state.loading)
+        },
+        saveHomepageBannerDataSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.bannerHomepageData = action.payload.data
+            console.log(action.payload.data);
+            notification.success({
+                message: 'Lưu thông tin thành công!',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+            });
+            state.isLoadingUpload = false;
+
+        },
+        saveHomepageBannerDataFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+        },
     },
 });
 
@@ -1201,6 +1288,118 @@ const saveTopArchitect$: RootEpic = (action$) =>
         })
     );
 
+const getMissionPageData$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getMissionPageDataRequest.match),
+        mergeMap((re) => {
+            return CustomUIAPI.getMissionPageData(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getMissionPageDataSuccess(res),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getMissionPageDataFail(err)])
+            );
+        })
+    );
+
+const saveMissionPageData$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(saveMissionPageDataRequest.match),
+        mergeMap((re) => {
+            let missionPageData = new FormData();
+            console.log(re.payload);
+
+            // if (re.payload.images[0]) { // Trường hợp không có ảnh mới được up lên thì array ảnh vẫn dạng string
+            //     missionPageData.append("title", re.payload.title);
+            //     missionPageData.append("text", re.payload.text);
+            //     // missionPageData.append("images", re.payload.images[0]);
+            //     missionPageData.append("buttonName", re.payload.buttonName);
+            //     missionPageData.append("buttonLink", re.payload.buttonLink);
+            // } else {
+            //     re.payload.images.fileList.forEach((item: any) => {
+            //         missionPageData.append("images", item as File); // chinh lai ten file anh sau
+            //     });
+            //     missionPageData.append("title", re.payload.title);
+            //     missionPageData.append("text", re.payload.text);
+            //     missionPageData.append("buttonName", re.payload.buttonName);
+            //     missionPageData.append("buttonLink", re.payload.buttonLink);
+
+            // }
+
+            if (re.payload.images.file) {
+                missionPageData.append("images", re.payload.images.file);
+                //    re.payload.images.fileList.forEach((item: any) => {
+                // missionPageData.append("images", item as File); 
+                // });
+                missionPageData.append("title", re.payload.title);
+                missionPageData.append("text", re.payload.text);
+                missionPageData.append("buttonName", re.payload.buttonName);
+                missionPageData.append("buttonLink", re.payload.buttonLink);
+            }
+            else {
+                missionPageData.append("title", re.payload.title);
+                missionPageData.append("text", re.payload.text);
+                missionPageData.append("buttonName", re.payload.buttonName);
+                missionPageData.append("buttonLink", re.payload.buttonLink);
+            }
+
+            return CustomUIAPI.saveMissionPageData(missionPageData, re.payload.id).pipe(
+                mergeMap((res: any) => {
+                    console.log(res);
+                    return [
+                        managementSlice.actions.saveMissionPageDataSuccess(res),
+                        managementSlice.actions.getMissionPageDataRequest(),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.saveMissionPageDataFail(err)])
+            );
+        })
+    );
+
+const getHomepageBannerData$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getHomepageBannerDataRequest.match),
+        mergeMap((re) => {
+            return CustomUIAPI.getBannerHomepageData(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getHomepageBannerDataSuccess(res),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getHomepageBannerDataFail(err)])
+            );
+        })
+    );
+
+const saveHomepageBannerData$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(saveHomepageBannerDataRequest.match),
+        mergeMap((re) => {
+            let bannerHomepageData = new FormData();
+            console.log(re.payload);
+
+            bannerHomepageData.append("file", re.payload.images.file);
+            // bannerHomepageData.append("type", re.payload.type);
+
+
+            return CustomUIAPI.saveBannerHomepageData(bannerHomepageData, re.payload.id).pipe(
+                mergeMap((res: any) => {
+                    console.log(res);
+                    return [
+                        managementSlice.actions.saveHomepageBannerDataSuccess(res),
+                        managementSlice.actions.getHomepageBannerDataRequest(),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.saveHomepageBannerDataFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -1227,7 +1426,11 @@ export const ManagementEpics = [
     getAllStyles$,
     getTopArchitect$,
     getOutTopArchitect$,
-    saveTopArchitect$
+    saveTopArchitect$,
+    getMissionPageData$,
+    saveMissionPageData$,
+    getHomepageBannerData$,
+    saveHomepageBannerData$
 ];
 export const {
     getUsersRequest,
@@ -1258,6 +1461,10 @@ export const {
     getOutTopArchitectRequest,
     addOutTopArchitectRequest,
     removeOutTopArchitectRequest,
-    saveTopArchitectRequest
+    saveTopArchitectRequest,
+    getMissionPageDataRequest,
+    saveMissionPageDataRequest,
+    getHomepageBannerDataRequest,
+    saveHomepageBannerDataRequest,
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

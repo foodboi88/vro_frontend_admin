@@ -5,6 +5,8 @@ import './App.styles.scss';
 import InLoginLayout from './layouts/in-login/in-login';
 import OutLoginLayout from './layouts/out-login/out-login';
 import Bill from './pages/bill/bill';
+import BannerHomepage from './pages/custom-ui/banner-home-page/banner-home-page';
+import MissionPage from './pages/custom-ui/mission-page/mission-page';
 import General from './pages/general/general';
 import HomePage from './pages/homepage/homepage';
 import Report from './pages/report/report';
@@ -33,6 +35,8 @@ function App() {
                 <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
                 <Route element={<Bill />} path='/management/bill' />
                 <Route element={<HomePage />} path='/management/homepage' />
+                <Route element={<MissionPage />} path="/management/mission-page" />
+                <Route element={<BannerHomepage />} path="/management/banner-home-page" />
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />

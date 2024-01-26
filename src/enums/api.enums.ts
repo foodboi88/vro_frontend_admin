@@ -28,5 +28,10 @@ export enum API_URL {
     GET_ALL_STYLE = "type-of-architectures",
     GET_TOP_ARCHITECT = "Admin/priority-seller",
     GET_OUT_TOP_ARCHITECT = "Admin/seller-nonpriority",
-    SAVE_TOP_ARCHITECT = "Admin/edit-index-seller"
+    SAVE_TOP_ARCHITECT = "Admin/edit-index-seller",
+
+
+    //Custom page
+    MISSION_PAGE_DATA = "custom-pages",
+    BANNER_HOME_PAGE_DATA = "custom-banners"
 }

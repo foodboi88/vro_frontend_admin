@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import './style.sidebar.scss'
-import Logo from '../../assets/image/logo.png'
-import { BiGridAlt } from 'react-icons/bi'
-import { BsFillPersonFill } from 'react-icons/bs'
-import { HiOutlineNewspaper } from 'react-icons/hi'
-import { RiMoneyDollarCircleLine } from 'react-icons/ri'
-import { ImStatsDots } from 'react-icons/im'
-import { AiOutlineKey, AiFillGift, AiOutlineQuestionCircle, AiOutlineDown, AiOutlineUp } from 'react-icons/ai'
-import { BiSolidLogIn } from 'react-icons/bi'
-import { GoDotFill, GoDot } from 'react-icons/go'
-import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { AiOutlineDown, AiOutlineKey, AiOutlineQuestionCircle, AiOutlineUp } from 'react-icons/ai'
+import { BiGridAlt, BiSolidLogIn } from 'react-icons/bi'
+import { BsFillPersonFill } from 'react-icons/bs'
+import { GoDot, GoDotFill } from 'react-icons/go'
+import { HiOutlineNewspaper } from 'react-icons/hi'
+import { IoIosImages } from "react-icons/io"
+import { RiMoneyDollarCircleLine } from 'react-icons/ri'
+import { useNavigate } from 'react-router-dom'
+import Logo from '../../assets/image/logo.png'
+import './style.sidebar.scss'
 const Sidebar = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState<number>(1)
@@ -138,6 +137,22 @@ const Sidebar = () => {
                         }}>
                             <AiOutlineQuestionCircle />
                             <span>Giải quyết phản hồi</span>
+                        </div>
+
+                        <div className={'sidebar-item' + (active === 9 ? ' active' : '')} onClick={() => {
+                            setActive(9)
+                            navigate('/management/mission-page')
+                        }}>
+                            <IoIosImages />
+                            <span>Cấu hình sứ mệnh</span>
+                        </div>
+
+                        <div className={'sidebar-item' + (active === 10 ? ' active' : '')} onClick={() => {
+                            setActive(10)
+                            navigate('/management/banner-home-page')
+                        }}>
+                            <IoIosImages />
+                            <span>Cấu hình banner trang chủ</span>
                         </div>
                     </div>
                     <div className='sidebar-logout'>
