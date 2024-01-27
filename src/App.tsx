@@ -5,8 +5,8 @@ import './App.styles.scss';
 import InLoginLayout from './layouts/in-login/in-login';
 import OutLoginLayout from './layouts/out-login/out-login';
 import Bill from './pages/bill/bill';
-import BannerHomepage from './pages/custom-ui/banner-homepage/banner-homepage';
 import MissionPage from './pages/custom-ui/mission-page/mission-page';
+import BannerHomepage from './pages/custom-ui/banner-homepage/banner-homepage';
 import General from './pages/general/general';
 import HomePage from './pages/homepage/homepage';
 import Report from './pages/report/report';
@@ -16,6 +16,8 @@ import Sketch from './pages/sketch/sketch';
 import User from './pages/user/user';
 import WithdrawRequest from './pages/withdraw-request/withdraw-request';
 import PrivateRoutes from './utils/PrivateRoutes';
+
+
 function App() {
 
   return (
@@ -35,6 +37,8 @@ function App() {
                 <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
                 <Route element={<Bill />} path='/management/bill' />
                 <Route element={<HomePage />} path='/management/homepage' />
+
+
                 <Route element={<MissionPage />} path="/management/mission-page" />
                 <Route element={<BannerHomepage />} path="/management/banner-home-page" />
               </Route>
