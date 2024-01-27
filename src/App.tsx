@@ -5,7 +5,7 @@ import './App.styles.scss';
 import InLoginLayout from './layouts/in-login/in-login';
 import OutLoginLayout from './layouts/out-login/out-login';
 import Bill from './pages/bill/bill';
-import BannerHomepage from './pages/custom-ui/banner-home-page/banner-home-page';
+import BannerHomepage from './pages/custom-ui/banner-homepage/banner-homepage';
 import MissionPage from './pages/custom-ui/mission-page/mission-page';
 import General from './pages/general/general';
 import HomePage from './pages/homepage/homepage';
