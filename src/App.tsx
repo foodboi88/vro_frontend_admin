@@ -5,8 +5,9 @@ import './App.styles.scss';
 import InLoginLayout from './layouts/in-login/in-login';
 import OutLoginLayout from './layouts/out-login/out-login';
 import Bill from './pages/bill/bill';
-import MissionPage from './pages/custom-ui/mission-page/mission-page';
+import BuyerDemand from './pages/buyer-demand/buyer-demand';
 import BannerHomepage from './pages/custom-ui/banner-homepage/banner-homepage';
+import MissionPage from './pages/custom-ui/mission-page/mission-page';
 import General from './pages/general/general';
 import HomePage from './pages/homepage/homepage';
 import Report from './pages/report/report';
@@ -34,6 +35,7 @@ function App() {
 
                 <Route element={<Report />} path="/management/report" />
                 <Route element={<SellerRequest />} path='/management/seller-requests' />
+                <Route element={<BuyerDemand />} path='/management/buyer-demand' />
                 <Route element={<WithdrawRequest />} path='/management/withdraw-requests' />
                 <Route element={<Bill />} path='/management/bill' />
                 <Route element={<HomePage />} path='/management/homepage' />

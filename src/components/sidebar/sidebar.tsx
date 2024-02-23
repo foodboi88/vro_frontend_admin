@@ -1,3 +1,4 @@
+import { TeamOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { AiOutlineDown, AiOutlineKey, AiOutlineQuestionCircle, AiOutlineUp } from 'react-icons/ai'
@@ -24,6 +25,7 @@ const Sidebar = () => {
         if (window.location.pathname === "/management/seller" || window.location.pathname === "/management/user") setActive(2);
         if (window.location.pathname === "/management/seller") setSubActive(1);
         if (window.location.pathname === "/management/user") setSubActive(2);
+        if (window.location.pathname === "/management/buyer-demand") setSubActive(5);
 
         window.addEventListener('resize', handleWindowResize);
         if (window.innerWidth > 800) {
@@ -41,6 +43,7 @@ const Sidebar = () => {
         if (window.location.pathname === "/management") setActive(1);
         if (window.location.pathname === "/management/user") setSubActive(2);
         if (window.location.pathname === "/management/seller") setSubActive(1);
+        if (window.location.pathname === "/management/buyer-demand") setSubActive(5);
 
         if (window.location.pathname === "/management/sketch") setActive(3);
         if (window.location.pathname === "/management/bill") setActive(4);
@@ -113,10 +116,13 @@ const Sidebar = () => {
                             <RiMoneyDollarCircleLine />
                             <span>Quản lý kiến trúc sư</span>
                         </div>
-                        {/* <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => setActive(5)}>
-                            <ImStatsDots />
-                            <span>Công cụ marketing</span>
-                        </div> */}
+                        <div className={'sidebar-item' + (active === 5 ? ' active' : '')} onClick={() => {
+                            setActive(5)
+                            navigate('/management/buyer-demand')
+                        }}>
+                            <TeamOutlined />
+                            <span>Quản lý nhu cầu khách hàng</span>
+                        </div>
                         <div className={'sidebar-item' + (active === 6 ? ' active' : '')} onClick={() => {
                             setActive(6)
                             navigate('/management/seller-requests')

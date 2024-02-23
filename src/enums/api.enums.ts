@@ -33,5 +33,8 @@ export enum API_URL {
 
     //Custom page
     MISSION_PAGE_DATA = "custom-pages",
-    BANNER_HOME_PAGE_DATA = "custom-banners"
+    BANNER_HOME_PAGE_DATA = "custom-banners",
+
+    //Buyer demand
+    CUSTOMER_NEED = "customer-need"
 }

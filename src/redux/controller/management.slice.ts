@@ -3,12 +3,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CheckboxOptionType, notification } from "antd";
 import { catchError, concatMap, filter, mergeMap, switchMap } from "rxjs/operators";
+import BuyerDemandAPI from "../../api/buyer-demand/buyer-demand.api";
 import CustomUIAPI from "../../api/custom-ui/custom-ui.api";
 import ReportApi from "../../api/report/report.api";
 import SketchApi from "../../api/sketch/sketch.api";
 import StatisticAPI from "../../api/statistic/statistic.api";
 import UserApi from "../../api/user/user.api";
 import WithdrawApi from "../../api/withdraw/withdraw.api";
+import { IBuyerDemandInterface } from "../../common/buyer-demand.interface";
 import { IBannerHomepageData, IMissionPageData } from "../../common/customize-page.interface";
 import { RootEpic } from "../../common/define-type";
 import { IReport, IStatisticReport } from "../../common/report.interface";
@@ -50,7 +52,7 @@ interface ManagementState {
     missionPageData: IMissionPageData[];
     isLoadingUpload: boolean;
     bannerHomepageData: IBannerHomepageData[];
-
+    uploadDemandRequest: IBuyerDemandInterface[];
 }
 
 const initState: ManagementState = {
@@ -85,6 +87,7 @@ const initState: ManagementState = {
     missionPageData: [],
     isLoadingUpload: false,
     bannerHomepageData: [],
+    uploadDemandRequest: []
 };
 
 const managementSlice = createSlice({
@@ -804,6 +807,31 @@ const managementSlice = createSlice({
             console.log(action);
 
         },
+
+        // get upload demand request 
+        getUploadDemandRequests(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        getUploadDemandSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.uploadDemandRequest = action.payload.data.items
+
+        },
+        getUploadDemandsFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
     },
 });
 
@@ -1400,6 +1428,22 @@ const saveHomepageBannerData$: RootEpic = (action$) =>
         })
     );
 
+const getUploadDemand$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(getUploadDemandRequests.match),
+        mergeMap((re) => {
+            return BuyerDemandAPI.getUploadDemand(re.payload).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.getUploadDemandSuccess(res),
+
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.getUploadDemandsFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -1430,7 +1474,8 @@ export const ManagementEpics = [
     getMissionPageData$,
     saveMissionPageData$,
     getHomepageBannerData$,
-    saveHomepageBannerData$
+    saveHomepageBannerData$,
+    getUploadDemand$
 ];
 export const {
     getUsersRequest,
@@ -1466,5 +1511,6 @@ export const {
     saveMissionPageDataRequest,
     getHomepageBannerDataRequest,
     saveHomepageBannerDataRequest,
+    getUploadDemandRequests
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
