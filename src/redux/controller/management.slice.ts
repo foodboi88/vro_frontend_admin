@@ -53,6 +53,7 @@ interface ManagementState {
     isLoadingUpload: boolean;
     bannerHomepageData: IBannerHomepageData[];
     uploadDemandRequest: IBuyerDemandInterface[];
+    uploadDemandCount: number;
 }
 
 const initState: ManagementState = {
@@ -87,7 +88,9 @@ const initState: ManagementState = {
     missionPageData: [],
     isLoadingUpload: false,
     bannerHomepageData: [],
-    uploadDemandRequest: []
+    uploadDemandRequest: [],
+    uploadDemandCount: 0
+
 };
 
 const managementSlice = createSlice({
@@ -815,9 +818,45 @@ const managementSlice = createSlice({
         getUploadDemandSuccess(state, action: PayloadAction<any>) {
             state.loading = false;
             state.uploadDemandRequest = action.payload.data.items
+            state.uploadDemandCount = action.payload.data.count
 
         },
         getUploadDemandsFail(state, action: PayloadAction<any>) {
+            console.log(action);
+            state.loading = false;
+            notification.open({
+                message: action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+
+        },
+
+        // approve upload demand request
+        approveDemandRequests(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+        approveDemandSuccess(state, action: PayloadAction<any>) {
+            state.loading = false;
+            state.uploadDemandRequest = action.payload.data.items
+            state.uploadDemandCount = action.payload.data.count
+            notification.open({
+                message: "Đã chấp nhận yêu cầu!",
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+                style: {
+                    marginTop: 50,
+                    paddingTop: 40,
+                },
+            });
+        },
+        approveDemandFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
             notification.open({
@@ -1444,6 +1483,23 @@ const getUploadDemand$: RootEpic = (action$) =>
         })
     );
 
+const approveDemand$: RootEpic = (action$) =>
+    action$.pipe(
+        filter(approveDemandRequests.match),
+        mergeMap((re) => {
+            const { currentSearchValue, ...bodyrequest } = re.payload
+            return BuyerDemandAPI.approveDemand(bodyrequest.id).pipe(
+                mergeMap((res: any) => {
+                    return [
+                        managementSlice.actions.approveDemandSuccess(res),
+                        managementSlice.actions.getUploadDemandRequests(currentSearchValue),
+                    ];
+                }),
+                catchError((err) => [managementSlice.actions.approveDemandFail(err)])
+            );
+        })
+    );
+
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -1475,7 +1531,8 @@ export const ManagementEpics = [
     saveMissionPageData$,
     getHomepageBannerData$,
     saveHomepageBannerData$,
-    getUploadDemand$
+    getUploadDemand$,
+    approveDemand$
 ];
 export const {
     getUsersRequest,
@@ -1511,6 +1568,7 @@ export const {
     saveMissionPageDataRequest,
     getHomepageBannerDataRequest,
     saveHomepageBannerDataRequest,
-    getUploadDemandRequests
+    getUploadDemandRequests,
+    approveDemandRequests
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;

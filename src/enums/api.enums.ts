@@ -36,5 +36,6 @@ export enum API_URL {
     BANNER_HOME_PAGE_DATA = "custom-banners",
 
     //Buyer demand
-    CUSTOMER_NEED = "customer-need"
+    CUSTOMER_NEED = "customer-need",
+    APPROVE_UPLOAD_CUSTOMER_NEED = "customer-need/approve"
 }

@@ -7,12 +7,12 @@ import { IGetSketchRequest } from '../../common/sketch.interface';
 import { IGetUsersRequest } from '../../common/user.interface';
 import CTable from '../../components/table/CTable';
 import { QUERY_PARAM } from '../../constants/get-api.constant';
-import { approveSellerRequest, getSellerRequests, getUploadDemandRequests } from '../../redux/controller';
+import { approveDemandRequests, approveSellerRequest, getSellerRequests, getUploadDemandRequests } from '../../redux/controller';
 import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
 import Utils from '../../utils/base-utils';
 import './buyer-demand.styles.scss';
 const BuyerDemand = () => {
-  const { uploadDemandRequest, numberOfSellerRequest } = useSelectorRoot((state) => state.management);
+  const { uploadDemandRequest, uploadDemandCount } = useSelectorRoot((state) => state.management);
     const [textSearch, setTextSearch] = useState('');
     const [beginDate, setBeginDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -46,31 +46,6 @@ const BuyerDemand = () => {
             dataIndex: 'title',
             key: 'title',
         },
-        // {
-        //     title: 'Mô tả',
-        //     dataIndex: 'description',
-        //     key: 'description',
-        // },
-        // {
-        //     title: 'Mã số thuế',
-        //     dataIndex: 'vatCode',
-        //     key: 'vatCode',
-        // },
-        // {
-        //     title: 'Số tài khoản',
-        //     dataIndex: 'bankAccountNumber',
-        //     key: 'bankAccountNumber',
-        // },
-        // {
-        //     title: 'Ngân hàng',
-        //     dataIndex: 'bankName',
-        //     key: 'bankName',
-        // },
-        // {
-        //     title: 'Chi nhánh ngân hàng',
-        //     dataIndex: 'bankBranch',
-        //     key: 'bankBranch',
-        // },
         {
             title: 'Tình trạng',
             dataIndex: 'isApproved',
@@ -78,7 +53,7 @@ const BuyerDemand = () => {
             render: (_, record) => {
                 if (record.isApproved) return (
                     <Space size="middle">
-                        <span>Duyệt</span>
+                        <span>Đã duyệt</span>
                     </Space>
                 )
                 else return (
@@ -103,7 +78,7 @@ const BuyerDemand = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a onClick={(event) => handleApprove(record)}>Chấp nhận</a>
+                    {!record.isApproved && <a onClick={(event) => handleApprove(record)}>Chấp nhận</a>}
                     <a onClick={(event) => handleViewDetail(record)}>Chi tiết</a>
                 </Space>
             ),
@@ -119,10 +94,10 @@ const BuyerDemand = () => {
 
     const handleApprove = (record: any) => {
         const bodyrequest = {
-            id: record.id,
-            currentSearchValue: currentSearchValue
+            currentSearchValue,
+            id: record.id
         }
-        dispatch(approveSellerRequest(bodyrequest));
+        dispatch(approveDemandRequests(bodyrequest));
     }
 
     const onChangeInput = (event: any) => {
@@ -154,9 +129,9 @@ const BuyerDemand = () => {
     }
 
     const onChangePagination = (event: any) => {
-        currentSearchValue.offset = (event - 1) * QUERY_PARAM.size;
+        currentSearchValue.offset = (event.page - 1) * QUERY_PARAM.size;
         setCurrentSearchValue(currentSearchValue);
-        dispatch(getSellerRequests(currentSearchValue))
+        dispatch(getUploadDemandRequests(currentSearchValue))
     }
 
     const handleViewDetail = (record: any) => {
@@ -210,7 +185,7 @@ const BuyerDemand = () => {
                                 <div>Tiêu đề:</div>
                                 <div>{detailUser.title}</div>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 87 }}>
                                 <div>Mô tả:</div>
                                 <div>{detailUser.description}</div>
                             </div>
@@ -241,7 +216,7 @@ const BuyerDemand = () => {
                     // onSearch={onSearch}
                     data={uploadDemandRequest}
                     titleOfColumnList={columns}
-                    totalRecord={numberOfSellerRequest}
+                    totalRecord={uploadDemandCount}
                     onChangePagination={onChangePagination}
                 />
             </div>

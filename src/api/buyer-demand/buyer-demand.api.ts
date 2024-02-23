@@ -18,15 +18,15 @@ export default class BuyerDemandAPI {
     );
   }
 
-  // static saveMissionPageData(body: any, id: string): Observable<any> {
-  //   const api = `${BuyerDemandAPI.apiURL.HOST}/${this.apiURL.MISSION_PAGE_DATA}/${id}`;
-  //   return HttpClient.put(api, body).pipe(
-  //     map(
-  //       (res) => (res as any) || null,
-  //       catchError((error) => new Observable())
-  //     )
-  //   );
-  // }
+  static approveDemand(id: string): Observable<any> {
+    const api = `${BuyerDemandAPI.apiURL.HOST}/${this.apiURL.APPROVE_UPLOAD_CUSTOMER_NEED}?id=${id}`;
+    return HttpClient.patch(api).pipe(
+      map(
+        (res) => (res as any) || null,
+        catchError((error) => new Observable())
+      )
+    );
+  }
 
   // static getBannerHomepageData(body: any): Observable<any> {
   //   const api = `${BuyerDemandAPI.apiURL.HOST}/${this.apiURL.BANNER_HOME_PAGE_DATA}`;

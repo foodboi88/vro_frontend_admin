@@ -8,7 +8,7 @@ import { notification } from "antd";
 
 /** types */
 type PartAjaxRequest = Omit<AjaxRequest, "url" | "method" | "body">;
-type HttpMethod = "GET" | "POST" | "DELETE" | "PUT";
+type HttpMethod = "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
 type HeadersAjax = {
     Authorization: string;
     Accept: string;
@@ -144,6 +144,13 @@ export default class HttpClient {
         isGetHeader?: boolean
     ): Observable<unknown> {
         return commonApiCall("POST", { url, data, headers }, isGetHeader);
+    }
+
+    static patch(
+        url: string,
+        headers?: PartAjaxRequest,
+    ): Observable<unknown> {
+        return commonApiCall("PATCH", { url, headers });
     }
 
     static delete(
