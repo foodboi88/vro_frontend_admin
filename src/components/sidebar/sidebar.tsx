@@ -50,6 +50,8 @@ const Sidebar = () => {
         if (window.location.pathname === "/management/seller-requests") setActive(6);
         if (window.location.pathname === "/management/withdraw-requests") setActive(7);
         if (window.location.pathname === "/management/report") setActive(8);
+        if (window.location.pathname === "/management/mission-page") setActive(9);
+        if (window.location.pathname === "/management/banner-home-page") setActive(10);
 
     }, []);
 
