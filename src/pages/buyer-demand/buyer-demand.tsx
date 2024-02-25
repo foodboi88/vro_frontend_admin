@@ -26,21 +26,21 @@ const BuyerDemand = () => {
                 <span className='span-table'>{rowIndex + 1}</span>
             )
         },
-        {
-            title: 'Tên người mua',
-            dataIndex: 'userName',
-            key: 'name',
-        },
-        {
-            title: 'Số điện thoại',
-            dataIndex: 'userPhone',
-            key: 'userPhone',
-            render: (_, record) => (
-                <p>{Utils.formatPhoneNumber(record.userPhone)}</p>
-            )
+        // {
+        //     title: 'Tên người mua',
+        //     dataIndex: 'userName',
+        //     key: 'name',
+        // },
+        // {
+        //     title: 'Số điện thoại',
+        //     dataIndex: 'userPhone',
+        //     key: 'userPhone',
+        //     render: (_, record) => (
+        //         <p>{Utils.formatPhoneNumber(record.userPhone)}</p>
+        //     )
 
 
-        },
+        // },
         {
             title: 'Tiêu đề',
             dataIndex: 'title',
