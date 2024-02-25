@@ -16,8 +16,14 @@ import { BiSolidLogIn } from 'react-icons/bi'
 import { GoDotFill, GoDot } from 'react-icons/go'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { motion } from 'framer-motion';
+import { useDispatchRoot, useSelectorRoot } from '../../redux/store';
 const Header = () => {
     const navigate = useNavigate();
+    const [windowSize, setWindowSize] = useState([window.innerWidth, window.innerHeight]);
+    const [isReponsive, setIsReponsive] = useState<boolean>(false);
+    const [open, setOpen] = useState(false);
+    const dispatch = useDispatchRoot();
+    const { tokenLogin, accesstokenExpỉred, userName, userId } = useSelectorRoot((state) => state.login);
 
     const items: MenuProps["items"] = [
         {
@@ -27,13 +33,11 @@ const Header = () => {
         },
     ];
 
-    const onClickLogout = () => {
-        localStorage.clear();
-        window.location.reload();
-    }
+    useEffect(() => {
+        console.log("userId", userId);
 
-    const [windowSize, setWindowSize] = useState([window.innerWidth, window.innerHeight]);
-    const [isReponsive, setIsReponsive] = useState<boolean>(false);
+    }, [userId]);
+
     useEffect(() => {
         const handleWindowResize = () => {
             setWindowSize([window.innerWidth, window.innerHeight]);
@@ -52,7 +56,10 @@ const Header = () => {
         };
     }, [windowSize]);
 
-    const [open, setOpen] = useState(false);
+    const onClickLogout = () => {
+        localStorage.clear();
+        window.location.reload();
+    }
 
     const showDrawer = () => {
         setOpen(true);
@@ -84,12 +91,12 @@ const Header = () => {
                     <MessageOutlined />
                 </Badge> */}
                 <div className="user-info-content">
-                    <Avatar className="avatar" src={UserIcon} />
+                    <Avatar className="avatar" src={`https://api.banvebank.com.vn/users/avatar/${userId}`} />
                     <div className="name-and-balance">
-                        <div className="name">Bùi Thị Hương</div>
-                        <div className="balance">
+                        <div className="name">{userName}</div>
+                        {/* <div className="balance">
                             SD: {"1tr500"}
-                        </div>
+                        </div> */}
                     </div>
                     <Dropdown
                         className="drop-down"

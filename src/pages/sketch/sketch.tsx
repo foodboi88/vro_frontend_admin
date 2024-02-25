@@ -265,8 +265,8 @@ const Sketch = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={(event) => handleBlockSketch(record)}>Block</a>
-          <a onClick={(event) => handleDeleteSketch(record)}>Delete</a>
+          <a onClick={(event) => handleBlockSketch(record)}>Chặn</a>
+          <a onClick={(event) => handleDeleteSketch(record)}>Xóa</a>
         </Space>
       ),
     },

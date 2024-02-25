@@ -29,7 +29,7 @@ export enum API_URL {
     GET_TOP_ARCHITECT = "Admin/priority-seller",
     GET_OUT_TOP_ARCHITECT = "Admin/seller-nonpriority",
     SAVE_TOP_ARCHITECT = "Admin/edit-index-seller",
-
+    UPLOAD_USER_AVATAR = "users/avatar",
 
     //Custom page
     MISSION_PAGE_DATA = "custom-pages",

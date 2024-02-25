@@ -113,16 +113,16 @@ const managementSlice = createSlice({
         getUsersFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -235,12 +235,12 @@ const managementSlice = createSlice({
         getOverviewStatisticDayFail(state, action: PayloadAction<any>) {
             state.loading = false;
             if (action.payload.status === 400 || action.payload.status === 404) {
-                notification.open({
-                    message: action.payload.response.message,
-                    onClick: () => {
-                        console.log("Notification Clicked!");
-                    },
-                });
+                // notification.open({
+                //     message: action.payload.response.message,
+                //     onClick: () => {
+                //         console.log("Notification Clicked!");
+                //     },
+                // });
             }
         },
 
@@ -258,12 +258,12 @@ const managementSlice = createSlice({
         getOverviewStatisticMonthFail(state, action: PayloadAction<any>) {
             state.loading = false;
             if (action.payload.status === 400 || action.payload.status === 404) {
-                notification.open({
-                    message: action.payload.response.message,
-                    onClick: () => {
-                        console.log("Notification Clicked!");
-                    },
-                });
+                // notification.open({
+                //     message: action.payload.response.message,
+                //     onClick: () => {
+                //         console.log("Notification Clicked!");
+                //     },
+                // });
             }
         },
 
@@ -281,12 +281,12 @@ const managementSlice = createSlice({
         getOverviewStatisticQuarterFail(state, action: PayloadAction<any>) {
             state.loading = false;
             if (action.payload.status === 400 || action.payload.status === 404) {
-                notification.open({
-                    message: action.payload.response.message,
-                    onClick: () => {
-                        console.log("Notification Clicked!");
-                    },
-                });
+                // notification.open({
+                //     message: action.payload.response.message,
+                //     onClick: () => {
+                //         console.log("Notification Clicked!");
+                //     },
+                // });
             }
         },
 
@@ -304,12 +304,12 @@ const managementSlice = createSlice({
         getOverviewStatisticYearFail(state, action: PayloadAction<any>) {
             state.loading = false;
             if (action.payload.status === 400 || action.payload.status === 404) {
-                notification.open({
-                    message: action.payload.response.message,
-                    onClick: () => {
-                        console.log("Notification Clicked!");
-                    },
-                });
+                // notification.open({
+                //     message: action.payload.response.message,
+                //     onClick: () => {
+                //         console.log("Notification Clicked!");
+                //     },
+                // });
             }
         },
 
@@ -327,12 +327,12 @@ const managementSlice = createSlice({
         getOverviewStatisticUserDayFail(state, action: PayloadAction<any>) {
             state.loading = false;
             if (action.payload.status === 400 || action.payload.status === 404) {
-                notification.open({
-                    message: action.payload.message,
-                    onClick: () => {
-                        console.log("Notification Clicked!");
-                    },
-                });
+                // notification.open({
+                //     message: action.payload.message,
+                //     onClick: () => {
+                //         console.log("Notification Clicked!");
+                //     },
+                // });
             }
         },
 
@@ -351,12 +351,12 @@ const managementSlice = createSlice({
         getOverviewStatisticSellerDayFail(state, action: PayloadAction<any>) {
             state.loading = false;
             if (action.payload.status === 400 || action.payload.status === 404) {
-                notification.open({
-                    message: action.payload.message,
-                    onClick: () => {
-                        console.log("Notification Clicked!");
-                    },
-                });
+                // notification.open({
+                //     message: action.payload.message,
+                //     onClick: () => {
+                //         console.log("Notification Clicked!");
+                //     },
+                // });
             }
         },
 
@@ -418,16 +418,16 @@ const managementSlice = createSlice({
         getSellerRequestsFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -467,16 +467,16 @@ const managementSlice = createSlice({
         getWithdrawRequestsFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -870,6 +870,39 @@ const managementSlice = createSlice({
                 },
             });
 
+        },
+
+        changeAvatarRequest(state, action: PayloadAction<any>) {
+            state.loading = true;
+        },
+
+        changeAvatarSuccess(state, action: PayloadAction<any>) {
+            console.log(action.payload);
+            state.loading = false;
+
+            notification.open({
+                message: 'Đổi ảnh đại diện thành công!',
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        },
+
+        changeAvatarFail(state, action: PayloadAction<any>) {
+            console.log(action);
+
+            notification.open({
+                message: action.payload.response?.message ? action.payload.response?.message : "Đổi ảnh đại diện không thành công!",
+                // description:
+                //     action.payload.response.message,
+                onClick: () => {
+                    console.log("Notification Clicked!");
+                },
+            });
+            state.loading = false;
         },
     },
 });
@@ -1500,6 +1533,31 @@ const approveDemand$: RootEpic = (action$) =>
         })
     );
 
+    const changeAvatar$: RootEpic = (action$) => action$.pipe(
+        filter(changeAvatarRequest.match),
+        mergeMap((re) => {
+            // IdentityApi.login(re.payload) ?
+            console.log(re);
+    
+            const {  avatar } = re.payload;
+            console.log(avatar);
+            
+            let imageData = new FormData();
+            imageData.append("file", re.payload.avatar); // chinh lai ten file anh sau
+    
+            return UserApi.uploadUserAvatar(imageData).pipe(
+                mergeMap((res: any) => {
+                    console.log(res);
+                    return [
+                        managementSlice.actions.changeAvatarSuccess(res),
+                    ];
+                }),
+                catchError(err =>
+                    [managementSlice.actions.changeAvatarFail(err)]
+                )
+            );
+        })
+    );
 export const ManagementEpics = [
     getUsers$,
     blockUsers$,
@@ -1532,7 +1590,9 @@ export const ManagementEpics = [
     getHomepageBannerData$,
     saveHomepageBannerData$,
     getUploadDemand$,
-    approveDemand$
+    approveDemand$,
+    changeAvatar$,
+
 ];
 export const {
     getUsersRequest,
@@ -1569,6 +1629,7 @@ export const {
     getHomepageBannerDataRequest,
     saveHomepageBannerDataRequest,
     getUploadDemandRequests,
-    approveDemandRequests
+    approveDemandRequests,
+    changeAvatarRequest,
 } = managementSlice.actions;
 export const managementReducer = managementSlice.reducer;
