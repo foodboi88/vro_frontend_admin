@@ -34,6 +34,7 @@ interface LoginState {
     userPhone: string | undefined;
     accesstokenExpỉred: boolean;
     userRole: string;
+    userId: string;
 }
 
 const initState: LoginState = {
@@ -43,6 +44,7 @@ const initState: LoginState = {
     userName: Utils.getValueLocalStorage("userName"),
     userMail: Utils.getValueLocalStorage("userMail"),
     userPhone: Utils.getValueLocalStorage("userPhone"),
+    userId: Utils.getValueLocalStorage("userId"),
     departmentId: 1,
     message: undefined,
     messageForgot: undefined,
@@ -68,7 +70,7 @@ const loginSlice = createSlice({
                 Utils.setLocalStorage("token", action.payload.accessToken);
                 Utils.setLocalStorage("refresh_token", action.payload.refreshToken);
                 Utils.setLocalStorage("role", action.payload.role);
-    
+                
                 state.userRole = action.payload.role;
                 state.tokenLogin = action.payload.accessToken;
                 state.loading = false;
@@ -125,9 +127,17 @@ const loginSlice = createSlice({
             state,
             action: PayloadAction<{ user: any; token: string }>
         ) {
+            console.log(action.payload);
+            
             Utils.setLocalStorage("userName", action.payload.user.name);
             Utils.setLocalStorage("userMail", action.payload.user.email);
             Utils.setLocalStorage("userPhone", action.payload.user.phone);
+            Utils.setLocalStorage("userId", action.payload.user.id);
+
+            state.userName = action.payload.user.name;
+            state.userMail = action.payload.user.email;
+            state.userPhone = action.payload.user.phone;
+            state.userId = action.payload.user.id;
             state.loading = false;
             state.isSuccess = true;
             state.accesstokenExpỉred = false;
@@ -335,6 +345,9 @@ const login$: RootEpic = (action$) =>
 
                     return [
                         loginSlice.actions.loginSuccess(res.data),
+                        loginSlice.actions.getUserInfoRequest({
+                            accessToken: res.data.accessToken,
+                        }),
                         loginSlice.actions.setLoading(false),
                         loginSlice.actions.setStatusCode(res.statusCode),
                     ];
@@ -404,6 +417,7 @@ const getUserInfo$: RootEpic = (action$) =>
                     console.log(res);
                     const token = res.data.accessToken;
                     const user = {
+                        id: res.data.id,
                         email: res.data.email,
                         name: res.data.name,
                         phone: res.data.phone,

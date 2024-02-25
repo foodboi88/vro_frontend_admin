@@ -17,9 +17,27 @@ import Sketch from './pages/sketch/sketch';
 import User from './pages/user/user';
 import WithdrawRequest from './pages/withdraw-request/withdraw-request';
 import PrivateRoutes from './utils/PrivateRoutes';
+import { useEffect } from 'react';
+import { getUserInfoRequest } from './redux/controller';
+import { useDispatchRoot, useSelectorRoot } from './redux/store';
+import ChangeAvatar from './pages/change-avatar/ChangeAvatar';
 
 
 function App() {
+
+  // const dispatch = useDispatchRoot();
+  // const { tokenLogin, accesstokenExpỉred } = useSelectorRoot((state) => state.login);
+
+  // useEffect(() => {
+  //   let checkLogin = localStorage.getItem("token")
+  //     ? localStorage.getItem("token")
+  //     : "";
+  //   if (checkLogin) {
+  //     checkLogin = checkLogin.slice(1);
+  //     checkLogin = checkLogin.slice(0, checkLogin.length - 1);
+  //     dispatch(getUserInfoRequest(checkLogin));
+  //   }
+  // }, []);
 
   return (
     <div className="App">
@@ -43,6 +61,7 @@ function App() {
 
                 <Route element={<MissionPage />} path="/management/mission-page" />
                 <Route element={<BannerHomepage />} path="/management/banner-home-page" />
+                <Route element={<ChangeAvatar />} path='/management/change-avatar' />
               </Route>
             </Route>
             <Route element={<OutLoginLayout />} path="/" />

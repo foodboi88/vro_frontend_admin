@@ -50,7 +50,9 @@ const Sidebar = () => {
         if (window.location.pathname === "/management/seller-requests") setActive(6);
         if (window.location.pathname === "/management/withdraw-requests") setActive(7);
         if (window.location.pathname === "/management/report") setActive(8);
-
+        if (window.location.pathname === "/management/mission-page") setActive(9);
+        if (window.location.pathname === "/management/banner-home-page") setActive(10);
+        if (window.location.pathname === "/management/change-avatar") setActive(11);
     }, []);
 
     return (
@@ -160,6 +162,17 @@ const Sidebar = () => {
                             <IoIosImages />
                             <span>Cấu hình banner trang chủ</span>
                         </div>
+
+                        {/* Cấu hình thay đổi ảnh đại diện */}
+
+                        <div className={'sidebar-item' + (active === 11 ? ' active' : '')} onClick={() => {
+                            setActive(11)
+                            navigate('/management/change-avatar')
+                        }}>
+                            <IoIosImages />
+                            <span>Thay đổi ảnh đại diện</span>
+                        </div>
+
                     </div>
                     <div className='sidebar-logout'>
                         <BiSolidLogIn />

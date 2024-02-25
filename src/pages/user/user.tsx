@@ -149,6 +149,11 @@ const User = () => {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
+            render: (_, record) => (
+                <Space size="middle">
+                    <p>{record.status === 'active' ? 'Hoạt động' : 'Chặn'}</p>
+                </Space>
+            ),
         },
         // {
         //   title: 'Tags',
@@ -175,7 +180,7 @@ const User = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a onClick={(event) => handleBlockUser(record)}>Block</a>
+                    <a onClick={(event) => handleBlockUser(record)}>Chặn</a>
                 </Space>
             ),
         },

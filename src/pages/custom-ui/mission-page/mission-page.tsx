@@ -43,7 +43,7 @@ const MissionPage = () => {
     }, [selectedForm, missionPageData])
 
     const handleUploadSketch = (data: any) => {
-        if (newFiles.length <=0) return;
+        // if (newFiles.length <=0) return;
         console.log(data);
         Modal.confirm({
             title: 'Bạn có xác nhận lưu thông tin khối này?',
