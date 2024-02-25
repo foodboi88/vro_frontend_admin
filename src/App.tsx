@@ -25,19 +25,19 @@ import ChangeAvatar from './pages/change-avatar/ChangeAvatar';
 
 function App() {
 
-  const dispatch = useDispatchRoot();
-  const { tokenLogin, accesstokenExpỉred } = useSelectorRoot((state) => state.login);
+  // const dispatch = useDispatchRoot();
+  // const { tokenLogin, accesstokenExpỉred } = useSelectorRoot((state) => state.login);
 
-  useEffect(() => {
-    let checkLogin = localStorage.getItem("token")
-      ? localStorage.getItem("token")
-      : "";
-    if (checkLogin) {
-      checkLogin = checkLogin.slice(1);
-      checkLogin = checkLogin.slice(0, checkLogin.length - 1);
-      dispatch(getUserInfoRequest(checkLogin));
-    }
-  }, []);
+  // useEffect(() => {
+  //   let checkLogin = localStorage.getItem("token")
+  //     ? localStorage.getItem("token")
+  //     : "";
+  //   if (checkLogin) {
+  //     checkLogin = checkLogin.slice(1);
+  //     checkLogin = checkLogin.slice(0, checkLogin.length - 1);
+  //     dispatch(getUserInfoRequest(checkLogin));
+  //   }
+  // }, []);
 
   return (
     <div className="App">

@@ -345,6 +345,9 @@ const login$: RootEpic = (action$) =>
 
                     return [
                         loginSlice.actions.loginSuccess(res.data),
+                        loginSlice.actions.getUserInfoRequest({
+                            accessToken: res.data.accessToken,
+                        }),
                         loginSlice.actions.setLoading(false),
                         loginSlice.actions.setStatusCode(res.statusCode),
                     ];
