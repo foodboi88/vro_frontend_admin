@@ -375,16 +375,16 @@ const managementSlice = createSlice({
         getReportsFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -500,16 +500,16 @@ const managementSlice = createSlice({
         },
         approveWithdrawRequestFail(state, action: any) {
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message ? action.payload.response.message : 'Xử lý yêu cầu thất bại',
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message ? action.payload.response.message : 'Xử lý yêu cầu thất bại',
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
         },
 
         // get list bill
@@ -527,16 +527,16 @@ const managementSlice = createSlice({
         getBillListFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -554,16 +554,16 @@ const managementSlice = createSlice({
         getDetailBillFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -659,16 +659,16 @@ const managementSlice = createSlice({
         getTopArchitectFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -695,16 +695,16 @@ const managementSlice = createSlice({
         getOutTopArchitectFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -720,16 +720,16 @@ const managementSlice = createSlice({
         saveTopArchitectFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -824,16 +824,16 @@ const managementSlice = createSlice({
         getUploadDemandsFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -859,16 +859,16 @@ const managementSlice = createSlice({
         approveDemandFail(state, action: PayloadAction<any>) {
             console.log(action);
             state.loading = false;
-            notification.open({
-                message: action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-                style: {
-                    marginTop: 50,
-                    paddingTop: 40,
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            //     style: {
+            //         marginTop: 50,
+            //         paddingTop: 40,
+            //     },
+            // });
 
         },
 
@@ -894,14 +894,14 @@ const managementSlice = createSlice({
         changeAvatarFail(state, action: PayloadAction<any>) {
             console.log(action);
 
-            notification.open({
-                message: action.payload.response?.message ? action.payload.response?.message : "Đổi ảnh đại diện không thành công!",
-                // description:
-                //     action.payload.response.message,
-                onClick: () => {
-                    console.log("Notification Clicked!");
-                },
-            });
+            // notification.open({
+            //     message: action.payload.response?.message ? action.payload.response?.message : "Đổi ảnh đại diện không thành công!",
+            //     // description:
+            //     //     action.payload.response.message,
+            //     onClick: () => {
+            //         console.log("Notification Clicked!");
+            //     },
+            // });
             state.loading = false;
         },
     },
