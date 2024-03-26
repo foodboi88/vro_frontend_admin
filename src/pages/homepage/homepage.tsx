@@ -8,6 +8,8 @@ import { useDispatchRoot, useSelectorRoot } from '../../redux/store'
 import './homepage.styles.scss'
 import { motion } from 'framer-motion'
 import { AiOutlineDelete, AiOutlineMenu } from "react-icons/ai";
+import axios from 'axios'
+import Utils from '../../utils/base-utils'
 
 
 export default function HomePage() {
@@ -46,7 +48,7 @@ export default function HomePage() {
             title: `Bạn có muốn đổi vị trí của kts này từ vị trí ${dragPerson.current + 1} sang vị trí ${draggedOverPerson.current + 1} không?`,
             okText: 'Xác nhận',
             cancelText: 'Hủy bỏ',
-            onOk() {
+            async onOk() {
                 // // Code to change the position of the person goes here
 
                 const peopleClone = [...people]
@@ -59,7 +61,18 @@ export default function HomePage() {
                 const bodyrequest = {
                     userIds: peopleClone.map(item => item.id)
                 }
-                dispatch(saveTopArchitectRequest(bodyrequest));
+                const token = Utils.getValueLocalStorage("token");
+
+                await axios.put('https://api.banvebank.com.vn/Admin/edit-index-seller', bodyrequest, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+                // dispatch(saveTopArchitectRequest(bodyrequest));
 
                 // Sau khi thay đổi vị trí thành công, hiển thị thông báo
                 notification.open({
@@ -121,13 +134,23 @@ export default function HomePage() {
 
     }
 
-    function handleSave() {
+    async function handleSave() {
         const bodyrequest = {
             userIds: people.map(item => item.id)
         }
-        console.log(bodyrequest)
-        dispatch(saveTopArchitectRequest(bodyrequest));
+        // console.log(bodyrequest)
+        // dispatch(saveTopArchitectRequest(bodyrequest));
+        const token = Utils.getValueLocalStorage("token");
 
+        await axios.put('https://api.banvebank.com.vn/Admin/edit-index-seller', bodyrequest, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
         // Sau khi lưu thành công, hiển thị thông báo
         notification.open({
             message: "Lưu thành công",
